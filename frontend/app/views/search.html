@@ -1,0 +1,16 @@
+<md-dialog aria-label="Search">
+  <form>
+    <md-dialog-content class="sticky-container">
+      <div>
+        <h2 class="md-title">Search</h2>
+
+        <md-input-container flex>
+          <label>Type your search here..</label>
+          <input ng-model="searchKey">
+        </md-input-container>
+
+        <md-button class="md-raised md-primary" ng-click="answer(searchKey)">Search</md-button>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>
