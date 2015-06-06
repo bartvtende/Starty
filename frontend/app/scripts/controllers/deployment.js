@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name mockupsApp.controller:DeploymentCtrl
+ * @name startyApp.controller:DeploymentCtrl
  * @description
  * # DeploymentCtrl
- * Controller of the mockupsApp
+ * Controller of the startyApp
  */
-angular.module('mockupsApp')
+angular.module('startyApp')
   .controller('DeploymentCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',

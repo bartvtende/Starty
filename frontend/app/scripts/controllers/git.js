@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name mockupsApp.controller:GitCtrl
+ * @name startyApp.controller:GitCtrl
  * @description
  * # GitCtrl
- * Controller of the mockupsApp
+ * Controller of the startyApp
  */
-angular.module('mockupsApp')
+angular.module('startyApp')
   .controller('GitCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',

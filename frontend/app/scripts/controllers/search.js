@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name mockupsApp.controller:SearchCtrl
+ * @name startyApp.controller:SearchCtrl
  * @description
  * # SearchCtrl
- * Controller of the mockupsApp
+ * Controller of the startyApp
  */
-angular.module('mockupsApp')
+angular.module('startyApp')
   .controller('SearchCtrl', function ($scope, $mdDialog) {
     $scope.hide = function() {
       $mdDialog.hide();

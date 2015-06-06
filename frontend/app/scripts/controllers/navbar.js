@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name mockupsApp.controller:NavbarctrlCtrl
+ * @name startyApp.controller:NavbarctrlCtrl
  * @description
  * # NavbarctrlCtrl
- * Controller of the mockupsApp
+ * Controller of the startyApp
  */
-angular.module('mockupsApp')
+angular.module('startyApp')
   .controller('NavbarCtrl', function ($scope, $mdSidenav, $mdDialog, $state) {
     $scope.toggleSidenav = function(menuId) {
       $mdSidenav(menuId).toggle();

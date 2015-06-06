@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name mockupsApp.controller:MessageCtrl
+ * @name startyApp.controller:MessageCtrl
  * @description
  * # MessageCtrl
- * Controller of the mockupsApp
+ * Controller of the startyApp
  */
-angular.module('mockupsApp')
+angular.module('startyApp')
   .controller('MessageCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
