@@ -1,3 +1,12 @@
+.dark-primary-color    { background: #E64A19; }
+.default-primary-color { background: #FF5722; }
+.light-primary-color   { background: #FFCCBC; }
+.text-primary-color    { color: #FFFFFF; }
+.accent-color          { background: #FFC107; }
+.primary-text-color    { color: #212121; }
+.secondary-text-color  { color: #727272; }
+.divider-color         { border-color: #B6B6B6; }
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -9,4 +18,24 @@
   font-size: inherit;
   font-weight: inherit;
   margin: inherit;
+}
+
+.message-list {
+  overflow-y: scroll;
+}
+
+.message-text {
+  margin-top: 30px;
+}
+
+#messages {
+  height: 100%;
+}
+
+.message-send {
+  padding: 0 16px 6px 16px;
+}
+
+.message-sidebar {
+  height: 100%;
 }

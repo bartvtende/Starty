@@ -1,0 +1,17 @@
+<h1>Login</h1>
+
+<form name="LoginForm" ng-submit="login(user)">
+    <md-input-container>
+        <md-icon md-svg-src="images/icons/ic_email_24px.svg" class="email"></md-icon>
+        <input ng-model="user.email" type="email" placeholder="Email" ng-required="true" autofocus>
+    </md-input-container>
+
+    <md-input-container>
+        <md-icon md-svg-src="images/icons/ic_lock_24px.svg" class="password"></md-icon>
+        <input ng-model="user.password" type="password" placeholder="Password" ng-required="true">
+    </md-input-container>
+
+    <p><small>Don't have an account? <a ui-sref="auth.register">Register!</a></small></p>
+
+    <md-button class="md-raised md-primary">Login</md-button>
+</form>

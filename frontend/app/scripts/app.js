@@ -19,53 +19,84 @@ angular
     'ngMaterial',
     'ngMdIcons'
   ])
+  .constant('urls', {
+    API: 'http://localhost:3000/api'
+  })
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
-      .state('home', {
-        url: '/',
-        templateUrl: 'views/home.html',
-        controller: 'ProjectCtrl'
+      .state('auth', {
+        url: '/auth',
+        templateUrl: 'views/layouts/auth.html'
       })
-      .state('messages', {
+      .state('auth.login', {
+        url: '/login',
+        templateUrl: 'views/pages/auth/login.html',
+        controller: 'LoginCtrl'
+      })
+      .state('auth.register', {
+        url: '/register',
+        templateUrl: 'views/pages/auth/register.html',
+        controller: 'RegisterCtrl'
+      })
+      .state('auth.join-organization', {
+        url: '/join',
+        templateUrl: 'views/pages/auth/join-organization.html',
+        controller: 'JoinCtrl'
+      })
+      .state('project', {
+        url: '/project',
+        templateUrl: 'views/layouts/project.html'
+      })
+      .state('project.messages', {
         url: '/messages',
-        templateUrl: 'views/message.html',
+        templateUrl: 'views/pages/project/message.html',
         controller: 'MessageCtrl'
       })
-      .state('board', {
+      .state('project.board', {
         url: '/board',
-        templateUrl: 'views/board.html',
+        templateUrl: 'views/pages/project/board.html',
         controller: 'BoardCtrl'
       })
-      .state('backlog', {
+      .state('project.backlog', {
         url: '/backlog',
-        templateUrl: 'views/backlog.html',
+        templateUrl: 'views/pages/project/backlog.html',
         controller: 'BacklogCtrl'
       })
-      .state('issues', {
+      .state('project.backlog-create', {
+        url: '/backlog/new',
+        templateUrl: 'views/pages/project/backlog-create.html',
+        controller: 'BacklogCtrl'
+      })
+      .state('project.issues', {
         url: '/issues',
-        templateUrl: 'views/issues.html',
+        templateUrl: 'views/pages/project/issues.html',
         controller: 'IssuesCtrl'
       })
-      .state('reports', {
+      .state('project.issues-create', {
+        url: '/issues/new',
+        templateUrl: 'views/pages/project/issues-create.html',
+        controller: 'IssuesCtrl'
+      })
+      .state('project.reports', {
         url: '/reports',
-        templateUrl: 'views/reports.html',
+        templateUrl: 'views/pages/project/reports.html',
         controller: 'ReportsCtrl'
       })
-      .state('git', {
+      .state('project.git', {
         url: '/git',
-        templateUrl: 'views/git.html',
+        templateUrl: 'views/pages/project/git.html',
         controller: 'GitCtrl'
       })
-      .state('deployment', {
+      .state('project.deployment', {
         url: '/deployment',
-        templateUrl: 'views/deployment.html',
+        templateUrl: 'views/pages/project/deployment.html',
         controller: 'DeploymentCtrl'
       })
-      .state('calendar', {
+      .state('project.calendar', {
         url: '/calendar',
-        templateUrl: 'views/calendar.html',
+        templateUrl: 'views/pages/project/calendar.html',
         controller: 'CalendarCtrl'
       });
 
-      $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.otherwise('/auth/login');
   });

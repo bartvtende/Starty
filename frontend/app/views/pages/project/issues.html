@@ -1,0 +1,59 @@
+<div layout="column">
+    <md-toolbar class="md-accent md-toolbar-tools">
+        <h2>
+            <span>Issues</span>
+        </h2>
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="Add" ui-sref="project.issues-create">
+            <md-icon md-svg-src="images/icons/ic_add_24px.svg" style="color: white;"></md-icon>
+        </md-button>
+    </md-toolbar>
+
+    <md-content layout="column" flex class="md-padding">
+        <md-list>
+            <md-list-item>
+                <div flex>
+                    <b>ID</b>
+                </div>
+                <div flex>
+                    <b>Issue</b>
+                </div>
+                <div flex>
+                    <b>Creator</b>
+                </div>
+                <div flex>
+                    <b>Timestamp</b>
+                </div>
+                <div flex>
+                    <b>Status</b>
+                </div>
+                <div flex>
+                    <b>Action</b>
+                </div>
+            </md-list-item>
+
+            <md-list-item ng-repeat="issue in issues">
+                <div flex>
+                    {{issue.id}}
+                </div>
+                <div flex>
+                    {{issue.name}}
+                </div>
+                <div flex>
+                    {{issue.user}}
+                </div>
+                <div flex>
+                    {{issue.time}}
+                </div>
+                <div flex>
+                    <md-button class="md-fab md-mini md-primary" aria-label="Edit issue">
+                        <md-icon md-svg-src="images/icons/ic_edit_24px.svg"></md-icon>
+                    </md-button>
+                    <md-button class="md-fab md-mini" aria-label="Delete issue">
+                        <md-icon md-svg-src="images/icons/ic_delete_24px.svg"></md-icon>
+                    </md-button>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</div>

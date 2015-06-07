@@ -20,68 +20,7 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <md-content>
-      <md-toolbar ng-controller="NavbarCtrl">
-        <div class="md-toolbar-tools" layout-align="center center">
-          <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-            <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
-          </md-button>
-          <h1>Project #1337</h1>
-          <span flex></span>
-          <md-button class="md-icon-button" ng-click="spawnSearchPopup($event)" aria-label="Search">
-            <md-icon md-svg-src="images/icons/ic_search_24px.svg" style="color: white;"></md-icon>
-          </md-button>
-          <md-button class="md-icon-button" ng-click="spawnProfilePopup($event)" aria-label="Profile">
-            <md-icon md-svg-src="images/icons/ic_perm_identity_24px.svg" style="color: white;"></md-icon>
-          </md-button>
-        </div>
-      </md-toolbar>
-    </md-content>
-
-
-    <div layout="row" flex>
-      <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-        <div ng-controller="NavbarCtrl">
-          <md-list-item ng-click="navigateTo('messages')">
-            <md-icon md-svg-src="images/icons/ic_message_black_24px.svg" style="color: black;"></md-icon>
-            <p>Messages</p>
-          </md-list-item>
-          <md-list-item ng-click="navigateTo('board')">
-            <md-icon md-svg-src="images/icons/ic_dashboard_24px.svg" style="color: black;"></md-icon>
-            <p>Board</p>
-          </md-list-item>
-          <md-list-item ng-click="navigateTo('backlog')">
-            <md-icon md-svg-src="images/icons/ic_done_24px.svg" style="color: black;"></md-icon>
-            <p>Backlog</p>
-          </md-list-item>
-          <md-list-item ng-click="navigateTo('issues')">
-            <md-icon md-svg-src="images/icons/ic_report_problem_24px.svg" style="color: black;"></md-icon>
-            <p>Issues</p>
-          </md-list-item>
-          <md-list-item ng-click="navigateTo('reports')">
-            <md-icon md-svg-src="images/icons/ic_trending_up_24px.svg" style="color: black;"></md-icon>
-            <p>Reports</p>
-          </md-list-item>
-          <md-list-item ng-click="navigateTo('git')">
-            <md-icon md-svg-src="images/icons/ic_track_changes_24px.svg" style="color: black;"></md-icon>
-            <p>Git</p>
-          </md-list-item>
-          <md-list-item ng-click="navigateTo('deployment')">
-            <md-icon md-svg-src="images/icons/ic_memory_24px.svg" style="color: black;"></md-icon>
-            <p>Deployments</p>
-          </md-list-item>
-          <md-list-item ng-click="navigateTo('calendar')">
-            <md-icon md-svg-src="images/icons/ic_event_24px.svg" style="color: black;"></md-icon>
-            <p>Calendar</p>
-          </md-list-item>
-        </div>
-      </md-sidenav>
-      <div layout="column" flex id="content">
-        <md-content layout="column" flex class="md-padding">
-          <div ui-view></div>
-        </md-content>
-      </div>
-    </div>
+    <div ui-view></div>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -93,7 +32,6 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
-    <script src="bower_components/angular-material-icons/angular-material-icons.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
     <!-- endbower -->
@@ -101,17 +39,21 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/navbar.js"></script>
-    <script src="scripts/controllers/search.js"></script>
-    <script src="scripts/controllers/board.js"></script>
-    <script src="scripts/controllers/backlog.js"></script>
-    <script src="scripts/controllers/issues.js"></script>
-    <script src="scripts/controllers/reports.js"></script>
-    <script src="scripts/controllers/git.js"></script>
-    <script src="scripts/controllers/deployment.js"></script>
-    <script src="scripts/controllers/calendar.js"></script>
-    <script src="scripts/controllers/project.js"></script>
-    <script src="scripts/controllers/message.js"></script>
+    <script src="scripts/controllers/layouts/navbar.js"></script>
+    <script src="scripts/controllers/components/search.js"></script>
+    <script src="scripts/controllers/components/profile.js"></script>
+    <script src="scripts/controllers/project/board.js"></script>
+    <script src="scripts/controllers/project/backlog.js"></script>
+    <script src="scripts/controllers/project/issues.js"></script>
+    <script src="scripts/controllers/project/reports.js"></script>
+    <script src="scripts/controllers/project/git.js"></script>
+    <script src="scripts/controllers/project/deployment.js"></script>
+    <script src="scripts/controllers/project/calendar.js"></script>
+    <script src="scripts/controllers/project/project.js"></script>
+    <script src="scripts/controllers/project/message.js"></script>
+    <script src="scripts/controllers/auth/login.js"></script>
+    <script src="scripts/controllers/auth/register.js"></script>
+    <script src="scripts/controllers/auth/join-organization.js"></script>
     <!-- endbuild -->
 </body>
 </html>

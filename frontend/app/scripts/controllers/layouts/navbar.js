@@ -20,7 +20,7 @@ angular.module('startyApp')
     $scope.spawnSearchPopup = function(event) {
       $mdDialog.show({
         controller: 'SearchCtrl',
-        templateUrl: 'views/search.html',
+        templateUrl: 'views/components/search.html',
         targetEvent: event
       })
       .then(function(answer) {
@@ -31,13 +31,15 @@ angular.module('startyApp')
     };
 
     $scope.spawnProfilePopup = function(event) {
-      $mdDialog.show(
-        $mdDialog.alert()
-          .title('Profile')
-          .content('Change profile details')
-          .ariaLabel('Profile')
-          .ok('Close menu')
-          .targetEvent(event)
-      );
+      $mdDialog.show({
+        controller: 'ProfileCtrl',
+        templateUrl: 'views/components/profile.html',
+        targetEvent: event
+      })
+      .then(function(answer) {
+        $scope.alert = 'You said the information was "' + answer + '".';
+      }, function() {
+        $scope.alert = 'You cancelled the dialog.';
+      });
     };
   });

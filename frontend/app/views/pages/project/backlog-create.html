@@ -1,0 +1,30 @@
+<div layout="column">
+    <md-toolbar class="md-accent md-toolbar-tools">
+        <h2>
+            <span>Create new backlog item</span>
+        </h2>
+    </md-toolbar>
+
+    <md-content layout="column" flex class="md-padding">
+        <md-input-container flex>
+            <label>Backlog ID (required)</label>
+            <input ng-model="backlog.id" md-maxlength="6">
+        </md-input-container>
+
+        <md-input-container flex>
+            <label>Backlog name (required)</label>
+            <input ng-model="backlog.name">
+        </md-input-container>
+
+        <md-input-container flex>
+            <label>Backlog description (required)</label>
+            <textarea ng-model="backlog.description" md-maxlength="500" rows="5"></textarea>
+        </md-input-container>
+
+        <br />
+
+        <section layout="row" layout-sm="column" layout-align="end end">
+            <md-button class="md-raised md-primary" ng-click="createBacklog(backlog)">Create backlog!</md-button>
+        </section>
+    </md-content>
+</div>

@@ -1,0 +1,30 @@
+<div layout="column">
+    <md-toolbar class="md-accent md-toolbar-tools">
+        <h2>
+            <span>Create new issue</span>
+        </h2>
+    </md-toolbar>
+
+    <md-content layout="column" flex class="md-padding">
+        <md-input-container flex>
+            <label>Issue ID (required)</label>
+            <input ng-model="issue.id" md-maxlength="6">
+        </md-input-container>
+
+        <md-input-container flex>
+            <label>Issue name (required)</label>
+            <input ng-model="issue.name">
+        </md-input-container>
+
+        <md-input-container flex>
+            <label>Issue description (required)</label>
+            <textarea ng-model="issue.description" md-maxlength="500" rows="5"></textarea>
+        </md-input-container>
+
+        <br />
+
+        <section layout="row" layout-sm="column" layout-align="end end">
+            <md-button class="md-raised md-primary" ng-click="createIssue(issue)">Create issue!</md-button>
+        </section>
+    </md-content>
+</div>
