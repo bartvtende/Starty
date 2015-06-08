@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngMaterial',
-    'ngMdIcons'
+    'ngMdIcons',
+    'satellizer'
   ])
   .constant('urls', {
     API: 'http://localhost:3000/api'
@@ -25,7 +26,6 @@ angular
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('auth', {
-
         templateUrl: 'views/layouts/auth.html'
       })
       .state('auth.login', {
