@@ -25,7 +25,7 @@ angular
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('auth', {
-        url: '/auth',
+
         templateUrl: 'views/layouts/auth.html'
       })
       .state('auth.login', {
@@ -43,12 +43,20 @@ angular
         templateUrl: 'views/pages/auth/join-organization.html',
         controller: 'JoinCtrl'
       })
+      .state('overview', {
+        templateUrl: 'views/layouts/overview.html'
+      })
+      .state('overview.overview', {
+        url: '/',
+        templateUrl: 'views/pages/project/overview.html',
+        controller: 'ProjectCtrl'
+      })
       .state('project', {
-        url: '/project',
+        url: '/:projectName',
         templateUrl: 'views/layouts/project.html'
       })
       .state('project.messages', {
-        url: '/messages',
+        url: '/',
         templateUrl: 'views/pages/project/message.html',
         controller: 'MessageCtrl'
       })
@@ -98,5 +106,5 @@ angular
         controller: 'CalendarCtrl'
       });
 
-      $urlRouterProvider.otherwise('/auth/login');
+      $urlRouterProvider.otherwise('/login');
   });

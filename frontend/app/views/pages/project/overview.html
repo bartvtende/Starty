@@ -1,0 +1,20 @@
+<md-content flex layout="row" layout-padding layout-align="center">
+    <div ng-repeat="project in projects">
+        <div layout="column" layout-fill>
+            <div flex="33">
+                <md-card class="md-whiteframe-z4">
+                    <md-card-content>
+                        <h2 class="md-title"><a href="#/{{project.id}}/">{{project.name}}</a></h2>
+                        <p>
+                            {{project.description}}
+                        </p>
+                    </md-card-content>
+                    <div class="md-actions" layout="row" layout-align="center end" flex>
+                        <md-icon md-svg-src="images/icons/ic_people_24px.svg" aria-label="Participants"></md-icon>
+                        {{project.amountOfParticipants}}
+                    </div>
+                </md-card>
+            </div>
+        </div>
+    </div>
+</md-content>

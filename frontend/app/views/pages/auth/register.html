@@ -1,6 +1,6 @@
 <h1>Register</h1>
 
-<form name="RegisterForm" ng-submit="register(user)">
+<form name="RegisterForm" ng-submit="register(user)" novalidate>
     <md-input-container>
         <md-icon md-svg-src="images/icons/ic_person_24px.svg" class="name"></md-icon>
         <input ng-model="user.name" type="name" placeholder="Name (required)" ng-required="true" autofocus>

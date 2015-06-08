@@ -2,11 +2,11 @@
     <md-toolbar ng-controller="NavbarCtrl">
         <div class="md-toolbar-tools" layout-align="center center">
             <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-                <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
+                <md-icon aria-label="Menu" md-svg-icon="images/icons/ic_menu_24px.svg"></md-icon>
             </md-button>
-            <h1>Project #1337</h1>
+            <h1>{{projectName}}</h1>
             <span flex></span>
-            <md-button class="md-icon-button" ui-sref="auth.login" aria-label="Go back">
+            <md-button class="md-icon-button" ui-sref="overview.overview" aria-label="Go back">
                 <md-icon md-svg-src="images/icons/ic_arrow_back_24px.svg" style="color: white;"></md-icon>
                 <md-tooltip>
                     Go to project overview
@@ -52,6 +52,7 @@
                 <md-icon md-svg-src="images/icons/ic_trending_up_24px.svg" style="color: black;"></md-icon>
                 <p>Reports</p>
             </md-list-item>
+            <!--
             <md-list-item ng-click="navigateTo('project.git')">
                 <md-icon md-svg-src="images/icons/ic_track_changes_24px.svg" style="color: black;"></md-icon>
                 <p>Git</p>
@@ -63,7 +64,7 @@
             <md-list-item ng-click="navigateTo('project.calendar')">
                 <md-icon md-svg-src="images/icons/ic_event_24px.svg" style="color: black;"></md-icon>
                 <p>Calendar</p>
-            </md-list-item>
+            </md-list-item>-->
         </div>
     </md-sidenav>
     <div layout="column" flex id="content">

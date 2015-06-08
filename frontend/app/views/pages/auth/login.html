@@ -1,6 +1,6 @@
 <h1>Login</h1>
 
-<form name="LoginForm" ng-submit="login(user)">
+<form name="LoginForm" ng-submit="login(user)" novalidate>
     <md-input-container>
         <md-icon md-svg-src="images/icons/ic_email_24px.svg" class="email"></md-icon>
         <input ng-model="user.email" type="email" placeholder="Email" ng-required="true" autofocus>

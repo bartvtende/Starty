@@ -8,7 +8,10 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('NavbarCtrl', function ($scope, $mdSidenav, $mdDialog, $state) {
+  .controller('NavbarCtrl', function ($scope, $mdSidenav, $mdDialog, $state, $stateParams) {
+
+    $scope.projectName = $stateParams.projectName;
+
     $scope.toggleSidenav = function(menuId) {
       $mdSidenav(menuId).toggle();
     };

@@ -8,10 +8,12 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('LoginCtrl', function ($scope) {
+  .controller('LoginCtrl', function ($scope, $state) {
 
     $scope.login = function(user) {
       console.log(user);
+
+      $state.go('overview.overview');
 
       return false;
     };
