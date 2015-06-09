@@ -101,7 +101,14 @@ angular
       .state('project.reports', {
         url: '/reports',
         templateUrl: 'views/pages/project/reports.html',
-        controller: 'ReportsCtrl'
+        controller: 'ReportsCtrl',
+          resolve: {
+            authenticated: ['$location', '$auth', function($location, $auth) {
+              if (!$auth.isAuthenticated()) {
+                return $location.path('/login');
+              }
+            }]
+          }
       })
       .state('project.git', {
         url: '/git',
