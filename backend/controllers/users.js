@@ -15,31 +15,28 @@ router.post('/login', function(req, res) {
     Users.find({ where: { email: req.body.email }})
         .then(function(user) {
             if (!user) {
-                return res.status(401).json([{
+                return res.status(401).json({
                     error: { email: 'Incorrect email' },
                     result: ''
-                }]);
+                });
             }
 
             bcrypt.compare(req.body.password, user.password, function(err, isMatch) {
                 if (!isMatch) {
-                    return res.status(401).json([{
+                    return res.status(401).json({
                         error: { password: 'Incorrect password' },
                         result: ''
-                    }]);
+                    });
                 }
 
                 user.password = '';
 
                 var token = auth.createToken(user);
 
-                return res.json([{
-                    error: '',
-                    result: {
-                        token: token,
-                        user: user
-                    }
-                }]);
+                return res.json({
+                    token: token,
+                    user: user
+                });
             });
     });
 });
@@ -51,10 +48,10 @@ router.post('/register', function(req, res) {
     Users.find({ where: { email: req.body.email }})
         .then(function(user) {
             if (user) {
-                return res.status(409).send([{
+                return res.status(409).send({
                     error: 'Email is already taken.',
                     result: ''
-                }]);
+                });
             }
 
             var user = {
@@ -73,13 +70,10 @@ router.post('/register', function(req, res) {
 
                             var token = auth.createToken(user);
 
-                            return res.json([{
-                                error: '',
-                                result: {
-                                    token: token,
-                                    user: user
-                                }
-                            }]);
+                            return res.json({
+                                token: token,
+                                user: user
+                            });
                         });
                 });
             });
@@ -89,33 +83,42 @@ router.post('/register', function(req, res) {
 /**
  * Enables the user to change their password
  */
-router.post('/forgot-password', auth.isAuthenticated, function(req, res) {
-        bcrypt.compare(req.body.old_password, req.user.password, function(err, isMatch) {
-            if (!isMatch) {
-                return res.status(401).json([{
-                    error: { old_password: 'Incorrect old password' },
+router.post('/forgot-password', function(req, res) {
+    Users.find({ where: { email: req.body.email }})
+        .then(function(user) {
+            if (user == null) {
+                return res.status(401).json({
+                    error: 'There is no such user!',
                     result: ''
-                }]);
+                });
             }
+            bcrypt.compare(req.body.old_password, user.password, function(err, isMatch) {
+                if (!isMatch) {
+                    return res.status(401).json({
+                        error: { old_password: 'Incorrect old password' },
+                        result: ''
+                    });
+                }
 
-            if (req.body.new_password != req.body.new_password_confirmation || req.body.new_password == undefined) {
-                return res.status(401).json([{
-                    error: { new_password: 'The two new passwords don\'t match!' },
-                    result: ''
-                }]);
-            }
+                if (req.body.new_password != req.body.new_password_confirmation || req.body.new_password == undefined) {
+                    return res.status(401).json({
+                        error: { new_password: 'The two new passwords don\'t match!' },
+                        result: ''
+                    });
+                }
 
-            bcrypt.genSalt(10, function (err, salt) {
-                bcrypt.hash(req.body.new_password, salt, function (err, hash) {
-                    req.user.password = hash;
+                bcrypt.genSalt(10, function (err, salt) {
+                    bcrypt.hash(req.body.new_password, salt, function (err, hash) {
+                        user.password = hash;
 
-                    req.user.save()
-                        .then(function() {
-                            res.json([{
-                                error: '',
-                                result: 'Your password has been changed!'
-                            }])
-                        })
+                        user.save()
+                            .then(function() {
+                                res.json({
+                                    error: '',
+                                    result: 'Your password has been changed!'
+                                })
+                            })
+                    });
                 });
             });
         });

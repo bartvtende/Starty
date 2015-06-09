@@ -20,10 +20,10 @@ module.exports = {
 
     isAuthenticated: function(req, res, next) {
         if (!(req.headers && req.headers.authorization)) {
-            return res.status(400).json([{
+            return res.status(400).json({
                 error: 'You did not provide a JSON Web Token in the Authorization header.',
                 result: ''
-            }]);
+            });
         }
 
         var header = req.headers.authorization.split(' ');
@@ -31,27 +31,27 @@ module.exports = {
         try {
             var payload = jwt.decode(token, settings.tokenSecret);
         } catch(err) {
-            return res.status(401).json([{
+            return res.status(401).json({
                 error: 'The JSON Web Token is not in a valid format',
                 result: ''
-            }])
+            })
         }
         var now = moment().unix();
 
         if (now > payload.exp) {
-            return res.status(401).json([{
+            return res.status(401).json({
                 error: 'Token has expired',
                 result: ''
-            }]);
+            });
         }
 
         Users.find({ where: { id: payload.sub}})
         .then(function(user) {
             if (user == null) {
-                return res.status(400).json([{
+                return res.status(400).json({
                     error: 'User no longer exists.',
                     result: ''
-                }]);
+                });
             }
 
             req.user = user;

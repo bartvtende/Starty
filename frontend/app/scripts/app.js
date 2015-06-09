@@ -21,7 +21,15 @@ angular
     'satellizer'
   ])
   .constant('urls', {
-    API: 'http://localhost:3000/api'
+    API: 'http://localhost:1337/api'
+  })
+  .config(function($authProvider, urls) {
+    $authProvider.baseUrl = urls.API;
+    $authProvider.loginRedirect = '/';
+    $authProvider.logoutRedirect = '/login';
+    $authProvider.signupRedirect = '/';
+    $authProvider.loginUrl = '/users/login';
+    $authProvider.signupUrl = '/users/register';
   })
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -42,6 +50,11 @@ angular
         url: '/join',
         templateUrl: 'views/pages/auth/join-organization.html',
         controller: 'JoinCtrl'
+      })
+      .state('auth.forgot-password', {
+        url: '/forgot-password',
+        templateUrl: 'views/pages/auth/forgot-password.html',
+        controller: 'ForgotPasswordCtrl'
       })
       .state('overview', {
         templateUrl: 'views/layouts/overview.html'

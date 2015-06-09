@@ -11,15 +11,15 @@ router.get('/', auth.isAuthenticated, function(req, res) {
     // Find all the messages
     Messages.find({}, function(err, messages) {
         if (err) {
-            return res.json([{
+            return res.json({
                 error: err,
                 result: ''
-            }]);
+            });
         }
-        return res.json([{
+        return res.json({
             error: '',
             result: messages
-        }]);
+        });
     });
 });
 
@@ -31,15 +31,15 @@ router.post('/', auth.isAuthenticated, function(req, res) {
 
     message.save(function(err) {
         if (err) {
-            return res.json([{
+            return res.json({
                 error: err,
                 result: ''
-            }]);
+            });
         }
-        return res.json([{
+        return res.json({
             error: '',
             result: 'The message has been created!'
-        }]);
+        });
     })
 });
 
