@@ -7,3 +7,10 @@ Awesome projectmanagement tool for startups!
 2. In your command line, execute ```bower install``` and ```npm install``` to install all the necessary dependencies.
 3. In your command line, execute ```grunt serve``` to start the frontend
 4. Go to [http://localhost:9000/](http://localhost:9000/) to access the frontend
+
+##Running the backend
+
+1. Install Node.js and the nodemon library (```npm install -g nodemon```)
+2. In your command line, execute ```npm install``` to install all the necessary dependencies.
+3. In your command line, execute ```nodemon app.js``` to run application
+4. Go to [http://localhost:3000/api/{whatever api}](http://localhost:3000/api/{whatever api}) to access the backend
