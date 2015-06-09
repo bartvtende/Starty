@@ -25,31 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
 
-function isAuthenticated(req, res, next) {
-    if (!(req.headers && req.headers.authorization)) {
-        return res.status(400).send({message: 'You did not provide a JSON Web Token in the Authorization header.'});
-    }
 
-    var header = req.headers.authorization.split(' ');
-    var token = header[1];
-    var payload = jwt.decode(token, settings.tokenSecret);
-    var now = moment().unix();
-
-    if (now > payload.exp) {
-        return res.status(401).send({message: 'Token has expired.'});
-    }
-
-    console.log(payload.sub);
-
-    User.findById(payload.sub, function (err, user) {
-        if (!user) {
-            return res.status(400).send({message: 'User no longer exists.'});
-        }
-
-        req.user = user;
-        next();
-    });
-}
 
 // Include controllers
 var messages = require('./controllers/messages');

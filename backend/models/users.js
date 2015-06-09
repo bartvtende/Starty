@@ -1,7 +1,8 @@
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('Users', {
-        first_name: DataTypes.STRING,
-        last_name: DataTypes.STRING
+        name: DataTypes.STRING,
+        email: DataTypes.STRING,
+        password: DataTypes.STRING
     }, {
         instanceMethods: {
             countTasks: function() {
