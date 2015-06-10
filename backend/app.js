@@ -1,3 +1,4 @@
+var bcrypt = require('bcryptjs');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var express = require('express');
@@ -6,16 +7,12 @@ var mongoose = require('mongoose');
 var path = require('path');
 var request = require('request');
 var fs = require('fs');
-var Sequelize = require('sequelize');
 
 // Config files
-var settings = require('./config/settings');
+var settings = require('./config/setting');
 
 // MongoDB connection with Mongoose
 mongoose.connect('mongodb://' + settings.mongoHost + '/' + settings.mongoDatabase);
-
-// MySQL connection with Sequelize
-var sequelize = new Sequelize(settings.sqlDatabase, settings.sqlUsername, settings.sqlPassword, { host: settings.sqlHost, dialect: 'mysql' });
 
 var app = express();
 
@@ -29,9 +26,13 @@ app.use(express.static(path.join(__dirname)));
 
 // Include controllers
 var messages = require('./controllers/messages');
+var users = require('./controllers/users');
+var organizations = require('./controllers/organizations');
 
 // Routes
 app.use('/api/messages', messages);
+app.use('/api/users', users);
+app.use('/api/organizations', organizations);
 
 // Run the express server
 app.listen(app.get('port'), function() {

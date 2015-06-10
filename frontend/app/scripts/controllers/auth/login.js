@@ -8,14 +8,22 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('LoginCtrl', function ($scope, $state) {
+  .controller('LoginCtrl', function ($scope, $auth, $mdToast) {
 
     $scope.login = function(user) {
-      console.log(user);
-
-      $state.go('overview.overview');
-
-      return false;
+      $auth.login({
+        email: user.email,
+        password: user.password
+      }).then(function(response) {
+        if (!('error' in response.data)) {
+          $mdToast.show(
+              $mdToast.simple()
+                  .content('You are now logged in!')
+                  .position('bottom left')
+                  .hideDelay(3000)
+          );
+        }
+      })
     };
 
   });

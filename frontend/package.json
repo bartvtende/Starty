@@ -1,5 +1,5 @@
 {
-  "name": "mockups",
+  "name": "starty",
   "version": "0.0.0",
   "dependencies": {},
   "repository": {},
@@ -30,5 +30,15 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  }
+  },
+  "description": "This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }

@@ -21,7 +21,15 @@ angular
     'satellizer'
   ])
   .constant('urls', {
-    API: 'http://localhost:3000/api'
+    API: 'http://localhost:1337/api'
+  })
+  .config(function($authProvider, urls) {
+    $authProvider.baseUrl = urls.API;
+    $authProvider.loginRedirect = '/';
+    $authProvider.logoutRedirect = '/login';
+    $authProvider.signupRedirect = '/';
+    $authProvider.loginUrl = '/users/login';
+    $authProvider.signupUrl = '/users/register';
   })
   .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     $stateProvider
@@ -42,6 +50,11 @@ angular
         url: '/join',
         templateUrl: 'views/pages/auth/join-organization.html',
         controller: 'JoinCtrl'
+      })
+      .state('auth.forgot-password', {
+        url: '/forgot-password',
+        templateUrl: 'views/pages/auth/forgot-password.html',
+        controller: 'ForgotPasswordCtrl'
       })
       .state('overview', {
         templateUrl: 'views/layouts/overview.html'
@@ -88,7 +101,14 @@ angular
       .state('project.reports', {
         url: '/reports',
         templateUrl: 'views/pages/project/reports.html',
-        controller: 'ReportsCtrl'
+        controller: 'ReportsCtrl',
+          resolve: {
+            authenticated: ['$location', '$auth', function($location, $auth) {
+              if (!$auth.isAuthenticated()) {
+                return $location.path('/login');
+              }
+            }]
+          }
       })
       .state('project.git', {
         url: '/git',
