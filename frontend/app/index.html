@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body layout="column" ng-app="startyApp">
+  <body layout="column" ng-app="startyApp" ng-cloak>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -36,11 +36,13 @@
     <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
     <script src="bower_components/satellizer/satellizer.js"></script>
     <script src="bower_components/Chart.js/Chart.js"></script>
+    <script src="http://localhost:1338/socket.io/socket.io.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+
     <script src="scripts/controllers/layouts/navbar.js"></script>
     <script src="scripts/controllers/components/search.js"></script>
     <script src="scripts/controllers/components/profile.js"></script>
@@ -57,7 +59,11 @@
     <script src="scripts/controllers/auth/register.js"></script>
     <script src="scripts/controllers/auth/join-organization.js"></script>
     <script src="scripts/controllers/auth/forgot-password.js"></script>
+
     <script src="scripts/services/auth/forgot-password.js"></script>
+    <script src="scripts/services/auth/join-organization.js"></script>
+    <script src="scripts/services/organizations/organization.js"></script>
+    <script src="scripts/services/projects/project.js"></script>
     <!-- endbuild -->
 </body>
 </html>

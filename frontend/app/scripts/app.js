@@ -27,7 +27,7 @@ angular
     $authProvider.baseUrl = urls.API;
     $authProvider.loginRedirect = '/';
     $authProvider.logoutRedirect = '/login';
-    $authProvider.signupRedirect = '/';
+    $authProvider.signupRedirect = '/join';
     $authProvider.loginUrl = '/users/login';
     $authProvider.signupUrl = '/users/register';
   })
@@ -57,7 +57,14 @@ angular
         controller: 'ForgotPasswordCtrl'
       })
       .state('overview', {
-        templateUrl: 'views/layouts/overview.html'
+        templateUrl: 'views/layouts/overview.html',
+        resolve: {
+          authenticated: ['$location', '$auth', function($location, $auth) {
+            if (!$auth.isAuthenticated()) {
+              return $location.path('/login');
+            }
+          }]
+        }
       })
       .state('overview.overview', {
         url: '/',
@@ -66,7 +73,14 @@ angular
       })
       .state('project', {
         url: '/:projectName',
-        templateUrl: 'views/layouts/project.html'
+        templateUrl: 'views/layouts/project.html',
+        resolve: {
+          authenticated: ['$location', '$auth', function($location, $auth) {
+            if (!$auth.isAuthenticated()) {
+              return $location.path('/login');
+            }
+          }]
+        }
       })
       .state('project.messages', {
         url: '/',
@@ -101,14 +115,7 @@ angular
       .state('project.reports', {
         url: '/reports',
         templateUrl: 'views/pages/project/reports.html',
-        controller: 'ReportsCtrl',
-          resolve: {
-            authenticated: ['$location', '$auth', function($location, $auth) {
-              if (!$auth.isAuthenticated()) {
-                return $location.path('/login');
-              }
-            }]
-          }
+        controller: 'ReportsCtrl'
       })
       .state('project.git', {
         url: '/git',

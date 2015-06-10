@@ -1,7 +1,7 @@
 var jwt = require('jwt-simple');
 var moment = require('moment');
 
-var settings = require('../config/setting');
+var settings = require('../config/settings');
 var models = require('../models');
 
 var Users = models.Users;

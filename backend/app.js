@@ -9,12 +9,15 @@ var request = require('request');
 var fs = require('fs');
 
 // Config files
-var settings = require('./config/setting');
+var settings = require('./config/settings');
 
 // MongoDB connection with Mongoose
 mongoose.connect('mongodb://' + settings.mongoHost + '/' + settings.mongoDatabase);
 
 var app = express();
+
+//var http = require('http').Server(app);
+var io = require('socket.io')(1338);
 
 app.set('port', settings.appPort || 3000);
 
@@ -23,6 +26,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
+
+// Socket.io: chat message
+io.on('connection', function(socket){
+    socket.on('chat message', function(msg){
+        console.log('message: ' + msg);
+    });
+});
 
 // Include controllers
 var messages = require('./controllers/messages');

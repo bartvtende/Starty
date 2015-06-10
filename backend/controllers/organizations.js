@@ -59,9 +59,36 @@ router.post('/', auth.isAuthenticated, function(req, res) {
 });
 
 /**
+ * Returns all users within this organization
+ */
+router.get('/users', auth.isAuthenticated, function(req, res) {
+    if (req.user.organization_id == 0 || req.user.organization_id == null) {
+        return res.json({
+            error: 'You are currently not in an organization',
+            result: ''
+        });
+    }
+
+    Users.findAll({where : { organization_id: req.user.organization_id}})
+        .then(function(users) {
+            if (users.length == 0) {
+                return res.json({
+                    error: 'There are no users in this organization',
+                    result: ''
+                });
+            }
+
+            return res.json({
+                error: '',
+                result: users
+            });
+        });
+});
+
+/**
  * Adds a registered user to the organization
  *
- * TODO: Implement an invite tablekk
+ * TODO: Implement an invite table
  */
 router.post('/invite', auth.isAuthenticated, function(req, res) {
     var email = req.body.email;
@@ -80,7 +107,6 @@ router.post('/invite', auth.isAuthenticated, function(req, res) {
                     result: ''
                 });
             } else {
-                console.log(req.user);
                 user.organization_id = organizationId;
                 user.save()
                     .then(function() {
@@ -90,6 +116,8 @@ router.post('/invite', auth.isAuthenticated, function(req, res) {
                         });
                     });
             }
+        }, function(err) {
+            console.log(err);
         });
 });
 

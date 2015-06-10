@@ -3,8 +3,12 @@ var timestamps = require('mongoose-timestamp');
 var Schema = mongoose.Schema;
 
 var messagesSchema = new Schema({
-    // Empty schema for now (will add later)
-}, { versionKey: false, strict: false });
+    projectId: Number,
+    senderId: Number,
+    receiverId: Number,
+    providerId: Number,
+    message: String
+}, { versionKey: false });
 
 messagesSchema.plugin(timestamps);
 

@@ -48,7 +48,7 @@ router.post('/register', function(req, res) {
     Users.find({ where: { email: req.body.email }})
         .then(function(user) {
             if (user) {
-                return res.status(409).send({
+                return res.status(422).json({
                     error: 'Email is already taken.',
                     result: ''
                 });

@@ -7,10 +7,13 @@
  * # MessageCtrl
  * Controller of the startyApp
  */
+var socket = io('http://localhost:1338');
+
 angular.module('startyApp')
   .controller('MessageCtrl', function ($scope) {
 
       $scope.selectedChat = 'Chatting with all';
+      $scope.personId = '';
 
       $scope.messages = [
         { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Dit is een test bericht!', time: '7 days ago'},
@@ -27,26 +30,8 @@ angular.module('startyApp')
         { image: 'http://placehold.it/50x50', name: 'Henderikus', active: false }
       ];
 
-      $scope.changeChat = function(name) {
-        if (name == 'all') {
-          $scope.messages = [
-            { image: 'http://placehold.it/50x50', name: 'Jan-Bert', message: 'Dit is een test bericht!', time: '7 days ago'},
-            { image: 'http://placehold.it/50x50', name: 'Bart', message: 'lulz dit is zo cool', time: '7 days ago'},
-            { image: 'http://placehold.it/50x50', name: 'Henderikus', message: 'Ik ben zo awesome', time: '7 days ago'},
-            { image: 'http://placehold.it/50x50', name: 'Jerke', message: 'Wat een topper ben ik', time: '7 days ago'},
-            { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Testie test!', time: '7 days ago'}
-          ];
-          console.log('Changing to channel: ' + name);
-        } else {
-          $scope.messages = [
-            { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Dit is een test bericht!', time: '7 days ago'},
-            { image: 'http://placehold.it/50x50', name: 'Jan-Bert', message: 'lulz dit is zo cool', time: '7 days ago'},
-            { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Ik ben zo awesome', time: '7 days ago'},
-            { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Wat een topper ben ik', time: '7 days ago'},
-            { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Testie test!', time: '7 days ago'}
-          ];
-          console.log('Changing to person: ' + name);
-        }
+      $scope.changeChat = function(personId, name) {
+        $scope.personId = personId;
 
         $scope.selectedChat = 'Chatting with ' + name;
       };
@@ -64,3 +49,4 @@ angular.module('startyApp')
       };
 
   });
+

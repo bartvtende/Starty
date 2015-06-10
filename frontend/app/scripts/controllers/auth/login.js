@@ -14,16 +14,21 @@ angular.module('startyApp')
       $auth.login({
         email: user.email,
         password: user.password
-      }).then(function(response) {
-        if (!('error' in response.data)) {
+      }).then(function() {
           $mdToast.show(
-              $mdToast.simple()
-                  .content('You are now logged in!')
-                  .position('bottom left')
-                  .hideDelay(3000)
+            $mdToast.simple()
+              .content('You are now logged in!')
+              .position('bottom left')
+              .hideDelay(3000)
           );
-        }
-      })
+      }, function(err) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content('Your email or password is incorrect')
+            .position('bottom left')
+            .hideDelay(6000)
+        );
+      });
     };
 
   });

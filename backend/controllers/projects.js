@@ -112,6 +112,7 @@ router.put('/', auth.isAuthenticated, function(req, res) {
             result: ''
         });
     }
+
     Projects.find({ where: { id: projectId }})
         .then(function(project) {
             if (project == null) {

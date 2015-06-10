@@ -1,7 +1,16 @@
-<h1>Invite</h1>
+<h1>Organization</h1>
 
-<p>You've been invited to join <b>Bros Inc.</b></p>
+<h4>Wait to get invited</h4>
+<p>You have to be invited to your organization to participate, so please poke your friends for an invite!</p>
 
-<md-button class="md-raised md-primary" ng-click="accept()">Accept</md-button>
 
-<md-button class="md-raised md-warn md-button-top-right right" ng-click="decline()">Decline</md-button>
+<h4>Create an organization</h4>
+
+<md-input-container flex>
+  <label>Organization name</label>
+  <input ng-model="name">
+</md-input-container>
+
+<p>Make sure that your organization doesn't have a name yet, otherwise you can't join!</p>
+
+<md-button class="md-raised md-primary" ng-click="createOrganization(name)">Create organization</md-button>
