@@ -3,7 +3,7 @@ var bcrypt = require('bcryptjs');
 
 var router = express.Router();
 
-var models = require('../models');
+var models = require('../models/index');
 var auth = require('./auth');
 
 var Users = models.Users;
