@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 10 jun 2015 om 13:26
+-- Gegenereerd op: 10 jun 2015 om 21:58
 -- Serverversie: 5.6.24-log
 -- PHP-versie: 5.5.24
 
@@ -60,15 +60,15 @@ CREATE TABLE IF NOT EXISTS `issues` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `organization`
+-- Tabelstructuur voor tabel `organizations`
 --
 
-CREATE TABLE IF NOT EXISTS `organization` (
+CREATE TABLE IF NOT EXISTS `organizations` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -81,10 +81,10 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `organization_id` int(11) NOT NULL,
   `shortcode` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `description` varchar(250) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -110,13 +110,13 @@ CREATE TABLE IF NOT EXISTS `providers` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
-  `organization_id` int(11) NOT NULL,
+  `organization_id` int(11) DEFAULT NULL,
   `name` varchar(25) NOT NULL,
   `email` varchar(40) NOT NULL,
   `password` varchar(60) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -135,9 +135,9 @@ ALTER TABLE `issues`
   ADD PRIMARY KEY (`id`,`project_id`);
 
 --
--- Indexen voor tabel `organization`
+-- Indexen voor tabel `organizations`
 --
-ALTER TABLE `organization`
+ALTER TABLE `organizations`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -156,27 +156,27 @@ ALTER TABLE `providers`
 -- Indexen voor tabel `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `email` (`email`) USING BTREE;
 
 --
 -- AUTO_INCREMENT voor geëxporteerde tabellen
 --
 
 --
--- AUTO_INCREMENT voor een tabel `organization`
+-- AUTO_INCREMENT voor een tabel `organizations`
 --
-ALTER TABLE `organization`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `organizations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT voor een tabel `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
