@@ -23,7 +23,7 @@ angular
   .constant('urls', {
     API: 'http://localhost:3000/api'
   })
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     $stateProvider
       .state('auth', {
         templateUrl: 'views/layouts/auth.html'
@@ -107,4 +107,23 @@ angular
       });
 
       $urlRouterProvider.otherwise('/login');
+
+
+      var startyPrimary = $mdThemingProvider.extendPalette('blue', {
+          '500': '5296db' // Green
+        });
+
+      $mdThemingProvider.definePalette('startyPrimaryPalette', startyPrimary);
+
+      var startyAccent = $mdThemingProvider.extendPalette('green', {
+          '500': '6fcfc9', // Green
+          'contrastDefaultColor': 'light'
+        });
+
+      $mdThemingProvider.definePalette('startyAccentPalette', startyAccent);
+
+      $mdThemingProvider.theme('default')
+        .primaryPalette('startyPrimaryPalette')
+        .accentPalette('startyAccentPalette');
+
   });
