@@ -9,7 +9,8 @@ var sequelize = new Sequelize(settings.sqlDatabase, settings.sqlUsername, settin
 var models = [
     'Organizations',
     'Users',
-    'Projects'
+    'Projects',
+    'Backlog'
 ];
 
 models.forEach(function(model) {
