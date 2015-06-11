@@ -10,10 +10,29 @@
 //var socket = io('http://localhost:1338');
 
 angular.module('startyApp')
-  .controller('MessageCtrl', function ($scope) {
+  .controller('MessageCtrl', function ($scope, MessageData, $mdToast) {
 
       $scope.selectedChat = 'Chatting with all';
       $scope.personId = '';
+
+        $scope.$watch('$viewContentLoaded', function() {
+            $scope.loadPersons();
+        });
+
+        $scope.loadPersons = function() {
+            MessageData.getUsers()
+                .success(function(users) {
+                    $scope.persons = users.result;
+                })
+                .error(function() {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Something went wrong while fetching the users info!')
+                            .position('bottom left')
+                            .hideDelay(3000)
+                    );
+                });
+        };
 
       $scope.messages = [
         { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Dit is een test bericht!', time: '7 days ago'},
@@ -23,12 +42,6 @@ angular.module('startyApp')
         { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Testie test!', time: '7 days ago'}
       ];
 
-      $scope.persons = [
-        { image: 'http://placehold.it/50x50', name: 'Bart', active: true },
-        { image: 'http://placehold.it/50x50', name: 'Jan-Bert', active: false },
-        { image: 'http://placehold.it/50x50', name: 'Jerke', active: false },
-        { image: 'http://placehold.it/50x50', name: 'Henderikus', active: false }
-      ];
 
       $scope.changeChat = function(personId, name) {
         $scope.personId = personId;

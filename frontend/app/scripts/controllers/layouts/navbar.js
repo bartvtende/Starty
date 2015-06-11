@@ -49,7 +49,6 @@ angular.module('startyApp')
             });
         UserData.getUser()
             .success(function(user) {
-                console.log(user);
                 if (user.result.organization_id == 0 || user.result.organization_id == null)
                     $state.go('auth.join-organization');
                 $scope.user = user.result;
