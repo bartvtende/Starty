@@ -8,12 +8,12 @@
     <md-content layout="column" flex class="md-padding">
         <md-input-container flex>
             <label>Backlog ID (required)</label>
-            <input ng-model="backlog.id" md-maxlength="6">
+            <input ng-model="backlog.id">
         </md-input-container>
 
         <md-input-container flex>
             <label>Backlog name (required)</label>
-            <input ng-model="backlog.name">
+            <input ng-model="backlog.title">
         </md-input-container>
 
         <md-input-container flex>
@@ -21,10 +21,15 @@
             <textarea ng-model="backlog.description" md-maxlength="500" rows="5"></textarea>
         </md-input-container>
 
+        <md-input-container flex>
+            <label>Time Expected (required)</label>
+            <input ng-model="backlog.time_expected" type="number">
+        </md-input-container>
+
         <br />
 
         <section layout="row" layout-sm="column" layout-align="end end">
-            <md-button class="md-raised md-primary" ng-click="createBacklog(backlog)">Create backlog!</md-button>
+            <md-button class="md-raised md-primary" ng-click="createBacklogItem(backlog)">Create backlog!</md-button>
         </section>
     </md-content>
 </div>

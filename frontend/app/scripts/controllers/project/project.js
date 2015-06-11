@@ -8,7 +8,7 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('ProjectCtrl', function ($scope, OrganizationData, ProjectData, $mdToast) {
+  .controller('ProjectCtrl', function ($scope, $rootScope, OrganizationData, ProjectData, $mdToast) {
 
     $scope.projects = [];
     $scope.showCreateProject = false;
