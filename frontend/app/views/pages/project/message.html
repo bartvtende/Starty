@@ -10,7 +10,7 @@
     <div class="message-list" flex>
       <div ng-repeat="message in messages track by $index">
         <md-list-item class="md-3-line">
-          <img ng-src="{{message.image}}" class="md-avatar" alt="{{message.name}}" />
+          <img ng-src="http://placehold.it/50x50" class="md-avatar" alt="{{message.name}}" />
           <div class="md-list-item-text">
             <h3>{{message.name}} <small>- {{message.time}}</small></h3>
             <p>{{message.message}}</p>
@@ -21,15 +21,15 @@
 
     <md-sidenav class="md-sidenav-right md-whiteframe-z2 message-sidebar" md-component-id="right" md-is-locked-open="$mdMedia('gt-sm')">
       <md-content layout-padding>
-        <md-list-item ng-click="changeChat('all')">
+        <md-list-item ng-click="changeChat('', 'all')">
           <img alt="All" ng-src="http://placehold.it/40x40" class="md-avatar" />
           <p>All</p>
         </md-list-item>
 
         <h4>Persons</h4>
 
-        <md-list-item ng-repeat="person in persons" ng-click="changeChat(person.name)">
-          <img alt="{{ person.name }}" ng-src="{{ person.image }}" class="md-avatar" />
+        <md-list-item ng-repeat="person in persons" ng-click="changeChat(person.id, person.name)">
+          <img alt="{{ person.name }}" ng-src="http://placehold.it/40x40" class="md-avatar" />
           <p>{{ person.name }}</p>
         </md-list-item>
       </md-content>

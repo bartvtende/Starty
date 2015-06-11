@@ -32,7 +32,7 @@ router.get('/:projectId', auth.isAuthenticated, function(req, res) {
 });
 
 /**
- *
+ * Find the messages for a private conversation
  */
 router.get('/:projectId/:userId', auth.isAuthenticated, function(req, res) {
     var projectId = req.params.projectId;

@@ -12,10 +12,38 @@ var Users = models.Users;
  * Returns the logged in user
  */
 router.get('/', auth.isAuthenticated, function(req, res) {
+    req.user.password = '';
     return res.json({
         error: '',
         result: req.user
     });
+});
+
+/**
+ * Returns all users in the organization, excluding yourself
+ */
+router.get('/all', auth.isAuthenticated, function(req, res) {
+    if (req.user.organization_id == 0 || req.user.organization_id == null) {
+        return res.json({
+            error: 'You are currently not in an organization',
+            result: ''
+        });
+    }
+
+    Users.findAll({ where: { organization_id: req.user.organization_id }})
+        .then(function(users) {
+            // Delete yourself from the result
+            users.forEach(function(key, value) {
+                if (users[value].id == req.user.id)
+                    delete users[value];
+            });
+            users = users.filter(function(n){ return n != undefined });
+
+            return res.json({
+                error: '',
+                result: users
+            });
+        });
 });
 
 /**
