@@ -16,8 +16,39 @@ angular.module('startyApp')
       $scope.personId = '';
 
         $scope.$watch('$viewContentLoaded', function() {
+            $scope.loadGlobalMessages(2);
             $scope.loadPersons();
         });
+
+        $scope.loadGlobalMessages = function(projectId) {
+            MessageData.getGlobal(projectId)
+              .success(function(messages) {
+                $scope.messages = messages.result;
+              })
+              .error(function() {
+                $mdToast.show(
+                  $mdToast.simple()
+                    .content('Something went wrong while fetching the messages!')
+                    .position('bottom left')
+                    .hideDelay(3000)
+                );
+              });
+        };
+
+        $scope.loadUsersMessages = function(projectId, userId) {
+          MessageData.getPerson(projectId, userId)
+            .success(function(messages) {
+              $scope.messages = messages.result;
+            })
+            .error(function() {
+              $mdToast.show(
+                $mdToast.simple()
+                  .content('Something went wrong while fetching the messages!')
+                  .position('bottom left')
+                  .hideDelay(3000)
+              );
+            });
+        };
 
         $scope.loadPersons = function() {
             MessageData.getUsers()
@@ -34,17 +65,23 @@ angular.module('startyApp')
                 });
         };
 
-      $scope.messages = [
-        { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Dit is een test bericht!', time: '7 days ago'},
-        { image: 'http://placehold.it/50x50', name: 'Jan-Bert', message: 'lulz dit is zo cool', time: '7 days ago'},
-        { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Ik ben zo awesome', time: '7 days ago'},
-        { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Wat een topper ben ik', time: '7 days ago'},
-        { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Testie test!', time: '7 days ago'}
-      ];
+      //$scope.messages = [
+      //  { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Dit is een test bericht!', time: '7 days ago'},
+      //  { image: 'http://placehold.it/50x50', name: 'Jan-Bert', message: 'lulz dit is zo cool', time: '7 days ago'},
+      //  { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Ik ben zo awesome', time: '7 days ago'},
+      //  { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Wat een topper ben ik', time: '7 days ago'},
+      //  { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Testie test!', time: '7 days ago'}
+      //];
 
 
       $scope.changeChat = function(personId, name) {
         $scope.personId = personId;
+
+        if (personId == '') {
+          $scope.loadGlobalMessages(2);
+        } else {
+          $scope.loadUsersMessages(2, personId);
+        }
 
         $scope.selectedChat = 'Chatting with ' + name;
       };

@@ -8,11 +8,14 @@
 
   <div layout="row">
     <div class="message-list" flex>
+      <div ng-if="messages.length == 0">
+        <p>There are no messages, go and be social! :)</p>
+      </div>
       <div ng-repeat="message in messages track by $index">
         <md-list-item class="md-3-line">
           <img ng-src="http://placehold.it/50x50" class="md-avatar" alt="{{message.name}}" />
           <div class="md-list-item-text">
-            <h3>{{message.name}} <small>- {{message.time}}</small></h3>
+            <h3>{{message.name || 'Deleted user'}} <small>- {{message.createdAt | ago}}</small></h3>
             <p>{{message.message}}</p>
           </div>
         </md-list-item>
