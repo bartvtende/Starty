@@ -8,12 +8,13 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('NavbarCtrl', function ($scope, $mdSidenav, $mdToast, $mdDialog, $state, $stateParams, OrganizationData, ProjectData) {
+  .controller('NavbarCtrl', function ($scope, $mdSidenav, $mdToast, $mdDialog, $state, $stateParams, OrganizationData, ProjectData, UserData) {
 
     $scope.projectName = '';
     $scope.organizationName = '';
     $scope.project = null;
     $scope.organization = null;
+    $scope.user = null;
 
     $scope.$watch('$viewContentLoaded', function() {
       if ($stateParams.projectName != null) {
@@ -45,6 +46,21 @@ angular.module('startyApp')
                       .position('bottom left')
                       .hideDelay(3000)
               );
+            });
+        UserData.getUser()
+            .success(function(user) {
+                console.log(user);
+                if (user.result.organization_id == 0 || user.result.organization_id == null)
+                    $state.go('auth.join-organization');
+                $scope.user = user.result;
+            })
+            .error(function() {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content('Something went wrong while fetching your user data!')
+                        .position('bottom left')
+                        .hideDelay(3000)
+                );
             });
       }
     });

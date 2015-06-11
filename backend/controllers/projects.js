@@ -48,7 +48,7 @@ router.get('/:shortcode', auth.isAuthenticated, function(req, res) {
         });
     }
 
-    Projects.find({ where: { shortcode: shortcode }})
+    Projects.find({ where: { shortcode: shortcode, organization_id: req.user.organization_id }})
         .then(function(project) {
             if (project == null) {
                 return res.json({
@@ -127,6 +127,40 @@ router.put('/', auth.isAuthenticated, function(req, res) {
             project.description = req.body.description;
 
             project.save()
+                .then(function() {
+                    return res.json({
+                        error: '',
+                        result: project
+                    });
+                });
+        });
+});
+
+router.delete('/', auth.isAuthenticated, function(req, res) {
+    var shortcode = req.body.shortcode;
+
+    if (req.user.organization_id == 0 || req.user.organization_id == null) {
+        res.json({
+            error: 'You are not a member of an organization!',
+            result: ''
+        });
+    }
+
+    Projects.find({ where: { shortcode: shortcode, organization_id: req.user.organization_id }})
+        .then(function(project) {
+            if (project == null) {
+                return res.json({
+                    error: 'The project doesn\'t exist!',
+                    result: ''
+                });
+            }
+            if (project.organization_id != req.user.organization_id) {
+                return res.json({
+                    error: 'You are not a member of this organization!',
+                    result: ''
+                });
+            }
+            project.destroy()
                 .then(function() {
                     return res.json({
                         error: '',

@@ -9,6 +9,16 @@ var auth = require('./auth');
 var Users = models.Users;
 
 /**
+ * Returns the logged in user
+ */
+router.get('/', auth.isAuthenticated, function(req, res) {
+    return res.json({
+        error: '',
+        result: req.user
+    });
+});
+
+/**
  * Enables the user to login to the application
  */
 router.post('/login', function(req, res) {
