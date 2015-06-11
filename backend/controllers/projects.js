@@ -38,8 +38,8 @@ router.get('/', auth.isAuthenticated, function(req, res){
 /**
  * Returns a specific project
  */
-router.get('/:projectId', auth.isAuthenticated, function(req, res) {
-    var projectId = req.params.projectId;
+router.get('/:shortcode', auth.isAuthenticated, function(req, res) {
+    var shortcode = req.params.shortcode;
 
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
         res.json({
@@ -48,7 +48,7 @@ router.get('/:projectId', auth.isAuthenticated, function(req, res) {
         });
     }
 
-    Projects.find({ where: { id: projectId }})
+    Projects.find({ where: { shortcode: shortcode }})
         .then(function(project) {
             if (project == null) {
                 return res.json({

@@ -8,22 +8,44 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('NavbarCtrl', function ($scope, $mdSidenav, $mdDialog, $state, $stateParams, OrganizationData) {
+  .controller('NavbarCtrl', function ($scope, $mdSidenav, $mdToast, $mdDialog, $state, $stateParams, OrganizationData, ProjectData) {
 
-    $scope.projectName = $stateParams.projectName;
+    $scope.projectName = '';
     $scope.organizationName = '';
+    $scope.project = null;
+    $scope.organization = null;
 
     $scope.$watch('$viewContentLoaded', function() {
       if ($stateParams.projectName != null) {
-        console.log('projects');
+        ProjectData.getProject($stateParams.projectName)
+            .success(function(project) {
+              $scope.projectName = project.result.name;
+              $scope.project = project.result;
+              $scope.organization = null;
+            })
+            .error(function() {
+              $mdToast.show(
+                  $mdToast.simple()
+                      .content('Something went wrong while fetching the project info!')
+                      .position('bottom left')
+                      .hideDelay(3000)
+              );
+            });
       } else {
         OrganizationData.getOrganization()
           .success(function (organization) {
             $scope.organizationName = organization.result.name;
+            $scope.organization = organization.result;
+            $scope.project = null;
           })
-          .error(function (err) {
-            console.log('Something went wrong while fetching the organization info!');
-          });
+          .error(function () {
+              $mdToast.show(
+                  $mdToast.simple()
+                      .content('Something went wrong while fetching the organization info!')
+                      .position('bottom left')
+                      .hideDelay(3000)
+              );
+            });
       }
     });
 

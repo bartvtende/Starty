@@ -7,7 +7,7 @@
  * # MessageCtrl
  * Controller of the startyApp
  */
-var socket = io('http://localhost:1338');
+//var socket = io('http://localhost:1338');
 
 angular.module('startyApp')
   .controller('MessageCtrl', function ($scope) {
