@@ -16,7 +16,7 @@
                     <b>ID</b>
                 </div>
                 <div flex>
-                    <b>Issue</b>
+                    <b>Name</b>
                 </div>
                 <div flex>
                     <b>Creator</b>
@@ -37,22 +37,22 @@
                     {{backlog.id}}
                 </div>
                 <div flex>
-                    {{backlog.name}}
+                    {{backlog.title}}
                 </div>
                 <div flex>
-                    {{backlog.user}}
+                    {{backlog.creator}}
                 </div>
                 <div flex>
-                    {{backlog.time}}
+                    {{backlog.createdAt}} - {{backlog.updatedAt}}
                 </div>
                 <div flex>
                     {{backlog.status}}
                 </div>
                 <div flex>
-                    <md-button class="md-fab md-mini md-primary" aria-label="Edit backlog">
+                    <md-button class="md-fab md-mini md-primary" aria-label="Edit backlog" ng-click="editBacklogItem('{{backlog.id}}')">
                         <md-icon md-svg-src="images/icons/ic_edit_24px.svg"></md-icon>
                     </md-button>
-                    <md-button class="md-fab md-mini" aria-label="Delete backlog">
+                    <md-button class="md-fab md-mini" aria-label="Delete backlog" ng-click="confirmDelete($event, '{{backlog.id}}')">
                         <md-icon md-svg-src="images/icons/ic_delete_24px.svg"></md-icon>
                     </md-button>
                 </div>

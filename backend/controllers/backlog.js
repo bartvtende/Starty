@@ -4,13 +4,10 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-// var Organizations = models.Organizations;
-// var Projects = models.Projects;
-// var Users = models.Users;
 var Backlog = models.Backlog;
 
 /**
- * Gets all the projects of this user
+ * Gets all the backlog items of this project
  */
 router.get('/:projectId', auth.isAuthenticated, function(req, res){
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
@@ -20,7 +17,7 @@ router.get('/:projectId', auth.isAuthenticated, function(req, res){
         });
     }
 
-    Backlog.findAll({ where: { project_id: req.user.project_id }})
+    Backlog.findAll({ where: { project_id: req.params.projectId }})
         .then(function(projects) {
             if (projects.length == 0) {
                 return res.json({
@@ -37,7 +34,34 @@ router.get('/:projectId', auth.isAuthenticated, function(req, res){
 });
 
 /**
- * Creates a item
+ * Get a backlog item of this project
+ */
+router.get('/:projectId/:id', auth.isAuthenticated, function(req, res){
+    if (req.user.organization_id == 0 || req.user.organization_id == null) {
+        res.json({
+            error: 'You are not a member of an organization!',
+            result: ''
+        });
+    }
+
+    Backlog.findAll({ where: { project_id: req.params.projectId, id: req.params.id }})
+        .then(function(item) {
+            if (item.length == 0) {
+                return res.json({
+                    error: 'You don\'t have any items!',
+                    result: ''
+                });
+            } else {
+                return res.json({
+                    error: '',
+                    result: item[0]
+                });
+            }
+        });
+});
+
+/**
+ * Creates a backlog item
  */
 router.post('/', auth.isAuthenticated, function(req, res) {
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
@@ -56,7 +80,7 @@ router.post('/', auth.isAuthenticated, function(req, res) {
         time_reality: 0,
         creator: req.user.id,
         createdAt: models.sequelize.fn('NOW'),
-        updatedAt: 0
+        updatedAt: models.sequelize.fn('NOW')
     }).then(function (item) {
         return res.json({
             error: '',
@@ -66,46 +90,88 @@ router.post('/', auth.isAuthenticated, function(req, res) {
 });
  
 /**
- * Updates an project
+ * Updates an backlog item
  */
-// router.put('/', auth.isAuthenticated, function(req, res) {
-//     var projectId = req.body.project_id;
+router.put('/', auth.isAuthenticated, function(req, res) {
+    var id = req.body.id;
+    var projectId = req.body.project_id;
 
-//     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-//         res.json({
-//             error: 'You are not a member of an organization!',
-//             result: ''
-//         });
-//     }
+    if (req.user.organization_id == 0 || req.user.organization_id == null) {
+        res.json({
+            error: 'You are not a member of an organization!',
+            result: ''
+        });
+    }
 
-//     if (projectId == null) {
-//         res.json({
-//             error: 'You didn\'t specify a project!',
-//             result: ''
-//         });
-//     }
+    if (id == null) {
+        res.json({
+            error: 'You didn\'t specify a backlog item!',
+            result: ''
+        });
+    }
 
-//     Projects.find({ where: { id: projectId }})
-//         .then(function(project) {
-//             if (project == null) {
-//                 return res.json({
-//                     error: 'The project doesn\'t exist',
-//                     result: ''
-//                 })
-//             }
-//             project.organization_id = req.user.organization_id;
-//             project.shortcode = req.body.shortcode;
-//             project.name = req.body.name;
-//             project.description = req.body.description;
+    Backlog.find({ where: { project_id: projectId, id: id }})
+        .then(function(backlog) {
+            if (backlog == null) {
+                return res.json({
+                    error: 'The backlog item doesn\'t exist',
+                    result: ''
+                })
+            }
 
-//             project.save()
-//                 .then(function() {
-//                     return res.json({
-//                         error: '',
-//                         result: project
-//                     });
-//                 });
-//         });
-// });
+            backlog.title = req.body.title;
+            backlog.description = req.body.description;
+            backlog.time_expected = req.body.time_expected;
+            backlog.time_reality = 0;
+            backlog.updatedAt = models.sequelize.fn('NOW');
+
+            backlog.save()
+                .then(function() {
+                    return res.json({
+                        error: '',
+                        result: backlog
+                    });
+                });
+        });
+});
+ 
+/**
+ * Updates an backlog item
+ */
+router.delete('/:projectId/:id', auth.isAuthenticated, function(req, res) {
+    var id = req.params.id;
+
+    if (req.user.organization_id == 0 || req.user.organization_id == null) {
+        res.json({
+            error: 'You are not a member of an organization!',
+            result: ''
+        });
+    }
+
+    if (id == null) {
+        res.json({
+            error: 'You didn\'t specify a backlog item!',
+            result: ''
+        });
+    }
+
+    Backlog.find({ where: { project_id: req.params.projectId, id: id }})
+        .then(function(backlog) {
+            if (backlog == null) {
+                return res.json({
+                    error: 'The backlog item doesn\'t exist',
+                    result: ''
+                })
+            }
+
+            backlog.destroy()
+                .then(function() {
+                    return res.json({
+                        error: '',
+                        result: backlog
+                    });
+                });
+        });
+});
 
 module.exports = router;

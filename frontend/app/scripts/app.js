@@ -102,6 +102,11 @@ angular
         templateUrl: 'views/pages/project/backlog-create.html',
         controller: 'BacklogCtrl'
       })
+      .state('project.backlog-set', {
+        url: '/backlog/edit/:id',
+        templateUrl: 'views/pages/project/backlog-set.html',
+        controller: 'BacklogCtrl'
+      })
       .state('project.issues', {
         url: '/issues',
         templateUrl: 'views/pages/project/issues.html',
