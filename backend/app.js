@@ -27,10 +27,45 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
 
+var Messages = require('./models/messages');
+var auth = require('./controllers/auth');
+
 // Socket.io: chat message
-io.on('connection', function(socket){
+io.on('connect', function(socket){
     socket.on('chat message', function(msg){
-        console.log('message: ' + msg);
+        try {
+            var json = JSON.parse(msg);
+        } catch (e) {
+            return false;
+        }
+        console.log(msg);
+
+        // TODO: Send to DB
+        if (json.projectId == null) {
+            return false;
+        }
+
+        var messageInput = {
+            projectId: json.projectId,
+            senderId: json.userId,
+            message: json.message
+        };
+
+        if (json.receiverId != null) {
+            messageInput.receiverId = json.receiverId;
+        }
+
+        var message = new Messages(messageInput);
+
+        message.save(function(err) {
+            if (err) {
+                return false;
+            }
+
+            io.emit('receive', json.message);
+        });
+
+        //io.broadcast.to(2).emit('receive', msg.message);
     });
 });
 

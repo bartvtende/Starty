@@ -7,18 +7,30 @@
  * # MessageCtrl
  * Controller of the startyApp
  */
-//var socket = io('http://localhost:1338');
-
+var socky = io.connect('http://localhost:1338', {'force new connection': true});
 angular.module('startyApp')
-  .controller('MessageCtrl', function ($scope, MessageData, $mdToast) {
+  .controller('MessageCtrl', function ($scope, MessageData, $mdToast, ProjectData, $stateParams, $auth) {
 
       $scope.selectedChat = 'Chatting with all';
-      $scope.personId = '';
+      $scope.personId = null;
+      $scope.project = null;
 
         $scope.$watch('$viewContentLoaded', function() {
-            $scope.loadGlobalMessages(2);
+            $scope.loadProjects();
             $scope.loadPersons();
+            $scope.loadSockets();
         });
+
+        $scope.loadProjects = function() {
+          ProjectData.getProject($stateParams.projectName)
+            .success(function(project) {
+              $scope.project = project.result;
+              $scope.loadGlobalMessages($scope.project.id);
+            })
+            .error(function(err) {
+              // TODO: Dialog?
+            });
+        };
 
         $scope.loadGlobalMessages = function(projectId) {
             MessageData.getGlobal(projectId)
@@ -65,38 +77,53 @@ angular.module('startyApp')
                 });
         };
 
-      //$scope.messages = [
-      //  { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Dit is een test bericht!', time: '7 days ago'},
-      //  { image: 'http://placehold.it/50x50', name: 'Jan-Bert', message: 'lulz dit is zo cool', time: '7 days ago'},
-      //  { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Ik ben zo awesome', time: '7 days ago'},
-      //  { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Wat een topper ben ik', time: '7 days ago'},
-      //  { image: 'http://placehold.it/50x50', name: 'Bart', message: 'Testie test!', time: '7 days ago'}
-      //];
+        $scope.loadSockets = function() {
+            //socky.join(2);
+            socky.on('receive', function(msg) {
+              console.log('receive: ' + msg);
+              $scope.$apply(function() {
+                $scope.messages.push({image: 'http://placehold.it/50x50', name: 'Bart', message: msg, time: 'Nu!'});
+              });
+            });
+        };
 
+        $scope.changeChat = function(personId, name) {
+          $scope.personId = personId;
 
-      $scope.changeChat = function(personId, name) {
-        $scope.personId = personId;
+          if (personId == '') {
+            $scope.loadGlobalMessages($scope.project.id);
+          } else {
+            $scope.loadUsersMessages($scope.project.id, personId);
+          }
 
-        if (personId == '') {
-          $scope.loadGlobalMessages(2);
-        } else {
-          $scope.loadUsersMessages(2, personId);
-        }
+          $scope.selectedChat = 'Chatting with ' + name;
+        };
 
-        $scope.selectedChat = 'Chatting with ' + name;
-      };
+        $scope.addMessage = function(message) {
+          var userId = $auth.getPayload().sub;
 
-      $scope.addMessage = function(message) {
-        // Push the message to the dummy array
-        if (message != '' && message != null)
-          $scope.messages.push({image: 'http://placehold.it/50x50', name: 'Bart', message: message, time: 'Nu!'});
+          console.log(userId);
+          // Push the message to the dummy array
+          if (message != '' && message != null) {
+            var jsonMessage = '{ "message": "' + message + '", "userId": ' + userId + ', "projectId": ' + $scope.project.id;
 
-        // Delete the message from the input field
-        $scope.message = '';
+            if ($scope.personId != null && $scope.personId != '')
+              jsonMessage += ', "receiverId"  : ' + $scope.personId;
 
-        // Stop the form from submitting
-        return false;
-      };
+            jsonMessage += ' }';
+
+            console.log(jsonMessage);
+
+            socky.emit('chat message', jsonMessage);
+          }
+
+          // Delete the message from the input field
+          $scope.message = '';
+
+          // Stop the form from submitting
+          return false;
+        };
 
   });
+
 
