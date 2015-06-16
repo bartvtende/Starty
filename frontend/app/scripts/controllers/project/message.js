@@ -17,14 +17,18 @@ angular.module('startyApp')
         $scope.$watch('$viewContentLoaded', function() {
             $scope.loadProject();
             $scope.loadPersons();
-            $scope.loadSockets();
         });
 
         $scope.loadProject = function() {
           $scope.$watch('project', function() {
-            if ($scope.project != null)
-              $scope.loadGlobalMessages($scope.project.id);
+            if ($scope.project != null && 'id' in $scope.project && $scope.project.id != undefined) {
+              var projectId = $scope.project.id;
+              var userId = $scope.user.id;
+              $scope.loadSockets(projectId, userId);
+              $scope.loadGlobalMessages(projectId);
+            }
           });
+
         };
 
         $scope.loadGlobalMessages = function(projectId) {
@@ -72,21 +76,32 @@ angular.module('startyApp')
                 });
         };
 
-        $scope.loadSockets = function() {
-            //socky.join(2);
+        $scope.loadSockets = function(projectId, userId) {
+            socky.emit('join', 'p:' + projectId);
             socky.on('receive', function(msg) {
-              console.log('receive: ' + msg);
-              $scope.$apply(function() {
-                $scope.messages.push({image: 'http://placehold.it/50x50', name: 'Bart', message: msg, time: 'Nu!'});
-              });
+              console.log(msg);
+              console.log($scope.personId);
+              if (($scope.personId == msg.receiverId && msg.senderId == userId) || ($scope.personId == msg.senderId && msg.receiverId == userId) || ($scope.personId == null && msg.receiverId == null)) {
+                $scope.$apply(function() {
+                  $scope.messages.push({image: 'http://placehold.it/50x50', name: msg.senderId, message: msg.message, time: msg.createdAt});
+                });
+              } else {
+                $mdToast.show(
+                  $mdToast.simple()
+                    .content(msg.senderId + ' says: ' + msg.message)
+                    .position('bottom left')
+                    .hideDelay(3000)
+                );
+              }
             });
         };
 
         $scope.changeChat = function(personId, name) {
           $scope.personId = personId;
 
-          if (personId == '') {
+          if (personId == '' || personId == null) {
             $scope.loadGlobalMessages($scope.project.id);
+            $scope.personId = null;
           } else {
             $scope.loadUsersMessages($scope.project.id, personId);
           }
@@ -97,7 +112,6 @@ angular.module('startyApp')
         $scope.addMessage = function(message) {
           var userId = $auth.getPayload().sub;
 
-          console.log(userId);
           // Push the message to the dummy array
           if (message != '' && message != null) {
             var jsonMessage = '{ "message": "' + message + '", "userId": ' + userId + ', "projectId": ' + $scope.project.id;
@@ -106,8 +120,6 @@ angular.module('startyApp')
               jsonMessage += ', "receiverId"  : ' + $scope.personId;
 
             jsonMessage += ' }';
-
-            console.log(jsonMessage);
 
             socky.emit('chat message', jsonMessage);
           }
