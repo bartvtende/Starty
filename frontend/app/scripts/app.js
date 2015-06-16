@@ -117,6 +117,11 @@ angular
         templateUrl: 'views/pages/project/issues-create.html',
         controller: 'IssuesCtrl'
       })
+      .state('project.issues-set', {
+        url: '/issues/edit/:id',
+        templateUrl: 'views/pages/project/issues-set.html',
+        controller: 'IssuesCtrl'
+      })
       .state('project.reports', {
         url: '/reports',
         templateUrl: 'views/pages/project/reports.html',

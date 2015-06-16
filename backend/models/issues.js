@@ -1,10 +1,11 @@
 module.exports = function(sequelize, DataTypes) {
 
-    var Backlog = sequelize.define('backlog_items', {
+    var Issues = sequelize.define('issues', {
         id: DataTypes.STRING,
         project_id: DataTypes.STRING,
         title: DataTypes.STRING,
         description: DataTypes.STRING,
+        status: DataTypes.STRING,
         time_expected: DataTypes.INTEGER,
         time_reality: DataTypes.INTEGER,
         creator: DataTypes.INTEGER,
@@ -12,5 +13,5 @@ module.exports = function(sequelize, DataTypes) {
         updatedAt: DataTypes.DATE
     });
 
-    return Backlog;
+    return Issues;
 };

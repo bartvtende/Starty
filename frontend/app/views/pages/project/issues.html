@@ -37,19 +37,19 @@
                     {{issue.id}}
                 </div>
                 <div flex>
-                    {{issue.name}}
+                    {{issue.title}}
                 </div>
                 <div flex>
                     {{issue.user}}
                 </div>
                 <div flex>
-                    {{issue.time}}
+                    {{issue.updatedAt}}
                 </div>
                 <div flex>
-                    <md-button class="md-fab md-mini md-primary" aria-label="Edit issue">
+                    <md-button class="md-fab md-mini md-primary" aria-label="Edit issue" ng-click="editIssue('{{issue.id}}')">
                         <md-icon md-svg-src="images/icons/ic_edit_24px.svg"></md-icon>
                     </md-button>
-                    <md-button class="md-fab md-mini" aria-label="Delete issue">
+                    <md-button class="md-fab md-mini" aria-label="Delete issue" ng-click="confirmDelete($event, '{{issue.id}}')">
                         <md-icon md-svg-src="images/icons/ic_delete_24px.svg"></md-icon>
                     </md-button>
                 </div>
