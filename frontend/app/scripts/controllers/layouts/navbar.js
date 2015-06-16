@@ -8,11 +8,11 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('NavbarCtrl', function ($scope, $rootScope, $mdSidenav, $mdToast, $mdDialog, $state, $stateParams, OrganizationData, ProjectData, UserData) {
+  .controller('NavbarCtrl', function ($scope, $mdSidenav, $mdToast, $mdDialog, $state, $stateParams, OrganizationData, ProjectData, UserData) {
 
     $scope.projectName = '';
     $scope.organizationName = '';
-    $rootScope.project = null;
+    $scope.project = null;
     $scope.organization = null;
     $scope.user = null;
 
@@ -21,7 +21,7 @@ angular.module('startyApp')
         ProjectData.getProject($stateParams.projectName)
             .success(function(project) {
               $scope.projectName = project.result.name;
-              $rootScope.project = project.result;
+              $scope.project = project.result;
               $scope.organization = null;
             })
             .error(function() {
@@ -37,7 +37,7 @@ angular.module('startyApp')
           .success(function (organization) {
             $scope.organizationName = organization.result.name;
             $scope.organization = organization.result;
-            $rootScope.project = null;
+            $scope.project = null;
           })
           .error(function () {
               $mdToast.show(

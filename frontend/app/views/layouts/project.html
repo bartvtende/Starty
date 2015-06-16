@@ -1,75 +1,75 @@
 <div ng-controller="NavbarCtrl">
-    <md-content>
-        <md-toolbar>
-            <div class="md-toolbar-tools" layout-align="center center">
-                <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-                    <md-icon aria-label="Menu" md-svg-icon="images/icons/ic_menu_24px.svg"></md-icon>
-                </md-button>
-                <h1>{{projectName}}</h1>
-                <span flex></span>
-                <md-button class="md-icon-button" ui-sref="overview.overview" aria-label="Go back">
-                    <md-icon md-svg-src="images/icons/ic_arrow_back_24px.svg" style="color: white;"></md-icon>
-                    <md-tooltip>
-                        Go to project overview
-                    </md-tooltip>
-                </md-button>
-                <md-button class="md-icon-button" ng-click="spawnSearchPopup($event)" aria-label="Search">
-                    <md-icon md-svg-src="images/icons/ic_search_24px.svg" style="color: white;"></md-icon>
-                    <md-tooltip>
-                        Search this project
-                    </md-tooltip>
-                </md-button>
-                <md-button class="md-icon-button" ng-click="spawnProfilePopup($event)" aria-label="Profile">
-                    <md-icon md-svg-src="images/icons/ic_person_24px.svg" style="color: white;"></md-icon>
-                    <md-tooltip>
-                        Profile overview
-                    </md-tooltip>
-                </md-button>
-            </div>
-        </md-toolbar>
-    </md-content>
+  <md-content>
+    <md-toolbar>
+      <div class="md-toolbar-tools" layout-align="center center">
+        <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+          <md-icon aria-label="Menu" md-svg-icon="images/icons/ic_menu_24px.svg"></md-icon>
+        </md-button>
+        <h1>{{projectName}}</h1>
+        <span flex></span>
+        <md-button class="md-icon-button" ui-sref="overview.overview" aria-label="Go back">
+          <md-icon md-svg-src="images/icons/ic_arrow_back_24px.svg" style="color: white;"></md-icon>
+          <md-tooltip>
+            Go to project overview
+          </md-tooltip>
+        </md-button>
+        <md-button class="md-icon-button" ng-click="spawnSearchPopup($event)" aria-label="Search">
+          <md-icon md-svg-src="images/icons/ic_search_24px.svg" style="color: white;"></md-icon>
+          <md-tooltip>
+            Search this project
+          </md-tooltip>
+        </md-button>
+        <md-button class="md-icon-button" ng-click="spawnProfilePopup($event)" aria-label="Profile">
+          <md-icon md-svg-src="images/icons/ic_person_24px.svg" style="color: white;"></md-icon>
+          <md-tooltip>
+            Profile overview
+          </md-tooltip>
+        </md-button>
+      </div>
+    </md-toolbar>
+  </md-content>
 
 
-    <div layout="row" flex>
-        <md-sidenav layout="column" layout-fill layout-align="top center" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-            <div>
-                <md-list-item ng-click="navigateTo('project.messages')">
-                    <md-icon md-svg-src="images/icons/ic_message_black_24px.svg" style="color: black;"></md-icon>
-                    <p>Messages</p>
-                </md-list-item>
-                <md-list-item ng-click="navigateTo('project.board')">
-                    <md-icon md-svg-src="images/icons/ic_dashboard_24px.svg" style="color: black;"></md-icon>
-                    <p>Board</p>
-                </md-list-item>
-                <md-list-item ng-click="navigateTo('project.backlog')">
-                    <md-icon md-svg-src="images/icons/ic_done_24px.svg" style="color: black;"></md-icon>
-                    <p>Backlog</p>
-                </md-list-item>
-                <md-list-item ng-click="navigateTo('project.issues')">
-                    <md-icon md-svg-src="images/icons/ic_report_problem_24px.svg" style="color: black;"></md-icon>
-                    <p>Issues</p>
-                </md-list-item>
-                <md-list-item ng-click="navigateTo('project.reports')">
-                    <md-icon md-svg-src="images/icons/ic_trending_up_24px.svg" style="color: black;"></md-icon>
-                    <p>Reports</p>
-                </md-list-item>
-                <!--
-                <md-list-item ng-click="navigateTo('project.git')">
-                    <md-icon md-svg-src="images/icons/ic_track_changes_24px.svg" style="color: black;"></md-icon>
-                    <p>Git</p>
-                </md-list-item>
-                <md-list-item ng-click="navigateTo('project.deployment')">
-                    <md-icon md-svg-src="images/icons/ic_memory_24px.svg" style="color: black;"></md-icon>
-                    <p>Deployments</p>
-                </md-list-item>
-                <md-list-item ng-click="navigateTo('project.calendar')">
-                    <md-icon md-svg-src="images/icons/ic_event_24px.svg" style="color: black;"></md-icon>
-                    <p>Calendar</p>
-                </md-list-item>-->
-            </div>
-        </md-sidenav>
-        <div layout="column" flex id="content">
-            <div ui-view></div>
-        </div>
+  <div layout="row" flex>
+    <md-sidenav layout="column" layout-fill layout-align="top center" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+      <div>
+        <md-list-item ng-click="navigateTo('project.messages')">
+          <md-icon md-svg-src="images/icons/ic_message_black_24px.svg" style="color: black;"></md-icon>
+          <p>Messages</p>
+        </md-list-item>
+        <md-list-item ng-click="navigateTo('project.board')">
+          <md-icon md-svg-src="images/icons/ic_dashboard_24px.svg" style="color: black;"></md-icon>
+          <p>Board</p>
+        </md-list-item>
+        <md-list-item ng-click="navigateTo('project.backlog')">
+          <md-icon md-svg-src="images/icons/ic_done_24px.svg" style="color: black;"></md-icon>
+          <p>Backlog</p>
+        </md-list-item>
+        <md-list-item ng-click="navigateTo('project.issues')">
+          <md-icon md-svg-src="images/icons/ic_report_problem_24px.svg" style="color: black;"></md-icon>
+          <p>Issues</p>
+        </md-list-item>
+        <md-list-item ng-click="navigateTo('project.reports')">
+          <md-icon md-svg-src="images/icons/ic_trending_up_24px.svg" style="color: black;"></md-icon>
+          <p>Reports</p>
+        </md-list-item>
+        <!--
+        <md-list-item ng-click="navigateTo('project.git')">
+            <md-icon md-svg-src="images/icons/ic_track_changes_24px.svg" style="color: black;"></md-icon>
+            <p>Git</p>
+        </md-list-item>
+        <md-list-item ng-click="navigateTo('project.deployment')">
+            <md-icon md-svg-src="images/icons/ic_memory_24px.svg" style="color: black;"></md-icon>
+            <p>Deployments</p>
+        </md-list-item>
+        <md-list-item ng-click="navigateTo('project.calendar')">
+            <md-icon md-svg-src="images/icons/ic_event_24px.svg" style="color: black;"></md-icon>
+            <p>Calendar</p>
+        </md-list-item>-->
+      </div>
+    </md-sidenav>
+    <div layout="column" flex id="content">
+      <div ui-view></div>
     </div>
+  </div>
 </div>
