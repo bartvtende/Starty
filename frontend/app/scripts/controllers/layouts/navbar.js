@@ -17,6 +17,22 @@ angular.module('startyApp')
     $scope.user = null;
 
     $scope.$watch('$viewContentLoaded', function() {
+
+      UserData.getUser()
+        .success(function(user) {
+          if (user.result.organization_id == 0 || user.result.organization_id == null)
+            $state.go('auth.join-organization');
+          $scope.user = user.result;
+        })
+        .error(function() {
+          $mdToast.show(
+            $mdToast.simple()
+              .content('Something went wrong while fetching your user data!')
+              .position('bottom left')
+              .hideDelay(3000)
+          );
+        });
+
       if ($stateParams.projectName != null) {
         ProjectData.getProject($stateParams.projectName)
             .success(function(project) {
@@ -46,20 +62,6 @@ angular.module('startyApp')
                       .position('bottom left')
                       .hideDelay(3000)
               );
-            });
-        UserData.getUser()
-            .success(function(user) {
-                if (user.result.organization_id == 0 || user.result.organization_id == null)
-                    $state.go('auth.join-organization');
-                $scope.user = user.result;
-            })
-            .error(function() {
-                $mdToast.show(
-                    $mdToast.simple()
-                        .content('Something went wrong while fetching your user data!')
-                        .position('bottom left')
-                        .hideDelay(3000)
-                );
             });
       }
     });

@@ -31,14 +31,19 @@ var Messages = require('./models/messages');
 var auth = require('./controllers/auth');
 
 // Socket.io: chat message
-io.on('connect', function(socket){
+io.on('connection', function(socket){
+    console.log('Connection established');
+
+    socket.on('join', function(msg) {
+        socket.join(msg);
+    });
+
     socket.on('chat message', function(msg){
         try {
             var json = JSON.parse(msg);
         } catch (e) {
             return false;
         }
-        console.log(msg);
 
         // TODO: Send to DB
         if (json.projectId == null) {
@@ -57,15 +62,19 @@ io.on('connect', function(socket){
 
         var message = new Messages(messageInput);
 
-        message.save(function(err) {
+        message.save(function(err, message) {
             if (err) {
                 return false;
             }
 
-            io.emit('receive', json.message);
+            console.log('p:' + json.projectId);
+            io.to('p:' + json.projectId).emit('receive', message);
         });
 
-        //io.broadcast.to(2).emit('receive', msg.message);
+    });
+
+    socket.on('disconnect', function(){
+        console.log('User disconnected');
     });
 });
 

@@ -16,14 +16,32 @@ angular.module('startyApp')
 
         $scope.$watch('$viewContentLoaded', function() {
             $scope.loadProject();
-            $scope.loadPersons();
-            $scope.loadSockets();
+            $scope.$watch('messages', function() {
+              if ($scope.persons != undefined) {
+                $scope.connectUsers();
+              }
+            });
         });
+
+        $scope.connectUsers = function() {
+            for (var i = 0; i < $scope.messages.length; i++) {
+              for (var j = 0; j < $scope.users.length; j++) {
+                if ($scope.messages[i].senderId == $scope.users[j].id) {
+                  $scope.messages[i].name = $scope.users[j].name;
+                }
+              }
+            }
+        };
 
         $scope.loadProject = function() {
           $scope.$watch('project', function() {
-            if ($scope.project != null)
-              $scope.loadGlobalMessages($scope.project.id);
+            if ($scope.project != null && 'id' in $scope.project && $scope.project.id != undefined) {
+              var projectId = $scope.project.id;
+              var userId = $scope.user.id;
+              $scope.loadSockets(projectId, userId);
+              $scope.loadPersons(userId);
+              $scope.loadGlobalMessages(projectId);
+            }
           });
         };
 
@@ -57,9 +75,15 @@ angular.module('startyApp')
             });
         };
 
-        $scope.loadPersons = function() {
+        $scope.loadPersons = function(userId) {
             MessageData.getUsers()
                 .success(function(users) {
+                    $scope.users = JSON.parse(JSON.stringify(users.result));
+                    for (var i = 0; i < users.result.length; i++) {
+                      if (users.result[i].id == userId)
+                        delete users.result[i];
+                    }
+                    users.result = users.result.filter(function(n){ return n != undefined });
                     $scope.persons = users.result;
                 })
                 .error(function() {
@@ -72,21 +96,36 @@ angular.module('startyApp')
                 });
         };
 
-        $scope.loadSockets = function() {
-            //socky.join(2);
+        $scope.loadSockets = function(projectId, userId) {
+            socky.emit('join', 'p:' + projectId);
             socky.on('receive', function(msg) {
-              console.log('receive: ' + msg);
-              $scope.$apply(function() {
-                $scope.messages.push({image: 'http://placehold.it/50x50', name: 'Bart', message: msg, time: 'Nu!'});
-              });
+              var name;
+              for (var i = 0; i < $scope.users.length; i++) {
+                if ($scope.users[i].id == msg.senderId) {
+                  name = $scope.users[i].name;
+                }
+              }
+              if (($scope.personId == msg.receiverId && msg.senderId == userId) || ($scope.personId == msg.senderId && msg.receiverId == userId) || ($scope.personId == null && msg.receiverId == null)) {
+                $scope.$apply(function() {
+                  $scope.messages.push({image: 'http://placehold.it/50x50', name: name, message: msg.message, time: msg.createdAt});
+                });
+              } else {
+                $mdToast.show(
+                  $mdToast.simple()
+                    .content(name + ' says: ' + msg.message)
+                    .position('bottom left')
+                    .hideDelay(3000)
+                );
+              }
             });
         };
 
         $scope.changeChat = function(personId, name) {
           $scope.personId = personId;
 
-          if (personId == '') {
+          if (personId == '' || personId == null) {
             $scope.loadGlobalMessages($scope.project.id);
+            $scope.personId = null;
           } else {
             $scope.loadUsersMessages($scope.project.id, personId);
           }
@@ -97,7 +136,6 @@ angular.module('startyApp')
         $scope.addMessage = function(message) {
           var userId = $auth.getPayload().sub;
 
-          console.log(userId);
           // Push the message to the dummy array
           if (message != '' && message != null) {
             var jsonMessage = '{ "message": "' + message + '", "userId": ' + userId + ', "projectId": ' + $scope.project.id;
@@ -106,8 +144,6 @@ angular.module('startyApp')
               jsonMessage += ', "receiverId"  : ' + $scope.personId;
 
             jsonMessage += ' }';
-
-            console.log(jsonMessage);
 
             socky.emit('chat message', jsonMessage);
           }
