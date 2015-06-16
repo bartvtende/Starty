@@ -15,10 +15,16 @@ angular.module('startyApp')
     $scope.showInviteUser = false;
 
     $scope.createBacklogItem = function(backlog) {
-      backlog.project_id = $rootScope.project.id;
+      backlog.project_id = $scope.project.id;
       BacklogData.createBacklogItem(backlog)
-        .success(function(project) {
+        .success(function() {
             $state.go('project.backlog');
+            $mdToast.show(
+              $mdToast.simple()
+                .content('Your backlog item has been created!')
+                .position('bottom left')
+                .hideDelay(3000)
+            );
           })
         .error(function() {
             $mdToast.show(
@@ -30,14 +36,21 @@ angular.module('startyApp')
           });
     };
 
-    $scope.$watch('$viewContentLoaded', function(res) {
-      $scope.loadBacklog();
+    $scope.$watch('$viewContentLoaded', function() {
+      $scope.loadProject();
     });
+
+    $scope.loadProject = function() {
+      $scope.$watch('project', function() {
+        if ($scope.project != null)
+          $scope.loadBacklog();
+      });
+    };
 
     $scope.loadBacklog = function() {
         if ($stateParams.id == undefined) {
             // Load all backlog items from one project
-            BacklogData.allBacklogItems($rootScope.project.id)
+            BacklogData.allBacklogItems($scope.project.id)
                 .success(function(backlogs) {
                     $scope.backlogs = backlogs.result;
                 })
@@ -53,7 +66,7 @@ angular.module('startyApp')
 
         } else {
             // Load a backlog item from one project
-            BacklogData.getBacklogItem($rootScope.project.id, $stateParams.id)
+            BacklogData.getBacklogItem($scope.project.id, $stateParams.id)
                 .success(function(backlog) {
                     $scope.backlog = backlog.result;
                 })
@@ -71,7 +84,7 @@ angular.module('startyApp')
 
     $scope.editBacklogItem = function(backlog) {
         if (typeof backlog === 'object') {
-          backlog.project_id = $rootScope.project.id;
+          backlog.project_id = $scope.project.id;
           BacklogData.setBacklogItem(backlog)
             .success(function(project) {
                 $state.go('project.backlog');

@@ -13,4 +13,10 @@ angular.module('startyApp')
     return function(isodate){
       return moment(isodate).fromNow();
     };
+  })
+  .filter('time', function () {
+    return function(isodate){
+      var date = new Date(isodate);
+      return date.toLocaleTimeString();
+    };
   });

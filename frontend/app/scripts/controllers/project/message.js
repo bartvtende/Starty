@@ -11,25 +11,20 @@ var socky = io.connect('http://localhost:1338', {'force new connection': true});
 angular.module('startyApp')
   .controller('MessageCtrl', function ($scope, MessageData, $mdToast, ProjectData, $stateParams, $auth) {
 
-      $scope.selectedChat = 'Chatting with all';
-      $scope.personId = null;
-      $scope.project = null;
+        $scope.selectedChat = 'Chatting with all';
+        $scope.personId = null;
 
         $scope.$watch('$viewContentLoaded', function() {
-            $scope.loadProjects();
+            $scope.loadProject();
             $scope.loadPersons();
             $scope.loadSockets();
         });
 
-        $scope.loadProjects = function() {
-          ProjectData.getProject($stateParams.projectName)
-            .success(function(project) {
-              $scope.project = project.result;
+        $scope.loadProject = function() {
+          $scope.$watch('project', function() {
+            if ($scope.project != null)
               $scope.loadGlobalMessages($scope.project.id);
-            })
-            .error(function(err) {
-              // TODO: Dialog?
-            });
+          });
         };
 
         $scope.loadGlobalMessages = function(projectId) {
