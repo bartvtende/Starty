@@ -1,14 +1,14 @@
 <div layout="column">
     <md-toolbar class="md-accent md-toolbar-tools">
         <h2>
-            <span>Create new issue</span>
+            <span>Edit a issue</span>
         </h2>
     </md-toolbar>
 
     <md-content layout="column" flex class="md-padding">
         <md-input-container flex>
-            <label>Issue ID (required)</label>
-            <input ng-model="issue.id">
+            <label>Issue ID</label>
+            <input ng-model="issue.id" disabled>
         </md-input-container>
 
         <md-input-container flex>
@@ -29,7 +29,7 @@
         <br />
 
         <section layout="row" layout-sm="column" layout-align="end end">
-            <md-button class="md-raised md-primary" ng-click="createIssue(issue)">Create issue!</md-button>
+            <md-button class="md-raised md-primary" ng-click="editIssue(issue)">Submit!</md-button>
         </section>
     </md-content>
 </div>

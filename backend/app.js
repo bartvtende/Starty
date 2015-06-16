@@ -83,14 +83,14 @@ var messages = require('./controllers/messages');
 var users = require('./controllers/users');
 var organizations = require('./controllers/organizations');
 var projects = require('./controllers/projects');
-var backlogItems = require('./controllers/backlog');
+var items = require('./controllers/items');
 
 // Routes
 app.use('/api/messages', messages);
 app.use('/api/users', users);
 app.use('/api/organizations', organizations);
 app.use('/api/projects', projects);
-app.use('/api/backlog-items', backlogItems);
+app.use('/api/items', items);
 
 // Run the express server
 app.listen(app.get('port'), function() {

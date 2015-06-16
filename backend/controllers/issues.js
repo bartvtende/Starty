@@ -4,7 +4,7 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-var Backlog = models.Backlog;
+var Issues = models.Issues;
 
 /**
  * Gets all the backlog items of this project
@@ -17,7 +17,7 @@ router.get('/:projectId', auth.isAuthenticated, function(req, res){
         });
     }
 
-    Backlog.findAll({ where: { project_id: req.params.projectId }})
+    Issues.findAll({ where: { project_id: req.params.projectId }})
         .then(function(projects) {
             if (projects.length == 0) {
                 return res.json({
@@ -44,7 +44,7 @@ router.get('/:projectId/:id', auth.isAuthenticated, function(req, res){
         });
     }
 
-    Backlog.findAll({ where: { project_id: req.params.projectId, id: req.params.id }})
+    Issues.findAll({ where: { project_id: req.params.projectId, id: req.params.id }})
         .then(function(item) {
             if (item.length == 0) {
                 return res.json({
@@ -71,7 +71,7 @@ router.post('/', auth.isAuthenticated, function(req, res) {
         });
     }
 
-    Backlog.create({
+    Issues.create({
         id: req.body.id,
         project_id: req.body.project_id,
         title: req.body.title,
@@ -110,7 +110,7 @@ router.put('/', auth.isAuthenticated, function(req, res) {
         });
     }
 
-    Backlog.find({ where: { project_id: projectId, id: id }})
+    Issues.find({ where: { project_id: projectId, id: id }})
         .then(function(backlog) {
             if (backlog == null) {
                 return res.json({
@@ -155,7 +155,7 @@ router.delete('/:projectId/:id', auth.isAuthenticated, function(req, res) {
         });
     }
 
-    Backlog.find({ where: { project_id: req.params.projectId, id: id }})
+    Issues.find({ where: { project_id: req.params.projectId, id: id }})
         .then(function(backlog) {
             if (backlog == null) {
                 return res.json({

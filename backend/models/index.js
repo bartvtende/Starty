@@ -10,7 +10,8 @@ var models = [
     'Organizations',
     'Users',
     'Projects',
-    'Backlog'
+    'Backlog',
+    'Issues'
 ];
 
 models.forEach(function(model) {

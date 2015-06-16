@@ -8,11 +8,9 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('BacklogCtrl', function ($state, $stateParams, $scope, $rootScope, BacklogData, ProjectData, $mdToast, $mdDialog) {
+  .controller('BacklogCtrl', function ($state, $stateParams, $scope, BacklogData, ProjectData, $mdToast, $mdDialog) {
 
     $scope.backlogs = [];
-    $scope.showCreateProject = false;
-    $scope.showInviteUser = false;
 
     $scope.createBacklogItem = function(backlog) {
       backlog.project_id = $scope.project.id;
@@ -112,7 +110,7 @@ angular.module('startyApp')
           .cancel('Cancel')
           .targetEvent(event);
         $mdDialog.show(confirm).then(function() {
-          BacklogData.deleteBacklogItem($rootScope.project.id, id)
+          BacklogData.deleteBacklogItem($scope.project.id, id)
           .success(function(item) {
             for (var key in $scope.backlogs) {
                 if ($scope.backlogs[key].id == item.result.id) {
