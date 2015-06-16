@@ -16,8 +16,22 @@ angular.module('startyApp')
 
         $scope.$watch('$viewContentLoaded', function() {
             $scope.loadProject();
-            $scope.loadPersons();
+            $scope.$watch('messages', function() {
+              if ($scope.persons != undefined) {
+                $scope.connectUsers();
+              }
+            });
         });
+
+        $scope.connectUsers = function() {
+            for (var i = 0; i < $scope.messages.length; i++) {
+              for (var j = 0; j < $scope.users.length; j++) {
+                if ($scope.messages[i].senderId == $scope.users[j].id) {
+                  $scope.messages[i].name = $scope.users[j].name;
+                }
+              }
+            }
+        };
 
         $scope.loadProject = function() {
           $scope.$watch('project', function() {
@@ -25,10 +39,10 @@ angular.module('startyApp')
               var projectId = $scope.project.id;
               var userId = $scope.user.id;
               $scope.loadSockets(projectId, userId);
+              $scope.loadPersons(userId);
               $scope.loadGlobalMessages(projectId);
             }
           });
-
         };
 
         $scope.loadGlobalMessages = function(projectId) {
@@ -61,9 +75,15 @@ angular.module('startyApp')
             });
         };
 
-        $scope.loadPersons = function() {
+        $scope.loadPersons = function(userId) {
             MessageData.getUsers()
                 .success(function(users) {
+                    $scope.users = JSON.parse(JSON.stringify(users.result));
+                    for (var i = 0; i < users.result.length; i++) {
+                      if (users.result[i].id == userId)
+                        delete users.result[i];
+                    }
+                    users.result = users.result.filter(function(n){ return n != undefined });
                     $scope.persons = users.result;
                 })
                 .error(function() {
@@ -79,16 +99,20 @@ angular.module('startyApp')
         $scope.loadSockets = function(projectId, userId) {
             socky.emit('join', 'p:' + projectId);
             socky.on('receive', function(msg) {
-              console.log(msg);
-              console.log($scope.personId);
+              var name;
+              for (var i = 0; i < $scope.users.length; i++) {
+                if ($scope.users[i].id == msg.senderId) {
+                  name = $scope.users[i].name;
+                }
+              }
               if (($scope.personId == msg.receiverId && msg.senderId == userId) || ($scope.personId == msg.senderId && msg.receiverId == userId) || ($scope.personId == null && msg.receiverId == null)) {
                 $scope.$apply(function() {
-                  $scope.messages.push({image: 'http://placehold.it/50x50', name: msg.senderId, message: msg.message, time: msg.createdAt});
+                  $scope.messages.push({image: 'http://placehold.it/50x50', name: name, message: msg.message, time: msg.createdAt});
                 });
               } else {
                 $mdToast.show(
                   $mdToast.simple()
-                    .content(msg.senderId + ' says: ' + msg.message)
+                    .content(name + ' says: ' + msg.message)
                     .position('bottom left')
                     .hideDelay(3000)
                 );

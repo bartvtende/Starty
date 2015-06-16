@@ -20,7 +20,7 @@ router.get('/', auth.isAuthenticated, function(req, res) {
 });
 
 /**
- * Returns all users in the organization, excluding yourself
+ * Returns all users in the organization, including yourself
  */
 router.get('/all', auth.isAuthenticated, function(req, res) {
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
@@ -32,11 +32,6 @@ router.get('/all', auth.isAuthenticated, function(req, res) {
 
     Users.findAll({ where: { organization_id: req.user.organization_id }})
         .then(function(users) {
-            // Delete yourself from the result
-            users.forEach(function(key, value) {
-                if (users[value].id == req.user.id)
-                    delete users[value];
-            });
             users = users.filter(function(n){ return n != undefined });
 
             return res.json({
