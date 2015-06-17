@@ -11,7 +11,8 @@ var models = [
     'Users',
     'Projects',
     'Backlog',
-    'Issues'
+    'Issues',
+    'Providers'
 ];
 
 models.forEach(function(model) {

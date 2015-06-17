@@ -30,6 +30,13 @@ angular
     $authProvider.signupRedirect = '/join';
     $authProvider.loginUrl = '/users/login';
     $authProvider.signupUrl = '/users/register';
+
+    $authProvider.github({
+      clientId: 'ffb229d6119ca88e6e8c',
+      scope: ['repo', 'user'],
+      redirectUri: 'http://localhost:1337/api/providers/github'
+
+    });
   })
   .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     $stateProvider

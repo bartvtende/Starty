@@ -84,6 +84,7 @@ var users = require('./controllers/users');
 var organizations = require('./controllers/organizations');
 var projects = require('./controllers/projects');
 var items = require('./controllers/items');
+var providers = require('./controllers/providers');
 
 // Routes
 app.use('/api/messages', messages);
@@ -91,6 +92,7 @@ app.use('/api/users', users);
 app.use('/api/organizations', organizations);
 app.use('/api/projects', projects);
 app.use('/api/items', items);
+app.use('/api/providers', providers);
 
 // Run the express server
 app.listen(app.get('port'), function() {
