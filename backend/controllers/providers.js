@@ -6,7 +6,7 @@ var auth = require('./auth');
 
 var settings = require('../config/settings.js');
 
-var request = require('request');
+var requestify = require('requestify');
 
 var Providers = models.Providers;
 
@@ -24,10 +24,14 @@ router.get('/github', function(req, res) {
         code: req.query.code
     };
 
-    // Ping the GitHub servers for an access_token
-    request.post({ url: 'https://github.com/login/oauth/access_token', headers: {'Accept' : 'application/json'}, form: requestForm }, function(err, response, body) {
+    // Ping the GitHub servers for an
+    requestify.request('https://github.com/login/oauth/access_token', {
+        method: 'POST',
+        headers: { 'Accept' : 'application/json' },
+        body: requestForm
+    }).then(function (resp) {
         try {
-            var access_token = JSON.parse(body).access_token;
+            var access_token = resp.getBody().access_token;
         } catch (e) {
             return res.json({
                 error: 'Something went wrong while authenticating with GitHub',
@@ -43,17 +47,19 @@ router.get('/github', function(req, res) {
             image: 'http://google.nl'
         };
 
-        Providers.create(provider).then(function() {
-            return res.json({
-                error: '',
-                result: 'Your account has been authenticated with GitHub!'
+        Providers.create(provider)
+            .then(function() {
+                return res.json({
+                    error: '',
+                    result: 'Your account has been authenticated with GitHub!'
+                });
+            })
+            .then(function() {
+                return res.json({
+                    error: 'Something went wrong while authenticating with GitHub',
+                    result: ''
+                });
             });
-        });
-
-        return res.json({
-            error: 'Something went wrong while authenticating with GitHub',
-            result: ''
-        });
     });
 });
 

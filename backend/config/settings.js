@@ -13,6 +13,8 @@ module.exports = {
     tokenSecret: 'Dikke vette piemol die vind Jerke wel lekker, deze string mag je niet veranderen hihi',
 
     githubClientId: 'ffb229d6119ca88e6e8c',
-    githubClientSecret: '8975f269f7cf457b55ce576960daaeb6a283df94'
+    githubClientSecret: '8975f269f7cf457b55ce576960daaeb6a283df94',
+
+    baseUrl: 'http://localhost:1337/api'
 
 };

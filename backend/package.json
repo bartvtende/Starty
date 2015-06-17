@@ -15,6 +15,7 @@
     "mongoose-timestamp": "^0.4.0",
     "mysql": "^2.7.0",
     "request": "^2.57.0",
+    "requestify": "^0.1.17",
     "sequelize": "^3.2.0",
     "socket.io": "^1.3.5"
   }

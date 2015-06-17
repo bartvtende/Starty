@@ -16,7 +16,6 @@ mongoose.connect('mongodb://' + settings.mongoHost + '/' + settings.mongoDatabas
 
 var app = express();
 
-//var http = require('http').Server(app);
 var io = require('socket.io')(1338);
 
 app.set('port', settings.appPort || 3000);
@@ -85,6 +84,7 @@ var organizations = require('./controllers/organizations');
 var projects = require('./controllers/projects');
 var items = require('./controllers/items');
 var providers = require('./controllers/providers');
+var github = require('./controllers/github');
 
 // Routes
 app.use('/api/messages', messages);
@@ -93,6 +93,7 @@ app.use('/api/organizations', organizations);
 app.use('/api/projects', projects);
 app.use('/api/items', items);
 app.use('/api/providers', providers);
+app.use('/api/github', github);
 
 // Run the express server
 app.listen(app.get('port'), function() {
