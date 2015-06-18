@@ -94,7 +94,7 @@ angular.module('startyApp')
     };
 
     $scope.goToProject = function (shortcode) {
-        $state.go('project', {projectName: shortcode});
+        $state.go('project.messages', {projectName: shortcode});
 
         //var confirm = $mdDialog.confirm()
         //  .parent(angular.element(document.body))
@@ -111,7 +111,7 @@ angular.module('startyApp')
         //          .position('bottom left')
         //          .hideDelay(3000)
         //      );
-        //    $state.go('project', {projectName: shortcode});
+        //    $state.go('project.messages', {projectName: shortcode});
         //  });
         //});
     };
