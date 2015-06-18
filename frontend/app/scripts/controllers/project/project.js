@@ -59,11 +59,7 @@ angular.module('startyApp')
             .success(function() {
                 $scope.loadProjects();
 
-                $scope.$apply(function() {
-                  $scope.projectname = '';
-                  $scope.projectdescription = '';
-                });
-                console.log($scope.projectdescription);
+                $scope.showCreateProject = false;
             })
             .error(function() {
                 $mdToast.show(
@@ -84,7 +80,8 @@ angular.module('startyApp')
               .position('bottom left')
               .hideDelay(3000)
           );
-          $scope.email = '';
+
+          $scope.showInviteUser = false;
         })
         .error(function () {
           $mdToast.show(

@@ -25,7 +25,7 @@
     <md-sidenav class="md-sidenav-right md-whiteframe-z2 message-sidebar" md-component-id="right" md-is-locked-open="$mdMedia('gt-sm')">
       <md-content layout-padding>
         <md-list-item ng-click="changeChat('', 'all')">
-          <img alt="All" ng-src="images/icons/ic_person_24px.svg" class="md-avatar" />
+          <img alt="All" ng-src="images/icons/ic_forum_24px.svg" class="md-avatar" />
           <p>All</p>
 
           <div ng-show="allmessages != 0">
@@ -35,7 +35,7 @@
           </div>
         </md-list-item>
 
-        <div ng-show="persons.length != 0">
+        <div ng-if="persons.length != 0">
           <h4>Persons</h4>
 
           <md-list-item ng-repeat="person in persons" ng-click="changeChat(person.id, person.name)">
