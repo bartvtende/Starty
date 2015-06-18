@@ -1,12 +1,12 @@
 module.exports = {
 
-    mongoHost: 'localhost',
+    mongoHost: process.env.mongoHost || 'localhost',
     mongoDatabase: 'starty',
 
-    sqlHost: 'localhost',
-    sqlUsername: 'root',
-    sqlPassword: '',
-    sqlDatabase: 'starty',
+    sqlHost: process.env.sqlHost || 'localhost',
+    sqlUsername: process.env.sqlUsername || 'root',
+    sqlPassword: process.env.sqlPassword || '',
+    sqlDatabase: process.env.sqlDatabase || 'starty',
 
     appPort: 1337,
 
@@ -15,6 +15,6 @@ module.exports = {
     githubClientId: 'ffb229d6119ca88e6e8c',
     githubClientSecret: '8975f269f7cf457b55ce576960daaeb6a283df94',
 
-    baseUrl: 'http://localhost:1337/api'
+    baseUrl: process.env.baseUrl || 'http://localhost:1337/api'
 
 };
