@@ -13,6 +13,7 @@ angular.module('startyApp')
 
         $scope.selectedChat = 'Chatting with all';
         $scope.personId = null;
+        $scope.allmessages = 0;
 
         $scope.$watch('$viewContentLoaded', function() {
             $scope.loadProject();
@@ -84,6 +85,9 @@ angular.module('startyApp')
                         delete users.result[i];
                     }
                     users.result = users.result.filter(function(n){ return n != undefined });
+                    for (var i = 0; i < users.result.length; i++) {
+                      users.result[i].messages = 0;
+                    }
                     $scope.persons = users.result;
                 })
                 .error(function() {
@@ -98,6 +102,7 @@ angular.module('startyApp')
 
         $scope.loadSockets = function(projectId, userId) {
             socky.emit('join', 'p:' + projectId);
+
             socky.on('receive', function(msg) {
               var name;
               for (var i = 0; i < $scope.users.length; i++) {
@@ -105,17 +110,31 @@ angular.module('startyApp')
                   name = $scope.users[i].name;
                 }
               }
+              if (msg.message.length > 50) {
+                msg.message = msg.message.substring(0, 50);
+                msg.message += '..';
+              }
               if (($scope.personId == msg.receiverId && msg.senderId == userId) || ($scope.personId == msg.senderId && msg.receiverId == userId) || ($scope.personId == null && msg.receiverId == null)) {
                 $scope.$apply(function() {
                   $scope.messages.push({image: 'http://placehold.it/50x50', name: name, message: msg.message, time: msg.createdAt});
                 });
-              } else {
+              } else if (msg.receiverId == userId || msg.receiverId == null) {
                 $mdToast.show(
                   $mdToast.simple()
                     .content(name + ' says: ' + msg.message)
                     .position('bottom left')
                     .hideDelay(3000)
                 );
+                if (msg.receiverId != null) {
+                  $scope.persons.forEach(function (val, key) {
+                    if (val.id == msg.senderId) {
+                      console.log('Adding increment to persons.messages');
+                      $scope.persons[key].messages += 1;
+                    }
+                  });
+                } else {
+                  $scope.allmessages += 1;
+                }
               }
             });
         };
@@ -126,8 +145,14 @@ angular.module('startyApp')
           if (personId == '' || personId == null) {
             $scope.loadGlobalMessages($scope.project.id);
             $scope.personId = null;
+            $scope.allmessages = 0;
           } else {
             $scope.loadUsersMessages($scope.project.id, personId);
+            for (var i = 0; i < $scope.persons.length; i++) {
+              if ($scope.persons[i].id == personId) {
+                $scope.persons[i].messages = 0;
+              }
+            }
           }
 
           $scope.selectedChat = 'Chatting with ' + name;

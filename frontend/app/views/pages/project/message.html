@@ -27,6 +27,12 @@
         <md-list-item ng-click="changeChat('', 'all')">
           <img alt="All" ng-src="http://placehold.it/40x40" class="md-avatar" />
           <p>All</p>
+
+          <div ng-show="allmessages != 0">
+            <md-button class="md-fab md-mini" aria-label="New messages">
+              {{ allmessages }}
+            </md-button>
+          </div>
         </md-list-item>
 
         <h4>Persons</h4>
@@ -34,6 +40,12 @@
         <md-list-item ng-repeat="person in persons" ng-click="changeChat(person.id, person.name)">
           <img alt="{{ person.name }}" ng-src="http://placehold.it/40x40" class="md-avatar" />
           <p>{{ person.name }}</p>
+
+          <div ng-show="person.messages != 0">
+            <md-button class="md-fab md-mini" aria-label="New messages">
+              {{ person.messages }}
+            </md-button>
+          </div>
         </md-list-item>
       </md-content>
     </md-sidenav>

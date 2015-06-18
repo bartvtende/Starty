@@ -16,7 +16,7 @@ router.get('/:projectId', auth.isAuthenticated, function(req, res) {
         .find({ projectId: projectId })
         .where('receiverId').equals(null)
         .limit(limit)
-        .sort('+createdAt')
+        .sort({ createdAt: 'asc' })
         .exec(function(err, messages) {
             if (err) {
                 return res.json({

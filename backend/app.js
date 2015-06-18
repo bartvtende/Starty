@@ -31,8 +31,6 @@ var auth = require('./controllers/auth');
 
 // Socket.io: chat message
 io.on('connection', function(socket){
-    console.log('Connection established');
-
     socket.on('join', function(msg) {
         socket.join(msg);
     });
@@ -44,10 +42,8 @@ io.on('connection', function(socket){
             return false;
         }
 
-        // TODO: Send to DB
-        if (json.projectId == null) {
+        if (json.projectId == null)
             return false;
-        }
 
         var messageInput = {
             projectId: json.projectId,
@@ -55,25 +51,18 @@ io.on('connection', function(socket){
             message: json.message
         };
 
-        if (json.receiverId != null) {
+        if (json.receiverId != null)
             messageInput.receiverId = json.receiverId;
-        }
 
         var message = new Messages(messageInput);
 
         message.save(function(err, message) {
-            if (err) {
+            if (err)
                 return false;
-            }
 
-            console.log('p:' + json.projectId);
             io.to('p:' + json.projectId).emit('receive', message);
         });
 
-    });
-
-    socket.on('disconnect', function(){
-        console.log('User disconnected');
     });
 });
 
