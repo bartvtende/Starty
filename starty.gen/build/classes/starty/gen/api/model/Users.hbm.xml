@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 17, 2015 11:42:46 AM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="starty.gen.api.model.Users" table="users" catalog="starty">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="organizationId" type="java.lang.Integer">
+            <column name="organization_id" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="25" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="40" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="60" not-null="true" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="createdAt" length="19" not-null="true" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updatedAt" length="19" not-null="true" />
+        </property>
+        <set name="projectUserses" inverse="true">
+            <key>
+                <column name="UID" not-null="true" />
+            </key>
+            <one-to-many class="starty.gen.api.model.ProjectUsers" />
+        </set>
+    </class>
+</hibernate-mapping>

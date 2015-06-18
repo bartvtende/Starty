@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-catalog="starty" match-name="organizations"/>
+  <table-filter match-catalog="starty" match-name="project_users"/>
+  <table-filter match-catalog="starty" match-name="issues"/>
+  <table-filter match-catalog="starty" match-name="backlog_items"/>
+  <table-filter match-catalog="starty" match-name="users"/>
+  <table-filter match-catalog="starty" match-name="projects"/>
+</hibernate-reverse-engineering>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 17, 2015 11:42:46 AM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="starty.gen.api.model.BacklogItems" table="backlog_items" catalog="starty">
+        <composite-id name="id" class="starty.gen.api.model.BacklogItemsId">
+            <key-property name="id" type="string">
+                <column name="id" length="6" />
+            </key-property>
+            <key-property name="projectId" type="string">
+                <column name="project_id" length="50" />
+            </key-property>
+        </composite-id>
+        <property name="title" type="string">
+            <column name="title" length="40" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" not-null="true" />
+        </property>
+        <property name="timeExpected" type="int">
+            <column name="time_expected" not-null="true" />
+        </property>
+        <property name="timeReality" type="int">
+            <column name="time_reality" not-null="true" />
+        </property>
+        <property name="creator" type="int">
+            <column name="creator" not-null="true" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="createdAt" length="19" not-null="true" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updatedAt" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

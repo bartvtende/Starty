@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 17, 2015 11:42:46 AM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="starty.gen.api.model.ProjectUsers" table="project_users" catalog="starty">
+        <composite-id name="id" class="starty.gen.api.model.ProjectUsersId">
+            <key-property name="uid" type="int">
+                <column name="UID" />
+            </key-property>
+            <key-property name="pid" type="int">
+                <column name="PID" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="users" class="starty.gen.api.model.Users" update="false" insert="false" fetch="select">
+            <column name="UID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="projects" class="starty.gen.api.model.Projects" update="false" insert="false" fetch="select">
+            <column name="PID" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>
