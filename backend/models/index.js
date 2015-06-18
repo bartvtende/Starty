@@ -11,11 +11,8 @@ var models = [
     'Projects',
     'Backlog',
     'Issues',
-<<<<<<< HEAD
-    'ProjectUser'
-=======
+    'ProjectUser',
     'Providers'
->>>>>>> 13a7086c9ab34475029498047e036189014e9f8f
 ];
 
 models.forEach(function(model) {
