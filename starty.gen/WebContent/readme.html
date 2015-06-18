@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+    google.load('visualization', '1.1', {packages: ['line']});
+    google.setOnLoadCallback(drawChart);
+
+  
+    
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Day');
+      data.addColumn('number', 'Ideal workload');
+      data.addColumn('number', 'Actual workload');
+
+      data.addRows([
+        [1,  37.8, 80.8],
+        [2,  30.9, 69.5],
+        [3,  25.4,   57],
+        [4,  11.7, 18.8],
+        [5,  11.9, 17.6],
+        [6,   8.8, 13.6],
+        [7,   7.6, 12.3],
+        [8,  12.3, 29.2],
+        [9,  16.9, 42.9],
+        [10, 12.8, 30.9],
+        [11,  5.3,  7.9],
+        [12,  6.6,  8.4],
+        [13,  4.8,  6.3],
+        [14,  4.2,  6.2]
+      ]);
+
+      var options = {
+        chart: {
+          title: 'Burndown Chart amount of work',
+          subtitle: 'Amount of work (in Hours)'
+        },
+        width: 900,
+        height: 500
+      };
+
+      var chart = new google.charts.Line(document.getElementById('linechart_material'));
+
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+<h1>Read Me</h1>
+<div id="linechart_material"></div>
+</body>
+</html>
