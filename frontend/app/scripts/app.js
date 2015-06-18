@@ -20,6 +20,9 @@ angular
     'ngMdIcons',
     'satellizer'
   ])
+  .run(function($state, $rootScope) {
+    $rootScope.$state = $state;
+  })
   .constant('urls', {
     API: 'http://localhost:1337/api'
   })
@@ -75,8 +78,13 @@ angular
       })
       .state('overview.overview', {
         url: '/',
-        templateUrl: 'views/pages/project/overview.html',
+        templateUrl: 'views/pages/overview/overview.html',
         controller: 'ProjectCtrl'
+      })
+      .state('overview.settings', {
+        url: '/settings',
+        templateUrl: 'views/pages/overview/settings.html',
+        controller: 'SettingsCtrl'
       })
       .state('project', {
         url: '/:projectName',

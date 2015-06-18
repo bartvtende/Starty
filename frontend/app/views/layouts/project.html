@@ -1,7 +1,7 @@
 <div ng-controller="NavbarCtrl">
   <md-content>
     <md-toolbar>
-      <div class="md-toolbar-tools" layout-align="center center">
+      <div class="md-toolbar-tools">
         <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
           <md-icon aria-label="Menu" md-svg-icon="images/icons/ic_menu_24px.svg"></md-icon>
         </md-button>
@@ -10,13 +10,7 @@
         <md-button class="md-icon-button" ui-sref="overview.overview" aria-label="Go back">
           <md-icon md-svg-src="images/icons/ic_arrow_back_24px.svg" style="color: white;"></md-icon>
           <md-tooltip>
-            Go to project overview
-          </md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button" ng-click="spawnSearchPopup($event)" aria-label="Search">
-          <md-icon md-svg-src="images/icons/ic_search_24px.svg" style="color: white;"></md-icon>
-          <md-tooltip>
-            Search this project
+            Back to projects overview
           </md-tooltip>
         </md-button>
         <md-button class="md-icon-button" ng-click="spawnProfilePopup($event)" aria-label="Profile">
@@ -33,23 +27,23 @@
   <div layout="row" flex>
     <md-sidenav layout="column" layout-fill layout-align="top center" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
       <div>
-        <md-list-item ng-click="navigateTo('project.messages')">
+        <md-list-item ng-click="navigateTo('project.messages')" ng-class="{ 'active': $state.includes('project.messages')}">
           <md-icon md-svg-src="images/icons/ic_message_black_24px.svg" style="color: black;"></md-icon>
           <p>Messages</p>
         </md-list-item>
-        <md-list-item ng-click="navigateTo('project.board')">
+        <md-list-item ng-click="navigateTo('project.board')" ng-class="{ 'active': $state.includes('project.board')}">
           <md-icon md-svg-src="images/icons/ic_dashboard_24px.svg" style="color: black;"></md-icon>
           <p>Board</p>
         </md-list-item>
-        <md-list-item ng-click="navigateTo('project.backlog')">
+        <md-list-item ng-click="navigateTo('project.backlog')" ng-class="{ 'active': $state.includes('project.backlog')}">
           <md-icon md-svg-src="images/icons/ic_done_24px.svg" style="color: black;"></md-icon>
           <p>Backlog</p>
         </md-list-item>
-        <md-list-item ng-click="navigateTo('project.issues')">
+        <md-list-item ng-click="navigateTo('project.issues')" ng-class="{ 'active': $state.includes('project.issues')}">
           <md-icon md-svg-src="images/icons/ic_report_problem_24px.svg" style="color: black;"></md-icon>
           <p>Issues</p>
         </md-list-item>
-        <md-list-item ng-click="navigateTo('project.reports')">
+        <md-list-item ng-click="navigateTo('project.reports')" ng-class="{ 'active': $state.includes('project.reports')}">
           <md-icon md-svg-src="images/icons/ic_trending_up_24px.svg" style="color: black;"></md-icon>
           <p>Reports</p>
         </md-list-item>

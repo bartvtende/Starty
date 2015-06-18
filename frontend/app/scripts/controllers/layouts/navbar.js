@@ -74,19 +74,6 @@ angular.module('startyApp')
       $state.go(to);
     };
 
-    $scope.spawnSearchPopup = function(event) {
-      $mdDialog.show({
-        controller: 'SearchCtrl',
-        templateUrl: 'views/components/search.html',
-        targetEvent: event
-      })
-      .then(function(answer) {
-        $scope.alert = 'You said the information was "' + answer + '".';
-      }, function() {
-        $scope.alert = 'You cancelled the dialog.';
-      });
-    };
-
     $scope.spawnProfilePopup = function(event) {
       $mdDialog.show({
         controller: 'ProfileCtrl',

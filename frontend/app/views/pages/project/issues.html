@@ -10,8 +10,13 @@
     </md-toolbar>
 
     <md-content layout="column" flex class="md-padding">
-        <md-list>
+        <h4 ng-show="issues.length == 0">There are no issues, make some trouble!</h4>
+
+        <md-list ng-if="issues.length > 0">
             <md-list-item>
+                <div flex>
+                  <b>Details</b>
+                </div>
                 <div flex>
                     <b>ID</b>
                 </div>

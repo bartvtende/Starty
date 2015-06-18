@@ -3,12 +3,14 @@
         <div class="md-toolbar-tools" layout-align="center center">
             <h1><span ng-if="organizationName">{{organizationName}}: </span>All projects</h1>
             <span flex></span>
-            <md-button class="md-icon-button" ng-click="spawnSearchPopup($event)" aria-label="Search">
-                <md-icon md-svg-src="images/icons/ic_search_24px.svg" style="color: white;"></md-icon>
+            <div ng-if="!$state.includes('overview.overview')">
+              <md-button class="md-icon-button" aria-label="Back" ui-sref="overview.overview">
+                <md-icon md-svg-src="images/icons/ic_arrow_back_24px.svg" style="color: white;"></md-icon>
                 <md-tooltip>
-                    Search this project
+                  Back to projects overview
                 </md-tooltip>
-            </md-button>
+              </md-button>
+            </div>
             <md-button class="md-icon-button" ng-click="spawnProfilePopup($event)" aria-label="Profile">
                 <div flex>
                     <md-icon md-svg-src="images/icons/ic_person_24px.svg" style="color: white;"></md-icon>

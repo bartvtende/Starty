@@ -10,7 +10,9 @@
     </md-toolbar>
 
     <md-content layout="column" flex class="md-padding">
-        <md-list>
+        <h4 ng-show="backlogs.length == 0">There are no backlog items, make some work!</h4>
+
+        <md-list ng-show="backlogs.length != 0">
             <md-list-item>
                 <div flex>
                     <b>ID</b>
@@ -34,7 +36,7 @@
 
             <md-list-item ng-repeat="backlog in backlogs">
                 <div flex>
-                    {{backlog.id}}
+                  {{backlog.id}}
                 </div>
                 <div flex>
                     {{backlog.title}}
