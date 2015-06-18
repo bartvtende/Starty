@@ -94,24 +94,26 @@ angular.module('startyApp')
     };
 
     $scope.goToProject = function (shortcode) {
-        var confirm = $mdDialog.confirm()
-          .parent(angular.element(document.body))
-          .title('Would you like to join this project?')
-          .ok('Ok')
-          .cancel('Cancel')
-          .targetEvent(event);
-        $mdDialog.show(confirm).then(function() {
-          ProjectData.joinProject({shortcode: shortcode})
-          .success(function(item) {
-              $mdToast.show(
-                $mdToast.simple()
-                  .content('You just joined a project!')
-                  .position('bottom left')
-                  .hideDelay(3000)
-              );
-            $state.go('project', {projectName: shortcode});
-          });
-        });
+        $state.go('project', {projectName: shortcode});
+
+        //var confirm = $mdDialog.confirm()
+        //  .parent(angular.element(document.body))
+        //  .title('Would you like to join this project?')
+        //  .ok('Ok')
+        //  .cancel('Cancel')
+        //  .targetEvent(event);
+        //$mdDialog.show(confirm).then(function() {
+        //  ProjectData.joinProject({shortcode: shortcode})
+        //  .success(function(item) {
+        //      $mdToast.show(
+        //        $mdToast.simple()
+        //          .content('You just joined a project!')
+        //          .position('bottom left')
+        //          .hideDelay(3000)
+        //      );
+        //    $state.go('project', {projectName: shortcode});
+        //  });
+        //});
     };
 
   });
