@@ -8,7 +8,7 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('ProjectCtrl', function ($scope, $rootScope, OrganizationData, ProjectData, $mdToast) {
+  .controller('ProjectCtrl', function ($state, $scope, OrganizationData, ProjectData, $mdToast, $mdDialog) {
 
     $scope.projects = [];
     $scope.showCreateProject = false;
@@ -85,6 +85,27 @@ angular.module('startyApp')
               .position('bottom left')
               .hideDelay(5000)
           );
+        });
+    };
+
+    $scope.goToProject = function (shortcode) {
+        var confirm = $mdDialog.confirm()
+          .parent(angular.element(document.body))
+          .title('Would you like to join this project?')
+          .ok('Ok')
+          .cancel('Cancel')
+          .targetEvent(event);
+        $mdDialog.show(confirm).then(function() {
+          ProjectData.joinProject({shortcode: shortcode})
+          .success(function(item) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .content('You just joined a project!')
+                  .position('bottom left')
+                  .hideDelay(3000)
+              );
+            $state.go('project', {projectName: shortcode});
+          });
         });
     };
 

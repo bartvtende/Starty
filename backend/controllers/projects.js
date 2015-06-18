@@ -7,6 +7,7 @@ var auth = require('./auth');
 var Organizations = models.Organizations;
 var Projects = models.Projects;
 var Users = models.Users;
+var ProjectUser = models.ProjectUser;
 
 /**
  * Gets all the projects of this user
@@ -19,7 +20,10 @@ router.get('/', auth.isAuthenticated, function(req, res){
         });
     }
 
-    Projects.findAll({ where: { organization_id: req.user.organization_id }})
+
+    Users.belongsToMany(Projects, {through: ProjectUser, foreignKey: 'UID'});
+    Projects.belongsToMany(Users, {through: ProjectUser, foreignKey: 'PID'});
+    Projects.findAll({ where: { organization_id: req.user.organization_id}, include: [{model: Users, attributes: ['id', 'name'], through: {attributes: ['UID', 'PID']}}]})
         .then(function(projects) {
             if (projects.length == 0) {
                 return res.json({
@@ -168,6 +172,28 @@ router.delete('/', auth.isAuthenticated, function(req, res) {
                     });
                 });
         });
+});
+
+/**
+ * Creates a link between user and project
+ */
+router.post('/join', auth.isAuthenticated, function(req, res) {
+    if (req.user.organization_id == 0 || req.user.organization_id == null) {
+        res.json({
+            error: 'You are not a member of an organization!',
+            result: ''
+        });
+    }
+
+    ProjectUser.create({
+        UID: req.user.id,
+        PID: req.body.shortcode
+    }).then(function (project) {
+        return res.json({
+            error: '',
+            result: project
+        });
+    });
 });
 
 module.exports = router;

@@ -22,4 +22,8 @@ angular.module('startyApp')
         return $http.post(urls.API + '/projects', project);
     };
 
+    this.joinProject = function (shortcode) {
+      return $http.post(urls.API + '/projects/join', shortcode);
+    };
+
   });

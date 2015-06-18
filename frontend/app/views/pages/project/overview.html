@@ -46,10 +46,22 @@
                 <div flex="33">
                     <md-card class="md-whiteframe-z4">
                         <md-card-content>
-                            <h2 class="md-title"><a href="#/{{project.shortcode}}/">{{project.name}}</a></h2>
+                            <h2 class="md-title">
+                                <!-- <button class="md-icon-button md-button md-default-theme"> -->
+                                    <a ng-click="goToProject('{{project.shortcode}}')">{{project.name}}</a>
+                                <!-- </button> -->
+                            </h2>
                             <p>
                                 {{project.description}}
                             </p>
+
+                            <h4>Persons</h4>
+
+                            <md-list-item ng-repeat="person in project.Users" ng-click="changeChat(person.id, person.name)">
+                              <img alt="{{ person.name }}" ng-src="http://placehold.it/40x40" class="md-avatar" />
+                              <p>{{ person.name }}</p>
+                            </md-list-item>
+
                         </md-card-content>
                     </md-card>
                 </div>
