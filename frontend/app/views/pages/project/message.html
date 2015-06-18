@@ -6,7 +6,7 @@
     </h2>
   </md-toolbar>
 
-  <div layout="row">
+  <div layout="row" class="fit-height">
     <div class="message-list" flex>
       <div ng-if="messages.length == 0">
         <p>&nbsp&nbsp&nbsp;There are no messages, go and be social! :)</p>
@@ -14,7 +14,7 @@
       <div ng-repeat="message in messages track by $index">
         <md-list-item class="md-3-line">
           <img ng-src="http://placehold.it/50x50" class="md-avatar" alt="{{message.name}}" />
-          <div class="md-list-item-text">
+          <div class="md-list-item-text message-item" layout="column">
             <h3>{{message.name || 'Deleted user'}} <small>- {{message.createdAt | ago}}</small></h3>
             <p>{{message.message}}</p>
           </div>
@@ -35,18 +35,20 @@
           </div>
         </md-list-item>
 
-        <h4>Persons</h4>
+        <div ng-show="persons.length != 0">
+          <h4>Persons</h4>
 
-        <md-list-item ng-repeat="person in persons" ng-click="changeChat(person.id, person.name)">
-          <img alt="{{ person.name }}" ng-src="http://placehold.it/40x40" class="md-avatar" />
-          <p>{{ person.name }}</p>
+          <md-list-item ng-repeat="person in persons" ng-click="changeChat(person.id, person.name)">
+            <img alt="{{ person.name }}" ng-src="http://placehold.it/40x40" class="md-avatar" />
+            <p>{{ person.name }}</p>
 
-          <div ng-show="person.messages != 0">
-            <md-button class="md-fab md-mini" aria-label="New messages">
-              {{ person.messages }}
-            </md-button>
-          </div>
-        </md-list-item>
+            <div ng-show="person.messages != 0">
+              <md-button class="md-fab md-mini" aria-label="New messages">
+                {{ person.messages }}
+              </md-button>
+            </div>
+          </md-list-item>
+        </div>
       </md-content>
     </md-sidenav>
   </div>
@@ -54,7 +56,7 @@
   <form ng-submit="addMessage(message)">
     <div class="message-send" layout="row">
       <md-input-container flex md-no-float class="message-text">
-        <input ng-model="message" placeholder="Type message..">
+        <input ng-model="message" placeholder="Type a message..">
       </md-input-container>
 
       <md-button class="md-fab" aria-label="Send message">

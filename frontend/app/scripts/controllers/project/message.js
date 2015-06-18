@@ -50,6 +50,7 @@ angular.module('startyApp')
             MessageData.getGlobal(projectId)
               .success(function(messages) {
                 $scope.messages = messages.result;
+                window.setTimeout(showNewest, 100);
               })
               .error(function() {
                 $mdToast.show(
@@ -65,6 +66,7 @@ angular.module('startyApp')
           MessageData.getPerson(projectId, userId)
             .success(function(messages) {
               $scope.messages = messages.result;
+              window.setTimeout(showNewest, 100);
             })
             .error(function() {
               $mdToast.show(
@@ -110,15 +112,16 @@ angular.module('startyApp')
                   name = $scope.users[i].name;
                 }
               }
-              if (msg.message.length > 50) {
-                msg.message = msg.message.substring(0, 50);
-                msg.message += '..';
-              }
               if (($scope.personId == msg.receiverId && msg.senderId == userId) || ($scope.personId == msg.senderId && msg.receiverId == userId) || ($scope.personId == null && msg.receiverId == null)) {
                 $scope.$apply(function() {
                   $scope.messages.push({image: 'http://placehold.it/50x50', name: name, message: msg.message, time: msg.createdAt});
+                  window.setTimeout(showNewest, 100);
                 });
               } else if (msg.receiverId == userId || msg.receiverId == null) {
+                if (msg.message.length > 50) {
+                  msg.message = msg.message.substring(0, 50);
+                  msg.message += '..';
+                }
                 $mdToast.show(
                   $mdToast.simple()
                     .content(name + ' says: ' + msg.message)
@@ -182,4 +185,8 @@ angular.module('startyApp')
 
   });
 
-
+function showNewest() {
+  //document.querySelector('core-scaffold').$.headerPanel.scroller.scrollTop = document.querySelector('.chat-list').scrollHeight;
+  var chatDiv = document.querySelector('.message-list');
+  chatDiv.scrollTop = chatDiv.scrollHeight;
+}
