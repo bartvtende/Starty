@@ -6,16 +6,16 @@
     </div>
 
     <div ng-if="showCreateProject">
-        <form name="createProjectForm" ng-submit="createProject(project)" novalidate>
+        <form name="createProjectForm" ng-submit="createProject(projectname, projectdescription)" novalidate>
             <h4>Create a new project!</h4>
             <md-input-container flex>
                 <label>Project name</label>
-                <input type="text" ng-model="project.name" required>
+                <input type="text" ng-model="projectname" required>
             </md-input-container>
 
             <md-input-container flex>
                 <label>Short project description</label>
-                <textarea ng-model="project.description" columns="1" md-maxlength="50"></textarea>
+                <textarea ng-model="projectdescription" columns="1" md-maxlength="50"></textarea>
             </md-input-container>
 
             <md-button class="md-raised md-primary" ng-disabled="createProjectForm.$invalid">Create!</md-button>

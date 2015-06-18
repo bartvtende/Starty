@@ -12,6 +12,6 @@ angular.module('startyApp')
 
         $scope.refreshGraph = function() {
             console.log('Refresh graph initiated!');
-        }
+        };
 
-  });
+    });

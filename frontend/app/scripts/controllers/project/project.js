@@ -34,7 +34,7 @@ angular.module('startyApp')
                 );
                 console.log(err);
             });
-    }
+    };
 
     $scope.toggleProject = function() {
         $scope.showCreateProject = !$scope.showCreateProject;
@@ -48,14 +48,18 @@ angular.module('startyApp')
             $scope.showCreateProject = false;
     };
 
-    $scope.createProject = function(project) {
-        project.shortcode = slug(project.name);
-        ProjectData.createProject(project)
-            .success(function(project) {
+    $scope.createProject = function(name, description) {
+        var newProject = {
+          name: name,
+          description: description,
+          shortcode: slug(name)
+        };
+
+        ProjectData.createProject(newProject)
+            .success(function() {
                 $scope.loadProjects();
 
-                $scope.project.name = '';
-                $scope.project.description = '';
+                $scope.showCreateProject = false;
             })
             .error(function() {
                 $mdToast.show(
@@ -76,7 +80,8 @@ angular.module('startyApp')
               .position('bottom left')
               .hideDelay(3000)
           );
-          $scope.email = '';
+
+          $scope.showInviteUser = false;
         })
         .error(function () {
           $mdToast.show(

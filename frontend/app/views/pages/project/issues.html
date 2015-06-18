@@ -40,12 +40,15 @@
                     {{issue.title}}
                 </div>
                 <div flex>
-                    {{issue.user}}
+                    {{issue.creator}}
                 </div>
                 <div flex>
-                    {{issue.updatedAt}}
+                    {{issue.createdAt | date}}
                 </div>
                 <div flex>
+
+                </div>
+                <div flex layout="row">
                     <md-button class="md-fab md-mini md-primary" aria-label="Edit issue" ng-click="editIssue('{{issue.id}}')">
                         <md-icon md-svg-src="images/icons/ic_edit_24px.svg"></md-icon>
                     </md-button>

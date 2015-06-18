@@ -16,7 +16,6 @@ mongoose.connect('mongodb://' + settings.mongoHost + '/' + settings.mongoDatabas
 
 var app = express();
 
-//var http = require('http').Server(app);
 var io = require('socket.io')(1338);
 
 app.set('port', settings.appPort || 3000);
@@ -32,8 +31,6 @@ var auth = require('./controllers/auth');
 
 // Socket.io: chat message
 io.on('connection', function(socket){
-    console.log('Connection established');
-
     socket.on('join', function(msg) {
         socket.join(msg);
     });
@@ -45,10 +42,8 @@ io.on('connection', function(socket){
             return false;
         }
 
-        // TODO: Send to DB
-        if (json.projectId == null) {
+        if (json.projectId == null)
             return false;
-        }
 
         var messageInput = {
             projectId: json.projectId,
@@ -56,25 +51,18 @@ io.on('connection', function(socket){
             message: json.message
         };
 
-        if (json.receiverId != null) {
+        if (json.receiverId != null)
             messageInput.receiverId = json.receiverId;
-        }
 
         var message = new Messages(messageInput);
 
         message.save(function(err, message) {
-            if (err) {
+            if (err)
                 return false;
-            }
 
-            console.log('p:' + json.projectId);
             io.to('p:' + json.projectId).emit('receive', message);
         });
 
-    });
-
-    socket.on('disconnect', function(){
-        console.log('User disconnected');
     });
 });
 
@@ -84,6 +72,8 @@ var users = require('./controllers/users');
 var organizations = require('./controllers/organizations');
 var projects = require('./controllers/projects');
 var items = require('./controllers/items');
+var providers = require('./controllers/providers');
+var github = require('./controllers/github');
 
 // Routes
 app.use('/api/messages', messages);
@@ -91,6 +81,8 @@ app.use('/api/users', users);
 app.use('/api/organizations', organizations);
 app.use('/api/projects', projects);
 app.use('/api/items', items);
+app.use('/api/providers', providers);
+app.use('/api/github', github);
 
 // Run the express server
 app.listen(app.get('port'), function() {
