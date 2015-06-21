@@ -42,9 +42,8 @@ public class RequestListener {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getGraph(@PathParam("projectId") int projectId, @PathParam("sprintId") int sprintId){
 		GraphHandler handler = new GraphHandler();
-		Graph g = handler.getGraph(projectId, sprintId); 
-		JsonParser json = new JsonParser();
-		return json.getJSON(g);
+		String g = handler.getGraph(projectId, sprintId); 
+		return g;
 	}
 	
 	@GET
