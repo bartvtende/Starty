@@ -3,6 +3,8 @@ package start;
 import java.io.IOException;
 import java.util.Date;
 
+import net._01001111.text.LoremIpsum;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -19,7 +21,7 @@ import model.User;
 
 public class TestAddingUsers {
 
-	
+	private static LoremIpsum lorem = new LoremIpsum();
 	
 	public static void main(String[] args) {
 		JsonParser jsonParser = new JsonParser();
@@ -30,7 +32,7 @@ public class TestAddingUsers {
 		long startTime = System.currentTimeMillis();
 		String rl = Generator.getRandomString(4);
 		//le hardcode ;)
-		for (int i = 0; i < 10/* 00 */; i++) {
+		for (int i = 0; i < 10; i++) {
 			User u = new User("test", "test", "test" + rl + i + "@test.io");
 			
 			String userJson = null;
@@ -54,7 +56,7 @@ public class TestAddingUsers {
 				JsonElement jsonElement = jsonParser.parse(entityString);
 				JsonObject jsonObject = jsonElement.getAsJsonObject();
 				System.out.println("Via GSON: " +jsonObject.get("token").getAsString());
-				System.out.println("Via GSON User: " +jsonObject.get("user")/*.getAsString()*/);
+				System.out.println("Via GSON User: " +jsonObject.get("user"));
 				token = jsonObject.get("token").getAsString();
 				userJson = jsonObject.get("user").toString();
 				SimulatedData.addToken(token);
@@ -73,6 +75,18 @@ public class TestAddingUsers {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+				for(int j =0; j<10;j++){
+					response = con.ExecuteHttpRequestBase(con.CreateNewProjectPost(token, userJson, "pr"+rl+i+j, "project"+rl+i+j, lorem.words(40)));
+					entity = response.getEntity();
+					try {
+						entityString = EntityUtils.toString(entity);
+						System.out.println(entityString);
+					} catch (ParseException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 		}
 		long endTime = System.currentTimeMillis();
 		long pastTime = endTime - startTime;

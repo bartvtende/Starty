@@ -64,6 +64,22 @@ public class Connection {
 		return httppost;
 	}
 	
+	public HttpPost CreateNewProjectPost(String token, String user, String shortcode, String name, String description){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("shortcode", shortcode));
+		formparams.add(new BasicNameValuePair("name", name));
+		formparams.add(new BasicNameValuePair("description", description));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/projects");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
+		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
 	public CloseableHttpResponse ExecuteHttpRequestBase(HttpRequestBase request){
 		try {
 			return httpclient.execute(request, httpContext);
