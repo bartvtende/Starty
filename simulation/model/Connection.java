@@ -50,14 +50,16 @@ public class Connection {
 		return httppost;
 	}
 	
-	public HttpPost CreateNewOrganizationPost(String token, String name){
+	public HttpPost CreateNewOrganizationPost(String token, String user, String name){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("name", name));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
-		HttpPost httppost = new HttpPost(address+"/users/register");
-		BasicHeader header = new BasicHeader("authorization", token);
+		HttpPost httppost = new HttpPost(address+"/organizations");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
 		httppost.setEntity(entity);
 		return httppost;
 	}
