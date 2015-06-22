@@ -1,5 +1,8 @@
 package starty.gen.api.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -9,8 +12,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Graph {
+	/** project name **/
+	private String projectName;
+	
 	/** name of sprint **/
 	private String sprintName;
+	
+	/** amount of developers **/
+	private int Developers;
+	
+	/** efficieciency factor **/
+	private double efficiencyFactor;
 	
 	/** type measurement time of x axis **/
 	private String yType;
@@ -18,11 +30,14 @@ public class Graph {
 	/** type measurement time of x axis **/
 	private String xType;
 	
+	/** createdAt yyyy-MM-dd HH:mm:ss **/
+	private String createdAt;
+	
 	/** format {days, ideal workload, actual workload}  **/
 	private double[][] graphData;
 	
 	public Graph(){
-		
+		this.createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 	}
 
 	public String getSprintName() {
@@ -56,4 +71,38 @@ public class Graph {
 	public void setGraphData(double[][] graphData) {
 		this.graphData = graphData;
 	}
+	
+	public void setCreatedAt(String timestamp){
+		this.createdAt = timestamp;
+	}
+	
+	public String getCreatedAt(){
+		return this.createdAt;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public int getDevelopers() {
+		return Developers;
+	}
+
+	public void setDevelopers(int developers) {
+		Developers = developers;
+	}
+
+	public double getEfficiencyFactor() {
+		return efficiencyFactor;
+	}
+
+	public void setEfficiencyFactor(double efficiencyFactor) {
+		this.efficiencyFactor = efficiencyFactor;
+	}
+	
+	
 }
