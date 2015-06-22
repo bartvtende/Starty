@@ -74,6 +74,7 @@ var projects = require('./controllers/projects');
 var items = require('./controllers/items');
 var providers = require('./controllers/providers');
 var github = require('./controllers/github');
+var boards = require('./controllers/boards');
 
 // Routes
 app.use('/api/messages', messages);
@@ -83,6 +84,7 @@ app.use('/api/projects', projects);
 app.use('/api/items', items);
 app.use('/api/providers', providers);
 app.use('/api/github', github);
+app.use('/api/boards', boards);
 
 // Run the express server
 app.listen(app.get('port'), function() {
