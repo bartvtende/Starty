@@ -1,6 +1,6 @@
 module.exports = {
 
-    mongoHost: process.env.mongoHost || 'localhost',
+    mongoHost: process.env.mongoHost || 'localhost:27017',
     mongoDatabase: 'starty',
 
     sqlHost: process.env.sqlHost || 'localhost',

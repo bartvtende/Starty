@@ -67,14 +67,14 @@ angular
         controller: 'ForgotPasswordCtrl'
       })
       .state('overview', {
-        templateUrl: 'views/layouts/overview.html',
-        resolve: {
-          authenticated: ['$location', '$auth', function($location, $auth) {
-            if (!$auth.isAuthenticated()) {
-              return $location.path('/login');
-            }
-          }]
-        }
+        templateUrl: 'views/layouts/overview.html'//,
+        //resolve: {
+        //  authenticated: ['$location', '$auth', function($location, $auth) {
+        //    if (!$auth.isAuthenticated()) {
+        //      return $location.path('/login');
+        //    }
+        //  }]
+        //}
       })
       .state('overview.overview', {
         url: '/',
