@@ -80,6 +80,20 @@ public class Connection {
 		return httppost;
 	}
 	
+	public HttpPost CreateInvitePost(String token, String user, String email){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("email", email));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/organizations/invite");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
+		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
 	public CloseableHttpResponse ExecuteHttpRequestBase(HttpRequestBase request){
 		try {
 			return httpclient.execute(request, httpContext);
