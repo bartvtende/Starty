@@ -1,11 +1,12 @@
 package starty.gen.api.request.handlers;
 
-import starty.gen.api.controller.ProjectController;
-import starty.gen.api.dao.GraphsDao;
+import java.util.ArrayList;
+
 import starty.gen.api.model.Graph;
-import starty.gen.api.model.Projects;
+import starty.gen.api.model.ScrumboardItem;
+import starty.gen.api.model.ScrumboardList;
+import starty.gen.api.model.Sprint;
 import starty.gen.api.util.JsonParser;
-import starty.gen.api.util.TestData;
 
 /**
  * Handler for the generation of a graph
@@ -13,48 +14,44 @@ import starty.gen.api.util.TestData;
  * @date 18 jun. 2015
  */
 public class GraphHandler extends Handler {
-	private ProjectController projectController;
-	private GraphsDao graphsDao;
+	private int sprintDuration;
+	private double taskDaysAssigned; 
+	private int workDays;
+	private double taskDaysCompleted = 28; 
 	
 	public GraphHandler(){
-		this.projectController = new ProjectController();
-		this.graphsDao = new GraphsDao();
-		
+		super();
 	}
 	
 	/**
 	 * calculate graph and save graph data
 	 * @return String graph parsed to json
 	 */
-	public String getGraph(int projectId, String sprintId){
-		/** retrieve project info **/
-		Projects p = this.projectController.retreiveProjectById(projectId);
-		
-		TestData test = new TestData();
-		test.generateTestData(p);
-		
-		/** create new graph **/
+	public String getGraph(String sprintId){
+		Sprint sprint = super.getSprintsDao().findSprindById(sprintId);
+					
 		Graph graph = new Graph();
 		
-		/** calculate graphData **/
-		double[][] graphData = this.getGraphData(this.calculateIdealWorkload(projectId, sprintId, p), this.calculateActualWorkload(sprintId), p);
+		String parsedGraph = "";
 		
-		/** set all data to graph **/
-		graph.setProjectName(p.getName());
-		graph.setSprintName("sprint " + sprintId);
-		graph.setDevelopers(p.getAmountOfProjectUsers());
-		graph.setEfficiencyFactor(this.calculateEfficiencyFactor(20, p.getAmountOfProjectUsers(), 28));
-		graph.setxType("Days");
-		graph.setyType("Hours");
-		graph.setGraphData(graphData);
-		
-		/** parse graph **/
-		JsonParser json = new JsonParser();
-		String parsedGraph = json.objectToJSON(graph); 
-		
-		/** save graph **/
-		this.saveGraph(parsedGraph);
-		
+		if(sprint != null){
+			this.sprintDuration = this.calculateSprintDuration(sprint);
+			this.taskDaysAssigned = this.getTasksDaysAssignedFromDB(sprint);
+			this.workDays = this.sprintDuration - ((this.sprintDuration / 7) * 2);
+			
+			double[][] graphData = this.getGraphData(this.calculateIdealWorkload(sprint), this.calculateActualWorkload(sprint));
+			
+			graph.setSprintId(sprint.getId());
+			graph.setEfficiencyFactor(this.calculateEfficiencyFactor(sprint.getProject().getAmountOfProjectUsers()));
+			graph.setxType("Days");
+			graph.setyType("Hours");
+			graph.setGraphData(graphData);
+			
+			JsonParser json = new JsonParser();
+			parsedGraph = json.objectToJSON(graph); 
+			
+			this.saveGraph(parsedGraph);
+		}
 		return parsedGraph;
 	}
 	
@@ -62,13 +59,9 @@ public class GraphHandler extends Handler {
 	 * calculate ideal workload
 	 * @return int[]
 	 */
-	private double[] calculateIdealWorkload(int projectId, String sprintId, Projects p){
+	private double[] calculateIdealWorkload(Sprint sprint){
 		double[] idealWorkload;
-		if(p != null){
-			//TODO obtain from db
-			int workDays = 20;
-			double taskDaysAssigned = 28;
-			
+		if(sprint.getProject() != null){
 			//calculate ideal effort
 			double idealEffort = (-1 * taskDaysAssigned) / workDays ;
 			
@@ -79,7 +72,7 @@ public class GraphHandler extends Handler {
 			//create idealWorkload data array
 			for(int i = 1; i <= workDays; i++){
 				double ideal = (idealEffort * (i)) + taskDaysAssigned;
-				idealWorkload[i] = Math.floor(ideal * 10) /10 ;
+				idealWorkload[i] = ideal;
 			}
 			return idealWorkload;
 		}
@@ -90,7 +83,7 @@ public class GraphHandler extends Handler {
 	 * calculate actual workload
 	 * @return int[]
 	 */
-	private double[] calculateActualWorkload(String sprintId){
+	private double[] calculateActualWorkload(Sprint sprint){
 		double[] actual = new double[0];
 		return actual;
 	}
@@ -102,8 +95,7 @@ public class GraphHandler extends Handler {
 	 * @param actualWorkload
 	 * @return int[][] graphData {day, idealWorkload, actualWorkload}
 	 */
-	private double[][] getGraphData(double[] idealWorkload, double[] actualWorkload, Projects p){
-		int workDays = 20;
+	private double[][] getGraphData(double[] idealWorkload, double[] actualWorkload){
 		double[][] graphData = new double[workDays + 1][3];
 		
 		for(int d = 0; d <= workDays; d++){
@@ -125,11 +117,41 @@ public class GraphHandler extends Handler {
 	 * @param durationSprint
 	 * @return efficiencyFactor
 	 */
-	private double calculateEfficiencyFactor(int workdays, int amountDev, int durationSprint){
-		double manDays = workdays * amountDev;
-		double eff = durationSprint / manDays;
+	private double calculateEfficiencyFactor(int amountDev){
+		//TODO get passed workdays an work completed
+		double manDays = this.workDays * amountDev;
+		double eff = this.taskDaysCompleted / manDays;
 		double factor = Math.floor(eff * 10) /10 ;
 		return factor;
+	}
+	/**
+	 * calculate the amount of days for duration of the sprint
+	 * @param sprint
+	 * @return int days
+	 */
+	private int calculateSprintDuration(Sprint sprint){
+		return (int)((sprint.getEndAt().getTimeInMillis() - sprint.getStartAt().getTimeInMillis()) / (1000 * 60 * 60 * 24));
+	}
+	
+	/**
+	 * obtain the amount of days of assigned items from the db
+	 * @param sprint
+	 * @return double
+	 */
+	private double getTasksDaysAssignedFromDB(Sprint sprint){
+		ArrayList<Object> lists = super.getListDao().findListsBySprint(sprint);
+		double daysAssigned = 0.0;
+		
+		for(Object l : lists ){
+			ScrumboardList list = (ScrumboardList) l;
+			ArrayList<Object> items = super.getItemsDao().getItemsbyListId(list);
+			
+			for(Object i : items ){
+				ScrumboardItem item = (ScrumboardItem) i;
+				daysAssigned += item.getExpectedTime();
+			}
+		}
+		return daysAssigned;
 	}
 	
 	/** 
@@ -137,6 +159,6 @@ public class GraphHandler extends Handler {
 	 * @param json
 	 */
 	private void saveGraph(String json){
-		this.graphsDao.saveData(json);
+		super.getGraphsDao().saveData(json);
 	}
 }

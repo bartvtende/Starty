@@ -33,7 +33,7 @@ public class ScrumboardItemsDao extends MongoDao {
 	public ArrayList<Object> getItemsbyListId(ScrumboardList list){
 		this.list = list;
 		BasicDBObject query = new BasicDBObject();
-			query.put("_id", list.getId());
+			query.put("listid", list.getId());
 		return this.executeQuery(query);
 	}
 
@@ -75,7 +75,10 @@ public class ScrumboardItemsDao extends MongoDao {
 			item.setTitle(map.get("title").toString());
 			item.setDescription(map.get("description").toString());
 			item.setStatus(map.get("status").toString());
-			item.setCompletedAt(super.getCalendarParser().parseStringToCalendar(map.get("completedAt").toString()));
+			item.setExpectedTime(Double.parseDouble(map.get("expectedTime").toString()));
+			if(!map.get("completedAt").equals("")){
+				item.setCompletedAt(super.getCalendarParser().parseStringToCalendar(map.get("completedAt").toString()));
+			}
 		}
 		return item;
 	}

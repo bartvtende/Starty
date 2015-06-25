@@ -54,6 +54,9 @@ public class ScrumboardListsDao extends MongoDao {
 		}finally{
 			cursor.close();
 		}
+		if(lists.size() == 0){
+			System.out.println("ScrumboardList 404");
+		}
 		return lists;
 	}
 
@@ -71,7 +74,7 @@ public class ScrumboardListsDao extends MongoDao {
 			list.setSprint(this.sprint);
 			list.setName(map.get("name").toString());
 			list.setCreatedAt(super.getCalendarParser().parseStringToCalendar(map.get("createdAt").toString()));
-			list.setUpdatedAt(super.getCalendarParser().parseStringToCalendar(map.get("UpdatedAt").toString()));
+			list.setUpdatedAt(super.getCalendarParser().parseStringToCalendar(map.get("updatedAt").toString()));
 			list.setCompleted(Boolean.parseBoolean(map.get("completed").toString()));
 		}
 		return list;

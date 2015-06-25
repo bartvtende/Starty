@@ -11,6 +11,7 @@ public class ScrumboardItem {
 	//private Users assignedUser;
 	private String status;
 	private Calendar completedAt;
+	private double expectedTime;
 	
 	public ScrumboardItem(){
 		
@@ -81,4 +82,14 @@ public class ScrumboardItem {
 	public void setCompletedAt(Calendar completedAt) {
 		this.completedAt = completedAt;
 	}
+
+	public double getExpectedTime() {
+		return expectedTime;
+	}
+
+	public void setExpectedTime(double expectedTime) {
+		this.expectedTime = expectedTime;
+	}
+	
+	
 }

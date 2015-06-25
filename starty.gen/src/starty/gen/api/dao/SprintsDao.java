@@ -3,6 +3,8 @@ package starty.gen.api.dao;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 import starty.gen.api.controller.ProjectController;
 import starty.gen.api.model.Projects;
 import starty.gen.api.model.Sprint;
@@ -34,10 +36,11 @@ public class SprintsDao extends MongoDao {
 	 */
 	public Sprint findSprindById(String id){
 		BasicDBObject query = new BasicDBObject();
-			query.put("_id", id);
+			query.put("_id", new ObjectId(id));
 		Sprint sprint = this.getFirstElement(this.executeQuery(query));
 		return sprint;
 	}
+	
 	
 	/**
 	 * build query findByStartAt and invoke execute query
@@ -68,6 +71,9 @@ public class SprintsDao extends MongoDao {
 		}finally{
 			cursor.close();
 		}
+		if(sprints.size() == 0){
+			System.out.println("404");
+		}
 		return sprints;
 	}
 	
@@ -88,6 +94,8 @@ public class SprintsDao extends MongoDao {
 			sprint.setName(map.get("name").toString());
 			sprint.setStartAt(super.getCalendarParser().parseStringToCalendar(map.get("startAt").toString()));
 			sprint.setEndAt(super.getCalendarParser().parseStringToCalendar(map.get("endAt").toString()));
+		}else{
+			System.out.println("404");
 		}
 		return sprint;
 	}

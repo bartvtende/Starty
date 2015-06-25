@@ -12,14 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Graph {
-	/** project name **/
-	private String projectName;
-	
 	/** name of sprint **/
-	private String sprintName;
-	
-	/** amount of developers **/
-	private int Developers;
+	private String sprintId;
 	
 	/** efficieciency factor **/
 	private double efficiencyFactor;
@@ -40,12 +34,12 @@ public class Graph {
 		this.createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 	}
 
-	public String getSprintName() {
-		return sprintName;
+	public String getSprintId() {
+		return sprintId;
 	}
 
-	public void setSprintName(String sprintName) {
-		this.sprintName = sprintName;
+	public void setSprintId(String sprintId) {
+		this.sprintId = sprintId;
 	}
 
 	public String getyType() {
@@ -78,22 +72,6 @@ public class Graph {
 	
 	public String getCreatedAt(){
 		return this.createdAt;
-	}
-
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
-
-	public int getDevelopers() {
-		return Developers;
-	}
-
-	public void setDevelopers(int developers) {
-		Developers = developers;
 	}
 
 	public double getEfficiencyFactor() {
