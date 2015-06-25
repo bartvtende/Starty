@@ -5,6 +5,7 @@ import starty.gen.api.dao.GraphsDao;
 import starty.gen.api.model.Graph;
 import starty.gen.api.model.Projects;
 import starty.gen.api.util.JsonParser;
+import starty.gen.api.util.TestData;
 
 /**
  * Handler for the generation of a graph
@@ -25,15 +26,18 @@ public class GraphHandler extends Handler {
 	 * calculate graph and save graph data
 	 * @return String graph parsed to json
 	 */
-	public String getGraph(int projectId, int sprintId){
+	public String getGraph(int projectId, String sprintId){
 		/** retrieve project info **/
 		Projects p = this.projectController.retreiveProjectById(projectId);
+		
+		TestData test = new TestData();
+		test.generateTestData(p);
 		
 		/** create new graph **/
 		Graph graph = new Graph();
 		
 		/** calculate graphData **/
-		double[][] graphData = this.getGraphData(this.calculateIdealWorkload(projectId, sprintId, p), this.calculateActualWorkload(), p);
+		double[][] graphData = this.getGraphData(this.calculateIdealWorkload(projectId, sprintId, p), this.calculateActualWorkload(sprintId), p);
 		
 		/** set all data to graph **/
 		graph.setProjectName(p.getName());
@@ -46,7 +50,7 @@ public class GraphHandler extends Handler {
 		
 		/** parse graph **/
 		JsonParser json = new JsonParser();
-		String parsedGraph = json.getJSON(graph); 
+		String parsedGraph = json.objectToJSON(graph); 
 		
 		/** save graph **/
 		this.saveGraph(parsedGraph);
@@ -58,7 +62,7 @@ public class GraphHandler extends Handler {
 	 * calculate ideal workload
 	 * @return int[]
 	 */
-	private double[] calculateIdealWorkload(int projectId, int sprintId, Projects p){
+	private double[] calculateIdealWorkload(int projectId, String sprintId, Projects p){
 		double[] idealWorkload;
 		if(p != null){
 			//TODO obtain from db
@@ -86,7 +90,7 @@ public class GraphHandler extends Handler {
 	 * calculate actual workload
 	 * @return int[]
 	 */
-	private double[] calculateActualWorkload(){
+	private double[] calculateActualWorkload(String sprintId){
 		double[] actual = new double[0];
 		return actual;
 	}

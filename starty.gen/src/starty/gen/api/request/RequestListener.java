@@ -7,7 +7,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import starty.gen.api.controller.ProjectController;
-import starty.gen.api.model.Graph;
 import starty.gen.api.model.Projects;
 import starty.gen.api.model.Test;
 import starty.gen.api.request.handlers.GraphHandler;
@@ -34,13 +33,13 @@ public class RequestListener {
 			}
 		}
 		JsonParser json = new JsonParser();
-		return json.getJSON(g);
+		return json.objectToJSON(g);
 	}
 	
 	@GET
 	@Path("graph/{projectId}/{sprintId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getGraph(@PathParam("projectId") int projectId, @PathParam("sprintId") int sprintId){
+	public String getGraph(@PathParam("projectId") int projectId, @PathParam("sprintId") String sprintId){
 		GraphHandler handler = new GraphHandler();
 		String g = handler.getGraph(projectId, sprintId); 
 		return g;

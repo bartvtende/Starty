@@ -1,7 +1,11 @@
 package starty.gen.api.util;
 
 import starty.gen.api.model.Projects;
+import starty.gen.api.model.ScrumboardList;
+import starty.gen.api.model.Sprint;
+import starty.gen.api.util.jsonadapters.ListAdapter;
 import starty.gen.api.util.jsonadapters.ProjectAdapter;
+import starty.gen.api.util.jsonadapters.SprintAdapter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,12 +18,12 @@ import com.google.gson.GsonBuilder;
 public class JsonParser {
 	
 	/**
-	 * Parse object to json wit GSON (google json)
+	 * Parse standard object to json wit GSON (google json)
 	 * only for non hibernatobject
 	 * @param obj
 	 * @return JsonString
 	 */
-	public String getJSON(Object obj){
+	public String objectToJSON(Object obj){
 		String json = "";
 		if(obj != null && obj instanceof java.io.Serializable == false ){
 			Gson gson = new Gson();
@@ -37,5 +41,26 @@ public class JsonParser {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.registerTypeAdapter(Projects.class, new ProjectAdapter()).create();
 		return gson.toJson(p);
+	}
+	
+	/**
+	 * Parse sprint to json using SprintAdapter
+	 * @param sprint
+	 * @return
+	 */
+	public String sprintToJson(Sprint sprint){
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		Gson gson = gsonBuilder.registerTypeAdapter(Sprint.class, new SprintAdapter()).create();
+		return gson.toJson(sprint);
+	}
+	/**
+	 * Parse list to json using ListAdapter
+	 * @param list
+	 * @return
+	 */
+	public String listToJson(ScrumboardList list){
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		Gson gson = gsonBuilder.registerTypeAdapter(ScrumboardList.class, new ListAdapter()).create();
+		return gson.toJson(list);
 	}
 }

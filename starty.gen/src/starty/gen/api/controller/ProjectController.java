@@ -18,7 +18,7 @@ public class ProjectController extends Controller {
 	}
 	
 	/**
-	 * get all dat from db
+	 * get all data from db
 	 * @param projectId
 	 * @return
 	 */
