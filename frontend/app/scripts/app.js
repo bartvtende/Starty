@@ -88,14 +88,14 @@ angular
       })
       .state('project', {
         url: '/:projectName',
-        templateUrl: 'views/layouts/project.html',
-        resolve: {
-          authenticated: ['$location', '$auth', function($location, $auth) {
-            if (!$auth.isAuthenticated()) {
-              return $location.path('/login');
-            }
-          }]
-        }
+        templateUrl: 'views/layouts/project.html'// ,
+        //resolve: {
+        //  authenticated: ['$location', '$auth', function($location, $auth) {
+        //    if (!$auth.isAuthenticated()) {
+        //      return $location.path('/login');
+        //    }
+        //  }]
+        //}
       })
       .state('project.messages', {
         url: '/',

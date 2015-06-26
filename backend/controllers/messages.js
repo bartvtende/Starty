@@ -79,7 +79,7 @@ router.post('/:projectId', auth.isAuthenticated, function(req, res) {
             });
         }
 
-        return es.json({
+        return res.json({
             error: '',
             result: message
         })
