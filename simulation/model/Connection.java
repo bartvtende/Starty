@@ -136,22 +136,7 @@ public class Connection {
 		httppost.setEntity(entity);
 		return httppost;
 	}
-	/* api end point missing
-	public HttpPost CreateProviderMessagePost(String token, int providerID, String Message){
-		//TODO make body according to parameters
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-		formparams.add(new BasicNameValuePair("email", email));
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
-		
-		HttpPost httppost = new HttpPost(address+"/messages");
-		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
-		BasicHeader headerUser = new BasicHeader("user", user);
-		httppost.addHeader(header);
-		httppost.addHeader(headerUser);
-		httppost.setEntity(entity);
-		return httppost;
-	}
-	*/
+	
 	public CloseableHttpResponse ExecuteHttpRequestBase(HttpRequestBase request){
 		try {
 			return httpclient.execute(request, httpContext);
