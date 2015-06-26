@@ -66,9 +66,6 @@ router.post('/:projectId', auth.isAuthenticated, function(req, res) {
         senderId: req.user._id
     };
 
-    if (receiverId != null && receiverId != '')
-        newMessage.push = req.body.receiverId;
-
     var message = new Messages(newMessage);
 
     message.save(function(err, message) {
