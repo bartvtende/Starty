@@ -94,6 +94,64 @@ public class Connection {
 		return httppost;
 	}
 	
+	public HttpPost CreatePrivateMessagePost(String token, int senderId, int receiverId, int projectId, String Message){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("senderId", new Integer(senderId).toString()));
+		formparams.add(new BasicNameValuePair("receiverId", new Integer(receiverId).toString()));
+		formparams.add(new BasicNameValuePair("projectId", new Integer(projectId).toString()));
+		formparams.add(new BasicNameValuePair("Message", Message));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/messages");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		httppost.addHeader(header);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
+	public HttpPost CreateGlobalMessagePost(String token, int senderId, int projectId, String Message){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("senderId", new Integer(senderId).toString()));
+		formparams.add(new BasicNameValuePair("projectId", new Integer(projectId).toString()));
+		formparams.add(new BasicNameValuePair("Message", Message));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/messages");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		httppost.addHeader(header);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
+	public HttpPost CreateJoinProjectPost(String token, String user, String shortCode){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("shortcode", shortCode));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/organizations/invite");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
+		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	/* api end point missing
+	public HttpPost CreateProviderMessagePost(String token, int providerID, String Message){
+		//TODO make body according to parameters
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("email", email));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/messages");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
+		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	*/
 	public CloseableHttpResponse ExecuteHttpRequestBase(HttpRequestBase request){
 		try {
 			return httpclient.execute(request, httpContext);
