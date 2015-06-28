@@ -75,6 +75,12 @@ public class TestAddingUsers {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			try {
+				response.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 				for(int j =0; j<10;j++){
 					response = con.ExecuteHttpRequestBase(con.CreateNewProjectPost(token, userJson, "pr"+rl+i+j, "project"+rl+i+j, lorem.words(40)));
@@ -86,6 +92,44 @@ public class TestAddingUsers {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				}
+				
+				for(int j=0;j<100;j++){
+					String newUserMail = null;
+					
+					response = con.ExecuteHttpRequestBase(con.CreateAddUserPost("org-employee"+rl+i+j, "test", "test"));
+					entity = response.getEntity();
+					try {
+						entityString = EntityUtils.toString(entity);
+						JsonElement jsonElement = jsonParser.parse(entityString);
+						JsonObject jsonObject = jsonElement.getAsJsonObject();
+						JsonObject user = jsonObject.get("user").getAsJsonObject();
+						newUserMail = user.get("email").getAsString();
+					} catch (ParseException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					try {
+						response.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					response = con.ExecuteHttpRequestBase(con.CreateInvitePost(token, userJson, newUserMail));
+					entity = response.getEntity();
+					try {
+						entityString = EntityUtils.toString(entity);
+					} catch (ParseException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					try {
+						response.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				}
 		}
 		long endTime = System.currentTimeMillis();

@@ -26,4 +26,8 @@ angular.module('startyApp')
       return $http.post(urls.API + '/projects/join', shortcode);
     };
 
+    this.deleteProject = function (id) {
+      return $http.delete(urls.API + '/projects', id);
+    }
+
   });

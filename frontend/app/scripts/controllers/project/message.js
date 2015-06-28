@@ -36,7 +36,7 @@ angular.module('startyApp')
 
         $scope.loadProject = function() {
           $scope.$watch('project', function() {
-            if ($scope.project != null && 'id' in $scope.project && $scope.project.id != undefined) {
+            if ($scope.project != null && $scope.project.id != undefined) {
               var projectId = $scope.project.id;
               var userId = $scope.user.id;
               $scope.loadSockets(projectId, userId);

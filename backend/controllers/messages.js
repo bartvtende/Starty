@@ -59,4 +59,28 @@ router.get('/:projectId/:userId', auth.isAuthenticated, function(req, res) {
         });
 });
 
+router.post('/:projectId', auth.isAuthenticated, function(req, res) {
+    var newMessage = {
+        projectId: req.params.projectId,
+        message: req.body.message,
+        senderId: req.user._id
+    };
+
+    var message = new Messages(newMessage);
+
+    message.save(function(err, message) {
+        if (err) {
+            return res.json({
+                error: '',
+                result: message
+            });
+        }
+
+        return res.json({
+            error: '',
+            result: message
+        })
+    })
+});
+
 module.exports = router;

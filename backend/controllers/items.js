@@ -7,6 +7,8 @@ var auth = require('./auth');
 var Backlog = models.Backlog;
 var Issues = models.Issues;
 
+var Users = models.Users;
+
 var getModel = function (model) {
     switch (model) {
         case "backlog" :
@@ -64,10 +66,17 @@ router.get('/:model/:projectId/:id', auth.isAuthenticated, function(req, res){
                     result: ''
                 });
             } else {
-                return res.json({
-                    error: '',
-                    result: item[0]
-                });
+                Users.findAll({ where: { id: item.creator}})
+                    .then(function(user) {
+
+                        return res.json({
+                            error: '',
+                            result: {
+                                item: item[0],
+                                user: user[0]
+                            }
+                        });
+                    });
             }
         });
 });
@@ -86,9 +95,13 @@ router.post('/:model', auth.isAuthenticated, function(req, res) {
     var item = req.body;
 
     item.time_reality = 0;
+    item.status = 'Open';
     item.creator = req.user.id;
-    item.createdAt = models.sequelize.fn('NOW');
-    item.updatedAt = models.sequelize.fn('NOW');
+
+    if (req.params.model == 'issues') {
+        item.priority = req.body.priority;
+        item.type = req.body.type;
+    }
 
     var model = getModel(req.params.model);
     model.create(item).then(function (item) {
@@ -122,25 +135,30 @@ router.put('/:model', auth.isAuthenticated, function(req, res) {
 
     var model = getModel(req.params.model);
     model.find({ where: { project_id: projectId, id: id }})
-        .then(function(backlog) {
-            if (backlog == null) {
+        .then(function(item) {
+            if (item == null) {
                 return res.json({
                     error: 'The backlog item doesn\'t exist',
                     result: ''
                 })
             }
 
-            backlog.title = req.body.title;
-            backlog.description = req.body.description;
-            backlog.time_expected = req.body.time_expected;
-            backlog.time_reality = 0;
-            backlog.updatedAt = models.sequelize.fn('NOW');
+            item.title = req.body.title;
+            item.status = req.body.status;
+            item.description = req.body.description;
+            item.time_expected = req.body.time_expected;
+            item.time_reality = 0;
 
-            backlog.save()
+            if (req.params.model == 'issues') {
+                item.priority = req.body.priority;
+                item.type = req.body.type;
+            }
+
+            item.save()
                 .then(function() {
                     return res.json({
                         error: '',
-                        result: backlog
+                        result: item
                     });
                 });
         });
@@ -183,6 +201,41 @@ router.delete('/:model/:projectId/:id', auth.isAuthenticated, function(req, res)
                         result: item
                     });
                 });
+        });
+});
+
+router.put('/:model/:projectId/:id/status', function(req, res) {
+    var id = req.params.id;
+    var projectId = req.params.projectId;
+
+    var status = req.body.status;
+
+    if (req.user.organization_id == 0 || req.user.organization_id == null) {
+        res.json({
+            error: 'You are not a member of an organization!',
+            result: ''
+        });
+    }
+
+    if (id == null || projectId == null) {
+        res.json({
+            error: 'You didn\'t specify a backlog item!',
+            result: ''
+        });
+    }
+
+    var model = getModel(req.params.model);
+    model.find({ where: { project_id: req.params.projectId, id: id }})
+        .then(function(item) {
+            item.status = status;
+            item.save()
+                .then(function(item) {
+                    return res.json({
+                        error: '',
+                        result: item
+                    });
+                });
+
         });
 });
 

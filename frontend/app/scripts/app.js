@@ -67,14 +67,14 @@ angular
         controller: 'ForgotPasswordCtrl'
       })
       .state('overview', {
-        templateUrl: 'views/layouts/overview.html',
-        resolve: {
-          authenticated: ['$location', '$auth', function($location, $auth) {
-            if (!$auth.isAuthenticated()) {
-              return $location.path('/login');
-            }
-          }]
-        }
+        templateUrl: 'views/layouts/overview.html'//,
+        //resolve: {
+        //  authenticated: ['$location', '$auth', function($location, $auth) {
+        //    if (!$auth.isAuthenticated()) {
+        //      return $location.path('/login');
+        //    }
+        //  }]
+        //}
       })
       .state('overview.overview', {
         url: '/',
@@ -142,10 +142,20 @@ angular
         templateUrl: 'views/pages/project/issues-set.html',
         controller: 'IssuesCtrl'
       })
+      .state('project.issues-detail', {
+        url: '/issues/:id',
+        templateUrl: 'views/pages/project/issues-detail.html',
+        controller: 'IssuesDetailCtrl'
+      })
       .state('project.reports', {
         url: '/reports',
         templateUrl: 'views/pages/project/reports.html',
         controller: 'ReportsCtrl'
+      })
+      .state('project.settings', {
+        url: '/settings',
+        templateUrl: 'views/pages/project/settings.html',
+        controller: 'ProjectSettingsCtrl'
       })
       .state('project.git', {
         url: '/git',
@@ -164,7 +174,6 @@ angular
       });
 
       $urlRouterProvider.otherwise('/login');
-
 
       var startyPrimary = $mdThemingProvider.extendPalette('blue', {
           '500': '5296db' // Green

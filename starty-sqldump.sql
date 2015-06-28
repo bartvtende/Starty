@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 10 jun 2015 om 21:58
+-- Gegenereerd op: 28 jun 2015 om 11:25
 -- Serverversie: 5.6.24-log
 -- PHP-versie: 5.5.24
 
@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `backlog_items` (
   `project_id` varchar(50) NOT NULL,
   `title` varchar(40) NOT NULL,
   `description` text NOT NULL,
+  `status` varchar(20) NOT NULL,
   `time_expected` int(11) NOT NULL,
   `time_reality` int(11) NOT NULL,
   `creator` int(11) NOT NULL,
@@ -49,7 +50,9 @@ CREATE TABLE IF NOT EXISTS `issues` (
   `project_id` varchar(50) NOT NULL,
   `title` varchar(40) NOT NULL,
   `description` text NOT NULL,
-  `status` varchar(40) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `priority` varchar(20) NOT NULL,
+  `type` varchar(20) NOT NULL,
   `time_expected` int(11) NOT NULL,
   `time_reality` int(11) NOT NULL,
   `creator` int(11) NOT NULL,
@@ -68,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `organizations` (
   `name` varchar(50) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -84,7 +87,18 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `description` varchar(250) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `project_users`
+--
+
+CREATE TABLE IF NOT EXISTS `project_users` (
+  `UID` int(11) NOT NULL,
+  `PID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -96,11 +110,11 @@ CREATE TABLE IF NOT EXISTS `providers` (
   `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `access_token` int(11) NOT NULL,
+  `access_token` varchar(50) NOT NULL,
   `image` varchar(100) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -116,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(60) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -144,7 +158,13 @@ ALTER TABLE `organizations`
 -- Indexen voor tabel `projects`
 --
 ALTER TABLE `projects`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `shortcode_index` (`shortcode`) USING BTREE;
+
+--
+-- Indexen voor tabel `project_users`
+--
+ALTER TABLE `project_users`
+  ADD PRIMARY KEY (`UID`,`PID`), ADD KEY `fk_projects` (`PID`);
 
 --
 -- Indexen voor tabel `providers`
@@ -166,33 +186,33 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT voor een tabel `organizations`
 --
 ALTER TABLE `organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT voor een tabel `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=31;
+--
+-- AUTO_INCREMENT voor een tabel `providers`
+--
+ALTER TABLE `providers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;
+--
+-- Beperkingen voor geëxporteerde tabellen
+--
+
+--
+-- Beperkingen voor tabel `project_users`
+--
+ALTER TABLE `project_users`
+ADD CONSTRAINT `fk_projects` FOREIGN KEY (`PID`) REFERENCES `projects` (`id`),
+ADD CONSTRAINT `fk_usersp` FOREIGN KEY (`UID`) REFERENCES `users` (`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
--- Project User Table
-
-CREATE TABLE `starty`.`project_users` 
-( `UID` INT NOT NULL , `PID` INT NOT NULL , PRIMARY KEY (`UID`, `PID`) ) 
-ENGINE = InnoDB;
-
-ALTER TABLE project_users 
-ADD CONSTRAINT fk_usersp
-FOREIGN KEY (UID)
-REFERENCES users(id);
-
-ALTER TABLE project_users 
-ADD CONSTRAINT fk_projects 
-FOREIGN KEY (PID) 
-REFERENCES projects(id);

@@ -47,6 +47,10 @@
           <md-icon md-svg-src="images/icons/ic_trending_up_24px.svg" style="color: black;"></md-icon>
           <p>Reports</p>
         </md-list-item>
+        <md-list-item ng-click="navigateTo('project.settings')" ng-class="{ 'active': $state.includes('project.settings')}">
+          <md-icon md-svg-src="images/icons/ic_settings_24px.svg" style="color: black;"></md-icon>
+          <p>Settings</p>
+        </md-list-item>
         <!--
         <md-list-item ng-click="navigateTo('project.git')">
             <md-icon md-svg-src="images/icons/ic_track_changes_24px.svg" style="color: black;"></md-icon>
