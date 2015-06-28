@@ -5,6 +5,7 @@ var models = require('../models/index');
 var settings = require('../config/settings');
 var auth = require('./auth');
 
+var requestify = require('requestify');
 var request = require('request');
 
 var Providers = models.providers;

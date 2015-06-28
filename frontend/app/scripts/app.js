@@ -42,8 +42,8 @@ angular
         $authProvider.github({
             clientId: 'ffb229d6119ca88e6e8c',
             scope: ['repo', 'user'],
-            url: urls.homepage + '/providers/github',
-            redirectUri: urls.homepage + '/providers/github'
+            url: urls.API + '/providers/github',
+            redirectUri: urls.API + '/providers/github'
         });
     })
     .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
