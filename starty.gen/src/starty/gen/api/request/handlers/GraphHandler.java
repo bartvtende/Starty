@@ -92,14 +92,14 @@ public class GraphHandler extends Handler {
 		ScrumboardList cl = super.getListDao().findCompletedList(sprint);
 		Calendar day = sprint.getStartAt();
 		if(cl != null){
-			boolean currenDayPassed = false;
+			boolean currentDayPassed = false;
 			boolean endPast = false;
 			double weekendWork = 0.0; 
 			int i = 1;
 			double total = this.taskDaysAssigned;
 			System.out.println("startday = " + day.getTime());
 			actual[0] = total;
-			while (currenDayPassed == false && endPast == false ){
+			while (currentDayPassed == false && endPast == false ){
 				String today = super.getCalendarParser().parseDateToISOString(Calendar.getInstance());
 				Calendar d = super.getCalendarParser().parseIsoStringToCalendar(today);
 				
@@ -116,7 +116,7 @@ public class GraphHandler extends Handler {
 					}
 				}
 				else if (super.getCalendarParser().checkIfMonday(d)){
-					actual[i] = total - (this.calculateCompletedWorkTime(items) + weekendWork);
+					actual[i] = total - (this.calculateCompletedWorkTime(items));
 					System.out.println("calc1 " + actual[i]);
 					weekendWork = 0.0;
 					i++;
@@ -131,6 +131,7 @@ public class GraphHandler extends Handler {
 				System.out.println(i + " " + total);
 				day.add(Calendar.DATE, 1);
 				System.out.println("day = " + day.getTime());
+				//currentDaPassed = super.getCalendarParser().checkIfDatePassed(day, d);
 				endPast = super.getCalendarParser().checkIfDatePassed(day, sprint.getEndAt());
 			}
 		}
