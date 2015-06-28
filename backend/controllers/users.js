@@ -6,7 +6,7 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-var Users = models.Users;
+var Users = models.users;
 
 /**
  * Returns the logged in user
@@ -146,7 +146,7 @@ router.post('/forgot-password', function(req, res) {
 
                         user.save()
                             .then(function() {
-                                res.json({
+                                return res.json({
                                     error: '',
                                     result: 'Your password has been changed!'
                                 })

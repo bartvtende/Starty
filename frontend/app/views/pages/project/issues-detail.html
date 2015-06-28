@@ -17,15 +17,14 @@
           Status: {{issue.status}}<br />
           Priority: {{issue.priority}}<br />
           Type: {{issue.type}}<br /><br />
-          Time expected: {{issue.time_expected | minutes}}
-
+          Time expected: {{issue.time_expected | minutes}}<br />
+          <span ng-show="issue.time_reality > 0">Time reality: {{issue.time_reality | minutes}}</span>
         </p>
       </div>
       <div flex="35">
         <p>
           <b>People</b><br />
-          Assignee: {{issue.creator}}<br />
-          Reporter: {{issue.creator}}
+          Reporter: {{user.name}}
         </p>
 
         <p>
@@ -37,7 +36,10 @@
     </div>
 
     <div flex>
-      {{issue}}
+        <h1>{{issue.title}}</h1>
+        <h4>Issue ID: {{issue.id}}</h4>
+        <b>Description:</b>
+        <p>{{issue.description}}</p>
     </div>
   </md-content>
 </div>

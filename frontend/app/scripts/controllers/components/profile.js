@@ -10,9 +10,9 @@
 angular.module('startyApp')
     .controller('ProfileCtrl', function ($scope, $mdDialog, $state, $auth, $mdToast) {
 
-        $scope.logout = function() {
+        $scope.logout = function () {
             $auth.logout()
-                .then(function() {
+                .then(function () {
                     $scope.cancel();
                     $mdToast.show(
                         $mdToast.simple()
@@ -23,20 +23,20 @@ angular.module('startyApp')
                 });
         };
 
-        $scope.navigateTo = function(to) {
+        $scope.navigateTo = function (to) {
             $mdDialog.hide();
             $state.go(to);
         };
 
-        $scope.hide = function() {
+        $scope.hide = function () {
             $mdDialog.hide();
         };
 
-        $scope.cancel = function() {
+        $scope.cancel = function () {
             $mdDialog.cancel();
         };
 
-        $scope.answer = function(answer) {
+        $scope.answer = function (answer) {
             $mdDialog.hide(answer);
         };
     });

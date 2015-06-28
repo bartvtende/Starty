@@ -8,30 +8,44 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-    .controller('JoinCtrl', function ($scope, $state, $mdToast, JoinOrganizationData) {
+    .controller('JoinCtrl', function ($scope, $state, $mdToast, JoinOrganizationData, UserData) {
 
-        $scope.createOrganization = function(name) {
-          JoinOrganizationData.joinOrganization({name: name})
-            .success(function(organization) {
-              $mdToast.show(
-                $mdToast.simple()
-                  .content('Your organization has been created!')
-                  .position('bottom left')
-                  .hideDelay(3000)
-              );
-              $state.go('overview.overview');
-            })
-            .error(function() {
-              $mdToast.show(
-                $mdToast.simple()
-                  .content('Something went wrong creating the organization!')
-                  .position('bottom left')
-                  .hideDelay(3000)
-              );
-            })
+        $scope.$watch('$viewContentLoaded', function () {
+            $scope.checkUser();
+        });
+
+        $scope.checkUser = function() {
+            UserData.getUser()
+                .success(function(user) {
+                    var user = user.result;
+                    if (user.organization_id != null) {
+                        $state.go('overview.overview');
+                    }
+                });
         };
 
-        $scope.accept = function() {
+        $scope.createOrganization = function (name) {
+            JoinOrganizationData.joinOrganization({name: name})
+                .success(function (organization) {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Your organization has been created!')
+                            .position('bottom left')
+                            .hideDelay(3000)
+                    );
+                    $state.go('overview.overview');
+                })
+                .error(function () {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Something went wrong creating the organization!')
+                            .position('bottom left')
+                            .hideDelay(3000)
+                    );
+                })
+        };
+
+        $scope.accept = function () {
             console.log('The invite has been accepted.');
             $state.go('overview.overview');
             $mdToast.show(
@@ -42,7 +56,7 @@ angular.module('startyApp')
             );
         };
 
-        $scope.decline = function() {
+        $scope.decline = function () {
             console.log('The invite has been declined.');
         };
 

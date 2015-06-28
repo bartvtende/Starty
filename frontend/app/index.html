@@ -9,6 +9,7 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -36,6 +37,7 @@
     <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
     <script src="bower_components/satellizer/satellizer.js"></script>
     <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -46,7 +48,6 @@
 
     <script src="scripts/controllers/layouts/navbar.js"></script>
     <script src="scripts/controllers/components/profile.js"></script>
-    <script src="scripts/controllers/components/delete.js"></script>
     <script src="scripts/controllers/project/board.js"></script>
     <script src="scripts/controllers/project/backlog.js"></script>
     <script src="scripts/controllers/project/issues.js"></script>
@@ -60,6 +61,7 @@
     <script src="scripts/controllers/auth/register.js"></script>
     <script src="scripts/controllers/auth/join-organization.js"></script>
     <script src="scripts/controllers/auth/forgot-password.js"></script>
+    <script src="scripts/controllers/auth/providers.js"></script>
     <script src="scripts/controllers/overview/project.js"></script>
     <script src="scripts/controllers/overview/settings.js"></script>
 
@@ -72,8 +74,10 @@
     <script src="scripts/services/projects/messages.js"></script>
     <script src="scripts/services/projects/issues.js"></script>
     <script src="scripts/services/projects/board.js"></script>
+    <script src="scripts/services/projects/provider.js"></script>
 
     <script src="scripts/filters/ago.js"></script>
+    <script src="scripts/filters/tags.js"></script>
     <!-- endbuild -->
 
   </body>

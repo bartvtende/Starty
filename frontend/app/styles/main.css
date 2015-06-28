@@ -12,6 +12,17 @@ body {
   margin: 0;
 }
 
+#loading-bar .bar {
+    background: #000 !important;
+}
+
+#loading-bar .peg {
+    -moz-box-shadow: #000 1px 0 6px 1px !important;
+    -ms-box-shadow: #000 1px 0 6px 1px !important;
+    -webkit-box-shadow: #000 1px 0 6px 1px !important;
+    box-shadow: #000 1px 0 6px 1px !important;
+}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;

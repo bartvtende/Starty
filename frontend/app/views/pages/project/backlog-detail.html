@@ -1,0 +1,43 @@
+<div layout="column">
+    <md-toolbar class="md-accent md-toolbar-tools">
+        <h2>
+            <span><b>{{backlog.id}}</b>: {{backlog.title}}</span>
+        </h2>
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="Add" ui-sref="project.backlog-set({id: backlog.id})">
+            <md-icon md-svg-src="images/icons/ic_edit_24px.svg" style="color: white;"></md-icon>
+        </md-button>
+    </md-toolbar>
+
+    <md-content layout="column" class="md-padding" flex>
+        <div layout-wrap layout="row">
+            <div flex="65">
+                <p>
+                    <b>Details</b><br />
+                    Status: {{backlog.status}}<br />
+                    Time expected: {{backlog.time_expected | minutes}}<br />
+                    <span ng-show="backlog.time_reality > 0">Time reality: {{backlog.time_reality | minutes}}</span>
+                </p>
+            </div>
+            <div flex="35">
+                <p>
+                    <b>People</b><br />
+                    Reporter: {{user.name}}
+                </p>
+
+                <p>
+                    <b>Dates</b><br />
+                    Created: {{backlog.createdAt | ago}}<br />
+                    Updated: {{backlog.updatedAt | ago}}
+                </p>
+            </div>
+        </div>
+
+        <div flex>
+            <h1>{{backlog.title}}</h1>
+            <h4>Backlog ID: {{backlog.id}}</h4>
+            <b>Description:</b>
+            <p>{{backlog.description}}</p>
+        </div>
+    </md-content>
+</div>

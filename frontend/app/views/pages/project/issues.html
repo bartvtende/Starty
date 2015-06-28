@@ -10,34 +10,42 @@
     </md-toolbar>
 
     <md-content layout="column" flex class="md-padding">
-        <h4 ng-show="issues.length == 0">There are no issues, make some trouble!</h4>
+
+        <h4 ng-show="issues.length == 0">There are no results!</h4>
 
         <md-list ng-if="issues.length > 0">
+            <div layout="row">
+                <md-input-container flex>
+                    <label>Search by title</label>
+                    <input ng-model="search.title">
+                </md-input-container>
+            </div>
+
             <md-list-item>
-                <div flex>
+                <div flex ng-click="toggleOrderBy('id')" style="cursor: pointer;">
                   <b>Details</b>
                 </div>
-                <div flex>
-                    <b>ID</b>
+                <div flex ng-click="toggleOrderBy('title')" style="cursor: pointer;">
+                    <b>Title</b>
                 </div>
-                <div flex>
-                    <b>Issue</b>
+                <div flex ng-click="toggleOrderBy('createdAt')" style="cursor: pointer;">
+                    <b>Created</b>
                 </div>
-                <div flex>
-                    <b>Creator</b>
-                </div>
-                <div flex>
-                    <b>Timestamp</b>
-                </div>
-                <div flex>
+                <div flex ng-click="toggleOrderBy('status')" style="cursor: pointer;">
                     <b>Status</b>
+                </div>
+                <div flex ng-click="toggleOrderBy('priority')" style="cursor: pointer;">
+                    <b>Priority</b>
+                </div>
+                <div flex ng-click="toggleOrderBy('type')" style="cursor: pointer;">
+                    <b>Type</b>
                 </div>
                 <div flex>
                     <b>Action</b>
                 </div>
             </md-list-item>
 
-            <md-list-item ng-repeat="issue in issues">
+            <md-list-item ng-repeat="issue in issues | filter: search | orderBy: orderBy">
                 <div flex>
                     <md-button class="md-raised md-primary" ui-sref="project.issues-detail({id: issue.id})">{{issue.id}}</md-button>
                 </div>
@@ -45,16 +53,19 @@
                     {{issue.title}}
                 </div>
                 <div flex>
-                    {{issue.creator}}
+                    {{issue.createdAt | ago}}
                 </div>
                 <div flex>
-                    {{issue.createdAt | date}}
+                    {{issue.status}}
                 </div>
                 <div flex>
-
+                    {{issue.priority}}
+                </div>
+                <div flex>
+                    {{issue.type}}
                 </div>
                 <div flex layout="row">
-                    <md-button class="md-fab md-mini md-primary" aria-label="Edit issue" ng-click="editIssue('{{issue.id}}')">
+                    <md-button class="md-fab md-mini md-primary" aria-label="Edit issue" ui-sref="project.issues-set({id: issue.id})">
                         <md-icon md-svg-src="images/icons/ic_edit_24px.svg"></md-icon>
                     </md-button>
                     <md-button class="md-fab md-mini" aria-label="Delete issue" ng-click="confirmDelete($event, '{{issue.id}}')">

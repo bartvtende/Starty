@@ -5,6 +5,7 @@ module.exports = function(sequelize, DataTypes) {
         project_id: DataTypes.STRING,
         title: DataTypes.STRING,
         description: DataTypes.STRING,
+        status: DataTypes.STRING,
         time_expected: DataTypes.INTEGER,
         time_reality: DataTypes.INTEGER,
         creator: DataTypes.INTEGER,

@@ -6,6 +6,8 @@ module.exports = function(sequelize, DataTypes) {
         title: DataTypes.STRING,
         description: DataTypes.STRING,
         status: DataTypes.STRING,
+        type: DataTypes.STRING,
+        priority: DataTypes.STRING,
         time_expected: DataTypes.INTEGER,
         time_reality: DataTypes.INTEGER,
         creator: DataTypes.INTEGER,

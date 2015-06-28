@@ -7,7 +7,7 @@ var auth = require('./auth');
 
 var request = require('request');
 
-var Providers = models.Providers;
+var Providers = models.providers;
 
 /**
  * Lists all the repositories from the user
@@ -127,7 +127,7 @@ router.post('/:projectId/webhook', auth.isAuthenticated, function(req, res) {
 
 router.post('/:projectId/webhook/event', function(req, res) {
     console.log(res.body);
-    res.json({
+    return res.json({
         error: '',
         result: 'Yay!'
     });

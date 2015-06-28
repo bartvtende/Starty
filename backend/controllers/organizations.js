@@ -4,8 +4,8 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-var Organizations = models.Organizations;
-var Users = models.Users;
+var Organizations = models.organizations;
+var Users = models.users;
 
 /**
  * Retrieves an organization that the user is part of
@@ -97,12 +97,12 @@ router.post('/invite', auth.isAuthenticated, function(req, res) {
     Users.find({ where: { email: email }})
         .then(function(user) {
             if (user == null) {
-                res.json({
+                return res.json({
                     error: 'User is not a member of Starty!',
                     result: ''
                 });
             } else if (user.organization_id != 0 && user.organization_id != null) {
-                res.json({
+                return res.json({
                     error: 'User is already a member of an organization!',
                     result: ''
                 });
@@ -110,7 +110,7 @@ router.post('/invite', auth.isAuthenticated, function(req, res) {
                 user.organization_id = organizationId;
                 user.save()
                     .then(function() {
-                        res.json({
+                        return res.json({
                             error: '',
                             result: 'The organization has been added to the user!'
                         });

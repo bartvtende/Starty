@@ -8,10 +8,10 @@ var settings = require('../config/settings.js');
 
 var requestify = require('requestify');
 
-var Providers = models.Providers;
+var Providers = models.providers;
 
-router.get('/github', function(req, res) {
-    if (!req.query.code) {
+router.post('/github', auth.isAuthenticated, function(req, res) {
+    if (!req.body.code) {
         return res.json({
             error: 'Something went wrong while authenticating with GitHub',
             result: ''
@@ -21,7 +21,7 @@ router.get('/github', function(req, res) {
     var requestForm = {
         client_id: settings.githubClientId,
         client_secret: settings.githubClientSecret,
-        code: req.query.code
+        code: req.body.code
     };
 
     // Ping the GitHub servers for an
@@ -41,7 +41,7 @@ router.get('/github', function(req, res) {
 
         // Store the access_token to the database
         var provider = {
-            project_id: 1337, // TODO: make this dynamic
+            user_id: req.user.id,
             name: 'github',
             access_token: access_token,
             image: 'http://google.nl'

@@ -4,10 +4,10 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-var Backlog = models.Backlog;
-var Issues = models.Issues;
+var Backlog = models.backlog;
+var Issues = models.issues;
 
-var Users = models.Users;
+var Users = models.users;
 
 var getModel = function (model) {
     switch (model) {
@@ -23,7 +23,7 @@ var getModel = function (model) {
  */
 router.get('/:model/:projectId', auth.isAuthenticated, function(req, res){
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
@@ -51,29 +51,29 @@ router.get('/:model/:projectId', auth.isAuthenticated, function(req, res){
  */
 router.get('/:model/:projectId/:id', auth.isAuthenticated, function(req, res){
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
     }
 
     var model = getModel(req.params.model);
-    model.findAll({ where: { project_id: req.params.projectId, id: req.params.id }})
+    model.find({ where: { project_id: req.params.projectId, id: req.params.id }})
         .then(function(item) {
-            if (item.length == 0) {
+            if (item == null || item.length == 0) {
                 return res.json({
                     error: 'You don\'t have any items!',
                     result: ''
                 });
             } else {
-                Users.findAll({ where: { id: item.creator}})
+                Users.find({ where: { id: item.creator}})
                     .then(function(user) {
-
+                        user.password = '';
                         return res.json({
                             error: '',
                             result: {
-                                item: item[0],
-                                user: user[0]
+                                item: item,
+                                user: user
                             }
                         });
                     });
@@ -86,7 +86,7 @@ router.get('/:model/:projectId/:id', auth.isAuthenticated, function(req, res){
  */
 router.post('/:model', auth.isAuthenticated, function(req, res) {
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
@@ -95,13 +95,8 @@ router.post('/:model', auth.isAuthenticated, function(req, res) {
     var item = req.body;
 
     item.time_reality = 0;
-    item.status = 'Open';
+    item.status = req.body.status;
     item.creator = req.user.id;
-
-    if (req.params.model == 'issues') {
-        item.priority = req.body.priority;
-        item.type = req.body.type;
-    }
 
     var model = getModel(req.params.model);
     model.create(item).then(function (item) {
@@ -120,15 +115,15 @@ router.put('/:model', auth.isAuthenticated, function(req, res) {
     var projectId = req.body.project_id;
 
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
     }
 
     if (id == null) {
-        res.json({
-            error: 'You didn\'t specify a backlog item!',
+        return res.json({
+            error: 'You didn\'t specify a item!',
             result: ''
         });
     }
@@ -171,14 +166,14 @@ router.delete('/:model/:projectId/:id', auth.isAuthenticated, function(req, res)
     var id = req.params.id;
 
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
     }
 
     if (id == null) {
-        res.json({
+        return res.json({
             error: 'You didn\'t specify a backlog item!',
             result: ''
         });
@@ -211,14 +206,14 @@ router.put('/:model/:projectId/:id/status', function(req, res) {
     var status = req.body.status;
 
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
     }
 
     if (id == null || projectId == null) {
-        res.json({
+        return res.json({
             error: 'You didn\'t specify a backlog item!',
             result: ''
         });
