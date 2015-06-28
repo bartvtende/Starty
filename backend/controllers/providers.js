@@ -9,6 +9,7 @@ var settings = require('../config/settings.js');
 var requestify = require('requestify');
 
 var Providers = models.providers;
+var Projects = models.projects;
 
 router.get('/github', function(req, res) {
     if (!req.query.code) {
@@ -47,26 +48,29 @@ router.get('/github', function(req, res) {
             });
         }
 
-        // Store the access_token to the database
-        var provider = {
-            project_id: 31,
-            name: 'github',
-            access_token: access_token,
-            image: 'http://google.nl'
-        };
+        Projects.find({ order: 'createdAt DESC' })
+            .then(function(project) {
+                // Store the access_token to the database
+                var provider = {
+                    project_id: 31,
+                    name: 'github',
+                    access_token: access_token,
+                    image: 'http://google.nl'
+                };
 
-        Providers.create(provider)
-            .then(function() {
-                return res.json({
-                    error: '',
-                    result: 'Your account has been authenticated with GitHub!'
-                });
-            })
-            .then(function() {
-                return res.json({
-                    error: 'Something went wrong while authenticating with GitHub',
-                    result: ''
-                });
+                Providers.create(provider)
+                    .then(function() {
+                        return res.json({
+                            error: '',
+                            result: 'Your account has been authenticated with GitHub!'
+                        });
+                    })
+                    .then(function() {
+                        return res.json({
+                            error: 'Something went wrong while authenticating with GitHub',
+                            result: ''
+                        });
+                    });
             });
     });
 });

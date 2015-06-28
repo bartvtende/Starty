@@ -10,6 +10,8 @@
 angular.module('startyApp')
     .controller('ProjectSettingsCtrl', function ($scope, $auth, $mdDialog, ProjectData, $state, GitHubData) {
 
+        $scope.repositories = false;
+
         $scope.authenticate = function (provider) {
             $auth.authenticate(provider);
         };
@@ -28,7 +30,12 @@ angular.module('startyApp')
         $scope.loadRepositories = function() {
             GitHubData.getRepositories($scope.project.id)
                 .success(function(repositories) {
-                    $scope.repositories = repositories.result;
+                    if (repositories.result == null) {
+                        $scope.repositories = false;
+                    } else {
+                        $scope.repositories = true;
+                        $scope.repositories = repositories.result;
+                    }
                     console.log(repositories);
                 })
         };
