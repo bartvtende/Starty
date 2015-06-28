@@ -24,7 +24,8 @@ angular
         $rootScope.$state = $state;
     })
     .constant('urls', {
-        API: 'http://localhost:1337/api'
+        API: 'http://localhost:1337/api',
+        homepage: 'http://localhost:9000/#'
     })
     .config(function ($authProvider, urls) {
         $authProvider.baseUrl = urls.API;
@@ -37,12 +38,23 @@ angular
         $authProvider.github({
             clientId: 'ffb229d6119ca88e6e8c',
             scope: ['repo', 'user'],
-            redirectUri: 'http://localhost:1337/api/providers/github'
-
+            url: urls.homepage + '/providers/github',
+            redirectUri: urls.homepage + '/providers/github'
         });
     })
     .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
         $stateProvider
+            .state('auth.github', {
+                url: '/providers/github?code',
+                controller: 'GithubProviderCtrl',
+                resolve: {
+                    authenticated: ['$location', '$auth', function ($location, $auth) {
+                        if (!$auth.isAuthenticated()) {
+                            return $location.path('/login');
+                        }
+                    }]
+                }
+            })
             .state('auth', {
                 templateUrl: 'views/layouts/auth.html'
             })

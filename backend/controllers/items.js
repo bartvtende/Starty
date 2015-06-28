@@ -95,7 +95,7 @@ router.post('/:model', auth.isAuthenticated, function(req, res) {
     var item = req.body;
 
     item.time_reality = 0;
-    item.status = 'Open';
+    item.status = req.body.status;
     item.creator = req.user.id;
 
     var model = getModel(req.params.model);

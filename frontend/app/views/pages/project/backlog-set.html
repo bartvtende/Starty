@@ -26,6 +26,10 @@
             <input ng-model="backlog.time_expected" type="number">
         </md-input-container>
 
+        <md-select placeholder="Choose a status" ng-model="backlog.status" required>
+            <md-option ng-repeat="status in statusses" value="{{status}}">{{status}}</md-option>
+        </md-select>
+
         <br />
 
         <section layout="row" layout-sm="column" layout-align="end end">

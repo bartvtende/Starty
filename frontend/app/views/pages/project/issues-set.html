@@ -22,9 +22,21 @@
         </md-input-container>
 
         <md-input-container flex>
-            <label>Time Expected (required)</label>
+            <label>Time expected (required)</label>
             <input ng-model="issue.time_expected" type="number">
         </md-input-container>
+
+        <md-select placeholder="Choose a status" ng-model="issue.status" required>
+            <md-option ng-repeat="status in statusses" value="{{status}}">{{status}}</md-option>
+        </md-select>
+
+        <md-select placeholder="Choose a priority" ng-model="issue.priority" required>
+            <md-option ng-repeat="priority in priorities" value="{{priority}}">{{priority}}</md-option>
+        </md-select>
+
+        <md-select placeholder="Choose a type" ng-model="issue.type" required>
+            <md-option ng-repeat="type in types" value="{{type}}">{{type}}</md-option>
+        </md-select>
 
         <br />
 

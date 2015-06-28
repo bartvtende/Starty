@@ -12,6 +12,7 @@ angular.module('startyApp')
 
         $scope.priorities = ['Trivial', 'Minor', 'Major', 'Critical', 'Blocking'];
         $scope.types = ['Bug', 'New feature', 'Sub-task', 'Improvement'];
+        $scope.statusses = ['Open', 'Accepted', 'Stalled', 'In review', 'Done'];
         $scope.issues = [];
 
         $scope.orderBy = '+id';

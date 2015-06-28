@@ -10,6 +10,8 @@
 angular.module('startyApp')
     .controller('BacklogCtrl', function ($state, $stateParams, $scope, BacklogData, ProjectData, $mdToast, $mdDialog) {
 
+        $scope.statusses = ['Open', 'Accepted', 'Stalled', 'In review', 'Done'];
+
         $scope.backlogs = [];
         $scope.orderBy = '+id';
 
