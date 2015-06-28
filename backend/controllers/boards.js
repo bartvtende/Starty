@@ -239,9 +239,16 @@ router.put('/items', auth.isAuthenticated, function(req, res) {
     var ObjectId = require('mongoose').Types.ObjectId; 
     var item = Boards.ScrumboardItems
         .update(
-            { _id: new ObjectId(req.body._id )},
-            {name: req.body.name, order: req.body.order},
-            {  },
+            { _id: new ObjectId(req.body._id ) },
+            {
+                listId: req.body.listId,
+                shortcode: req.body.shortcode,
+                title: req.body.title,
+                description: req.body.description,
+                assignedUsers: req.body.assignedUsers,
+                status: req.body.status
+            },
+            {},
             function(err, item) {
 
                 if (err) {
