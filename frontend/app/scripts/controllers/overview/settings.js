@@ -8,10 +8,10 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('SettingsCtrl', function ($scope, $auth) {
+    .controller('SettingsCtrl', function ($scope, $auth) {
 
-    $scope.authenticate = function(provider) {
-      $auth.authenticate(provider);
-    };
+        $scope.authenticate = function (provider) {
+            $auth.authenticate(provider);
+        };
 
-  });
+    });

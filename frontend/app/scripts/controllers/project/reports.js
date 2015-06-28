@@ -8,9 +8,9 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('ReportsCtrl', function ($scope) {
+    .controller('ReportsCtrl', function ($scope) {
 
-        $scope.refreshGraph = function() {
+        $scope.refreshGraph = function () {
             console.log('Refresh graph initiated!');
         };
 

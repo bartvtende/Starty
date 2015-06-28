@@ -14,12 +14,12 @@ angular.module('startyApp')
             return $http.get(urls.API + '/users/all');
         };
 
-        this.getGlobal = function(projectId) {
+        this.getGlobal = function (projectId) {
             return $http.get(urls.API + '/messages/' + projectId);
         };
 
-        this.getPerson = function(projectId, personId) {
-          return $http.get(urls.API + '/messages/' + projectId + '/' + personId);
+        this.getPerson = function (projectId, personId) {
+            return $http.get(urls.API + '/messages/' + projectId + '/' + personId);
         };
 
     });

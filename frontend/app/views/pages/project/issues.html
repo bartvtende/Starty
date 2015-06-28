@@ -11,15 +11,16 @@
 
     <md-content layout="column" flex class="md-padding">
 
-        <div layout="row">
-            <md-input-container flex>
-                <label>Search by title</label>
-                <input ng-model="search.title">
-            </md-input-container>
-        </div>
-
+        <h4 ng-show="issues.length == 0">There are no results!</h4>
 
         <md-list ng-if="issues.length > 0">
+            <div layout="row">
+                <md-input-container flex>
+                    <label>Search by title</label>
+                    <input ng-model="search.title">
+                </md-input-container>
+            </div>
+
             <md-list-item>
                 <div flex ng-click="toggleOrderBy('id')" style="cursor: pointer;">
                   <b>Details</b>
@@ -43,8 +44,6 @@
                     <b>Action</b>
                 </div>
             </md-list-item>
-
-            <h4 ng-show="issues.length == 0">There are no results!</h4>
 
             <md-list-item ng-repeat="issue in issues | filter: search | orderBy: orderBy">
                 <div flex>

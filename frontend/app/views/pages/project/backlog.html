@@ -13,20 +13,24 @@
         <h4 ng-show="backlogs.length == 0">There are no backlog items, make some work!</h4>
 
         <md-list ng-show="backlogs.length != 0">
+            <div layout="row">
+                <md-input-container flex>
+                    <label>Search by title</label>
+                    <input ng-model="search.title">
+                </md-input-container>
+            </div>
+
             <md-list-item>
-                <div flex>
+                <div flex ng-click="toggleOrderBy('id')" style="cursor: pointer;">
                     <b>ID</b>
                 </div>
-                <div flex>
-                    <b>Name</b>
+                <div flex ng-click="toggleOrderBy('title')" style="cursor: pointer;">
+                    <b>Title</b>
                 </div>
-                <div flex>
-                    <b>Creator</b>
+                <div flex ng-click="toggleOrderBy('createdAt')" style="cursor: pointer;">
+                    <b>Created</b>
                 </div>
-                <div flex>
-                    <b>Timestamp</b>
-                </div>
-                <div flex>
+                <div flex ng-click="toggleOrderBy('status')" style="cursor: pointer;">
                     <b>Status</b>
                 </div>
                 <div flex>
@@ -34,18 +38,15 @@
                 </div>
             </md-list-item>
 
-            <md-list-item ng-repeat="backlog in backlogs">
+            <md-list-item ng-repeat="backlog in backlogs | filter: search | orderBy: orderBy">
                 <div flex>
-                  {{backlog.id}}
+                    <md-button class="md-raised md-primary" ui-sref="project.backlog-detail({id: backlog.id})">{{backlog.id}}</md-button>
                 </div>
                 <div flex>
                     {{backlog.title}}
                 </div>
                 <div flex>
-                    {{backlog.creator}}
-                </div>
-                <div flex>
-                    {{backlog.createdAt | date}}
+                    {{backlog.createdAt | ago}}
                 </div>
                 <div flex>
                     {{backlog.status}}

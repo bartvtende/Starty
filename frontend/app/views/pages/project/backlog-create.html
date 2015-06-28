@@ -7,22 +7,22 @@
 
     <md-content layout="column" flex class="md-padding">
         <md-input-container flex>
-            <label>Backlog ID (required)</label>
+            <label>Backlog ID *</label>
             <input ng-model="backlog.id">
         </md-input-container>
 
         <md-input-container flex>
-            <label>Backlog name (required)</label>
+            <label>Backlog name *</label>
             <input ng-model="backlog.title">
         </md-input-container>
 
         <md-input-container flex>
-            <label>Backlog description (required)</label>
-            <textarea ng-model="backlog.description" md-maxlength="500" rows="5"></textarea>
+            <label>Backlog description *</label>
+            <textarea ng-model="backlog.description" md-maxlength="500" rows="3"></textarea>
         </md-input-container>
 
         <md-input-container flex>
-            <label>Time expected (required)</label>
+            <label>Time expected *</label>
             <input ng-model="backlog.time_expected" type="number">
         </md-input-container>
 

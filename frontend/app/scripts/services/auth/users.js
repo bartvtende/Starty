@@ -8,7 +8,7 @@
  * Service of the startyApp
  */
 angular.module('startyApp')
-    .service('UserData', ['$http', 'urls', function($http, urls) {
+    .service('UserData', ['$http', 'urls', function ($http, urls) {
 
         this.getUser = function () {
             return $http.get(urls.API + '/users');

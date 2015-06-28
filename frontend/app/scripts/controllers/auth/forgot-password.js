@@ -10,9 +10,9 @@
 angular.module('startyApp')
     .controller('ForgotPasswordCtrl', function ($scope, $mdToast, ForgotPasswordData, $state) {
 
-        $scope.forgotPassword = function(user) {
+        $scope.forgotPassword = function (user) {
             ForgotPasswordData.forgotPassword(user)
-                .error(function(err) {
+                .error(function (err) {
                     $mdToast.show(
                         $mdToast.simple()
                             .content(err.error)
@@ -20,7 +20,7 @@ angular.module('startyApp')
                             .hideDelay(3000)
                     );
                 })
-                .success(function() {
+                .success(function () {
                     $mdToast.show(
                         $mdToast.simple()
                             .content('You password has been changed!')
