@@ -8,7 +8,7 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-  .controller('BoardCtrl', function ($scope, $state, $mdToast, $mdDialog, BoardData) {
+  .controller('BoardCtrl', function ($scope, $state, $mdToast, $mdDialog, BoardData, MessageData) {
 
     $scope.cur = {
       sprint: null,
@@ -39,34 +39,33 @@ angular.module('startyApp')
     };
 
     $scope.goToSprint = function(sprintKey) {
-      // $scope.$watch('project', function () {
-        $scope.cur = {
-          sprint: null,
-          lists: [],
-          items: []
-        };
-        $scope.cur.sprint = $scope.data.Sprints[sprintKey];
-        $scope.cur.sprint.key = sprintKey;
+      $scope.cur = {
+        sprint: null,
+        lists: [],
+        items: []
+      };
+      $scope.cur.sprint = $scope.data.Sprints[sprintKey];
+      $scope.cur.sprint.key = sprintKey;
+      $scope.cur.items = [];
 
-        for (var list in $scope.data.ScrumboardLists) {
-          list = $scope.data.ScrumboardLists[list];
-          if (list.sprintId == $scope.cur.sprint._id) {
-            $scope.cur.lists[list.order] = list;
+      for (var list in $scope.data.ScrumboardLists) {
+        list = $scope.data.ScrumboardLists[list];
+        if (list.sprintId == $scope.cur.sprint._id) {
+          $scope.cur.lists[list.order] = list;
 
-            for (var item in $scope.data.ScrumboardItems) {
-                if (item.listId == list._id)
-                  $scope.cur.lists[item.order] = item;
-            };
+          for (var item in $scope.data.ScrumboardItems) {
+            item = $scope.data.ScrumboardItems[item];
+              if (item.listId == list._id)
+                $scope.cur.items = $scope.cur.items.concat(item);
           }
-        };
-      // });
-  console.log($scope.cur);
+        }
+      }
     };
 
     $scope.createSprint = function () {
-        if ($scope.project.id != null) {
-          $scope.sprint.projectId = $scope.project.id;
-          BoardData.createSprint($scope.sprint)
+      if ($scope.project.id != null) {
+        $scope.sprint.projectId = $scope.project.id;
+        BoardData.createSprint($scope.sprint)
           .success(function(data) {
             $state.go('project.board');
             $scope.data.Sprints = $scope.data.Sprints.concat(data.result);
@@ -76,7 +75,7 @@ angular.module('startyApp')
                   .position('bottom left')
                   .hideDelay(3000)
               );
-          })
+            })
           .error(function() {
               $mdToast.show(
                   $mdToast.simple()
@@ -110,7 +109,7 @@ angular.module('startyApp')
         $mdDialog.show({
               template: dialogContent,
               targetEvent: ev,
-              controller: 'DialogController',
+              controller: 'ListDialogController',
               locals: {list: {name: ''}}
           })
           .then(function(list) {
@@ -165,7 +164,7 @@ angular.module('startyApp')
         $mdDialog.show({
               template: dialogContent,
               targetEvent: ev,
-              controller: 'DialogController',
+              controller: 'ListDialogController',
               locals: {list: $scope.list}
           })
           .then(function(list) {
@@ -273,30 +272,209 @@ angular.module('startyApp')
       }
     };
 
-    $scope.deleteList = function(event, id) {
+    $scope.deleteList = function(event, order) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.confirm()
+        .parent(angular.element(document.body))
+        .title('Would you like to delete this list?')
+        .ok('Ok')
+        .cancel('Cancel')
+        .targetEvent(event);
+      $mdDialog.show(confirm).then(function() {
+        BoardData.deleteList($scope.cur.lists[order]._id)
+        .success(function(list) {
+          console.log("deleted: "+list);
+          $scope.loadScrumboard($scope.cur.sprint.key);
+        });
+      });
+    };
+
+    $scope.addItem = function (ev, listId) {
+      if ($scope.cur.sprint != undefined) {
+
+        var dialogContent = ' \
+          <md-dialog> \
+            <md-content> \
+              <md-input-container> \
+                  <label>Item Name</label> \
+                  <input ng-model="item.title" class="dialog-close"></input> \
+              </md-input-container> \
+              <md-input-container> \
+                  <label>Item Shortcode</label> \
+                  <input ng-model="item.name" class="dialog-close"></input> \
+              </md-input-container> \
+              <md-input-container> \
+                  <label>Item Description</label> \
+                  <input ng-model="item.description" class="dialog-close"></input> \
+              </md-input-container> \
+              <md-input-container> \
+                  <label>Users</label> \
+                  <md-select ng-model="item.user" style="min-width: 200px;"> \
+                    <md-option ng-repeat="(key, user) in users" value="{{key}}">{{user.name}}</md-option> \
+                  </md-select> \
+                  <md-button aria-label="Add" class="md-fab md-raised md-primary md-mini" ng-click="addUser()" style="float:right"> \
+                    Add \
+                  </md-button> \
+              </md-input-container> \
+              <md-input-container> \
+                  <md-button ng-repeat="(key, user) in item.assignedUsers" aria-label="left" ng-click="removeUser({{key}})"> \
+                    <md-icon md-svg-src="images/icons/ic_delete_24px.svg"></md-icon> \
+                    {{user.name}} \
+                  </md-button> \
+              </md-input-container> \
+            </md-content> \
+            <div class="md-actions"> \
+                <!-- type=button is needed so form uses submit button --> \
+                <md-button type=button ng-click="cancel()">Cancel</md-button> \
+                <md-button class="md-primary" type="submit" ng-click="hide()">Okay</md-button> \
+            </div> \
+          </md-dialog> \
+        ';
+
+        self.item = {assignedUsers: [], listId: listId};
+        self.cur = $scope.cur;
+        MessageData.getUsers()
+            .success(function(users) {
+              self.users = users.result;
+            $mdDialog.show({
+                  template: dialogContent,
+                  targetEvent: ev,
+                  controller: 'ItemDialogController',
+                  locals: self
+              })
+              .then(function(item) {
+                console.log(item);
+                BoardData.createItem(item)
+                .success(function(data) {
+                  $state.go('project.board');
+                  $scope.data.ScrumboardItems = $scope.data.ScrumboardItems.concat(data.result);
+                  $mdToast.show(
+                    $mdToast.simple()
+                      .content('Your item has been created!')
+                      .position('bottom left')
+                      .hideDelay(3000)
+                  );
+                  $scope.goToSprint($scope.cur.sprint.key);
+                })
+                .error(function() {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Something went wrong, please try again please')
+                            .position('bottom left')
+                            .hideDelay(5000)
+                    );
+                  });
+
+              }, function() {
+              });
+            })
+            .error(function() {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content('Something went wrong while fetching the users info!')
+                        .position('bottom left')
+                        .hideDelay(3000)
+                );
+            });
+      }
+    };
+
+    $scope.itemEdit = function (ev, key) {
+      if ($scope.cur.sprint != undefined) {
+
+        var dialogContent = ' \
+          <md-dialog> \
+            <md-content> \
+              <md-input-container> \
+                  <label>Item Name</label> \
+                  <input ng-model="item.title" class="dialog-close"></input> \
+              </md-input-container> \
+              <md-input-container> \
+                  <label>Item Shortcode</label> \
+                  <input ng-model="item.name" class="dialog-close"></input> \
+              </md-input-container> \
+              <md-input-container> \
+                  <label>Item Description</label> \
+                  <input ng-model="item.description" class="dialog-close"></input> \
+              </md-input-container> \
+              <md-input-container> \
+                  <label>Users</label> \
+                  <md-select ng-model="item.user" style="min-width: 200px;"> \
+                    <md-option ng-repeat="(key, user) in users" value="{{key}}">{{user.name}}</md-option> \
+                  </md-select> \
+                  <md-button aria-label="Add" class="md-fab md-raised md-primary md-mini" ng-click="addUser()" style="float:right"> \
+                    Add \
+                  </md-button> \
+              </md-input-container> \
+              <md-input-container> \
+                  <md-button ng-repeat="(key, user) in item.assignedUsers" aria-label="left" ng-click="removeUser({{key}})"> \
+                    <md-icon md-svg-src="images/icons/ic_delete_24px.svg"></md-icon> \
+                    {{user.name}} \
+                  </md-button> \
+              </md-input-container> \
+            </md-content> \
+            <div class="md-actions"> \
+                <!-- type=button is needed so form uses submit button --> \
+                <md-button type=button ng-click="cancel()">Cancel</md-button> \
+                <md-button class="md-primary" type="submit" ng-click="hide()">Okay</md-button> \
+            </div> \
+          </md-dialog> \
+        ';
+        $scope.item = $scope.cur.items[key];
+        self.item = $scope.item;
+        $mdDialog.show({
+              template: dialogContent,
+              targetEvent: ev,
+              controller: 'ItemDialogController',
+              locals: self
+          })
+          .then(function(item) {
+
+            item.sprintId = $scope.cur.sprint._id;
+            BoardData.editItem(item)
+            .success(function(data) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .content('Your item has been created!')
+                  .position('bottom left')
+                  .hideDelay(3000)
+              );
+              $scope.loadScrumboard($scope.cur.sprint.key);
+            })
+            .error(function() {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content('Something went wrong, please try again please')
+                        .position('bottom left')
+                        .hideDelay(5000)
+                );
+              });
+
+          }, function() {
+          });
+      }
+    };
+
+    $scope.deleteItem = function(event, order) {
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.confirm()
           .parent(angular.element(document.body))
           .title('Would you like to delete this item?')
-          .content('The item you are about to delete is "' + id + '".')
           .ok('Ok')
           .cancel('Cancel')
           .targetEvent(event);
         $mdDialog.show(confirm).then(function() {
-          BoardData.deleteList($scope.project.id, id)
+          BoardData.deleteItem($scope.cur.items[order]._id)
           .success(function(item) {
-            for (var key in $scope.backlogs) {
-                if ($scope.backlogs[key].id == item.result.id) {
-                    $scope.backlogs.splice(key, 1);
-                }
-            }
+            console.log("deleted: "+item);
+            $scope.loadScrumboard($scope.cur.sprint.key);
           });
         });
     };
 
   })
 
-  .controller('DialogController', function($scope, $mdDialog, list) {
+  .controller('ListDialogController', function($scope, $mdDialog, list) {
       $scope.list = list;
 
       $scope.hide = function() {
@@ -306,4 +484,34 @@ angular.module('startyApp')
       $scope.cancel = function() {
           $mdDialog.cancel();
       };
+  })
+
+  .controller('ItemDialogController', function($scope, $mdDialog, item, users, cur) {
+      $scope.item = item;
+      $scope.users = users;
+      $scope.cur = cur;
+
+      $scope.hide = function() {
+          $mdDialog.hide($scope.item);
+      };
+      
+      $scope.cancel = function() {
+          $mdDialog.cancel();
+      };
+      
+      $scope.addUser = function() {
+        var cont = true;
+        for (var user in $scope.item.assignedUsers) {
+          if($scope.item.assignedUsers[user].id === $scope.users[$scope.item.user].id)
+            cont = false;
+        }
+        if (cont)
+          $scope.item.assignedUsers = $scope.item.assignedUsers.concat($scope.users[$scope.item.user]);
+      };
+      
+      $scope.removeUser = function(key) {
+        var index = $scope.item.assignedUsers[key];
+        $scope.item.assignedUsers.splice(index, 1);
+      };
+
   });

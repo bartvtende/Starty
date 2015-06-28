@@ -154,6 +154,61 @@ router.put('/lists', auth.isAuthenticated, function(req, res) {
 });
 
 /**
+ * Creates a new list for a project
+ */
+router.delete('/lists/:id', auth.isAuthenticated, function(req, res) {
+    var ObjectId = require('mongoose').Types.ObjectId; 
+    var list = Boards.ScrumboardLists
+        .findOneAndRemove(
+            { _id: new ObjectId(req.params.id )},
+            {  },
+            function(err, list) {
+
+                if (err) {
+                    return res.json({
+                        error: err,
+                        result: ''
+                    });
+                }
+
+
+                Boards.ScrumboardLists
+                    .find({ sprintId: new ObjectId(list.sprintId)})
+                    .sort({ order: 'asc' })
+                    .exec(function(err, json) {
+                        var i = 0;
+                        for (var list in json) {
+                                        console.log(i+": "+json[list]);
+
+
+                            // var ObjectId = require('mongoose').Types.ObjectId; 
+                            Boards.ScrumboardLists
+                                .where({ _id: new ObjectId(json[list]._id )})
+                                .update({order: i},
+                                    function(err, list) {
+
+                                        if (err) {
+                                            return res.json({
+                                                error: err,
+                                                result: ''
+                                            });
+                                        }
+                                    });
+                            i++;
+
+
+                        }
+                    });
+
+                return res.json({
+                    error: '',
+                    result: list
+                });
+            });
+
+});
+
+/**
  * Creates a new item for a project
  */
 router.post('/items', auth.isAuthenticated, function(req, res) {
@@ -173,6 +228,88 @@ router.post('/items', auth.isAuthenticated, function(req, res) {
         });
 
     });
+
+});
+
+/**
+ * Sets a new item for a project
+ */
+router.put('/items', auth.isAuthenticated, function(req, res) {
+
+    var ObjectId = require('mongoose').Types.ObjectId; 
+    var item = Boards.ScrumboardLists
+        .update(
+            { _id: new ObjectId(req.body._id )},
+            {name: req.body.name, order: req.body.order},
+            {  },
+            function(err, item) {
+
+                if (err) {
+                    return res.json({
+                        error: err,
+                        result: ''
+                    });
+                }
+                return res.json({
+                    error: '',
+                    result: item
+                });
+            });
+
+});
+
+/**
+ * Creates a new item for a project
+ */
+router.delete('/items/:id', auth.isAuthenticated, function(req, res) {
+    var ObjectId = require('mongoose').Types.ObjectId; 
+    var item = Boards.ScrumboardItems
+        .findOneAndRemove(
+            { _id: new ObjectId(req.params.id )},
+            {  },
+            function(err, item) {
+
+                if (err) {
+                    return res.json({
+                        error: err,
+                        result: ''
+                    });
+                }
+
+
+                Boards.ScrumboardItems
+                    .find({ sprintId: new ObjectId(item.sprintId)})
+                    .sort({ order: 'asc' })
+                    .exec(function(err, json) {
+                        var i = 0;
+                        for (var item in json) {
+                                        console.log(i+": "+json[item]);
+
+
+                            // var ObjectId = require('mongoose').Types.ObjectId; 
+                            Boards.ScrumboardItems
+                                .where({ _id: new ObjectId(json[item]._id )})
+                                .update({order: i},
+                                    function(err, item) {
+
+                                        if (err) {
+                                            return res.json({
+                                                error: err,
+                                                result: ''
+                                            });
+                                        }
+                                    });
+                            i++;
+
+
+                        }
+                    });
+
+                return res.json({
+                    error: '',
+                    result: item
+                });
+            });
 
 });
 

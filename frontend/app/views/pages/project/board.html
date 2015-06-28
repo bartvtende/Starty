@@ -28,38 +28,52 @@
 </md-toolbar>
 <div style="overflow-x: scroll; width:100%">
   <div style="width: {{cur.lists.length * 300 + 56}};display: inline-flex;">
-    <div ng-repeat="list in cur.lists" style="width: 300px; float: left">
-<div style="float:left;width: 65px;display: -webkit-box;">
-      <md-fab-speed-dial md-open="demo.isOpen" md-direction="right"
-                         ng-class="demo.selectedMode">
-        <md-fab-trigger>
-          <md-button aria-label="menu" class="md-fab md-primary md-mini" ng-click="listEdit($event, {{list.order}})">
-            <md-icon md-svg-src="images/icons/ic_edit_24px.svg"></md-icon>
-          </md-button>
-        </md-fab-trigger>
-        <md-fab-actions>
-          <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="listMoveLeft({{list.order}})">
-            &#60;
-          </md-button>
-          <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="listMoveRight({{list.order}})">
-            &#62;
-          </md-button>
-          <md-button aria-label="left" class="md-fab md-raised md-warn md-mini" ng-click="deleteList({{list.order}})">
-            <md-icon md-svg-src="images/icons/ic_delete_24px.svg"></md-icon>
-          </md-button>
-        </md-fab-actions>
-      </md-fab-speed-dial></div>
+    <div style="width:100%">
+      <div ng-repeat="list in cur.lists" style="width: 300px; float: left">
+        <div style="float:left;width: 65px;display: -webkit-box;">
+          <md-fab-speed-dial md-open="demo.isOpen" md-direction="right"
+                             ng-class="demo.selectedMode">
+            <md-fab-trigger>
+              <md-button aria-label="menu" class="md-fab md-primary md-mini" ng-click="listEdit($event, {{list.order}})">
+                <md-icon md-svg-src="images/icons/ic_edit_24px.svg"></md-icon>
+              </md-button>
+            </md-fab-trigger>
+            <md-fab-actions>
+              <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="listMoveLeft({{list.order}})">
+                &#60;
+              </md-button>
+              <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="listMoveRight({{list.order}})">
+                &#62;
+              </md-button>
+              <md-button aria-label="left" class="md-fab md-raised md-warn md-mini" ng-click="deleteList($event, {{list.order}})">
+                <md-icon md-svg-src="images/icons/ic_delete_24px.svg"></md-icon>
+              </md-button>
+              <md-button aria-label="left" class="md-fab md-raised md-primary md-mini" ng-click="addItem($event, '{{list._id}}')">
+                <md-icon md-svg-src="images/icons/ic_add_24px.svg"></md-icon>
+              </md-button>
+            </md-fab-actions>
+          </md-fab-speed-dial></div>
 
-      <h3 style="float:left;margin">{{list.name}}</h3>
+        <h3 style="float:left;margin">{{list.name}}</h3>
+      </div>
+      
+      <md-list>
+        <md-list-item class="md-3-line" ng-repeat="(key, item) in cur.items">
+          <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="itemEdit({{key}})">
+            <md-icon md-svg-src="images/icons/ic_edit_24px.svg" style="color: white;"></md-icon>
+          </md-button>
+          <div class="md-list-item-text">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </div>
+        </md-list-item>
+      </md-list>
 
-      <md-whiteframe ng-repeat="item in cur.items" class="md-whiteframe-z5" layout layout-align="center center">
-        <span>{{item.title}}</span>
-      </md-whiteframe>
     </div>
 
-  <md-button class="md-fab" aria-label="Add List" ng-click="addList($event)" style="float: left">
-      <md-icon md-svg-src="images/icons/ic_add_24px.svg" style="color: white;"></md-icon>
-  </md-button>
+    <md-button class="md-fab" aria-label="Add List" ng-click="addList($event)" style="float: left">
+        <md-icon md-svg-src="images/icons/ic_add_24px.svg" style="color: white;"></md-icon>
+    </md-button>
 
   </div>
 </div>

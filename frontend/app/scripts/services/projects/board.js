@@ -28,6 +28,10 @@ angular.module('startyApp')
         return $http.put(url + '/lists', list);
     };
 
+    this.deleteList = function (list) {
+        return $http.delete(url + '/lists/' + list);
+    };
+
     this.createItem = function (item) {
         return $http.post(url + '/items', item);
     };
