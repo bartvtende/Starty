@@ -1,0 +1,43 @@
+<div layout="column">
+  <md-toolbar class="md-accent md-toolbar-tools">
+    <h2>
+      <span><b>{{issue.id}}</b>: {{issue.title}}</span>
+    </h2>
+    <span flex></span>
+    <md-button class="md-icon-button" aria-label="Add" ui-sref="project.issues-set({id: issue.id})">
+      <md-icon md-svg-src="images/icons/ic_edit_24px.svg" style="color: white;"></md-icon>
+    </md-button>
+  </md-toolbar>
+
+  <md-content layout="column" class="md-padding" flex>
+    <div layout-wrap layout="row">
+      <div flex="65">
+        <p>
+          <b>Details</b><br />
+          Status: {{issue.status}}<br />
+          Priority: {{issue.priority}}<br />
+          Type: {{issue.type}}<br /><br />
+          Time expected: {{issue.time_expected | minutes}}
+
+        </p>
+      </div>
+      <div flex="35">
+        <p>
+          <b>People</b><br />
+          Assignee: {{issue.creator}}<br />
+          Reporter: {{issue.creator}}
+        </p>
+
+        <p>
+          <b>Dates</b><br />
+          Created: {{issue.createdAt | ago}}<br />
+          Updated: {{issue.updatedAt | ago}}
+        </p>
+      </div>
+    </div>
+
+    <div flex>
+      {{issue}}
+    </div>
+  </md-content>
+</div>

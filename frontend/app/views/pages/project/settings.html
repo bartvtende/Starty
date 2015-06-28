@@ -1,0 +1,21 @@
+<div layout="column">
+  <md-toolbar class="md-accent md-toolbar-tools">
+    <h2>
+      <span>Project settings</span>
+    </h2>
+  </md-toolbar>
+
+  <md-content layout="column" flex class="md-padding">
+    <h2 class="md-title">GitHub integration</h2>
+
+    <md-button class="md-raised md-primary" ng-click="authenticate('github')">Sign in with GitHub</md-button>
+
+    or
+
+    Your list of repo's
+
+    <h2 class="md-title">Delete this project</h2>
+
+    <md-button class="md-raised" ng-click="deleteProject()">Delete project</md-button>
+  </md-content>
+</div>

@@ -41,6 +41,7 @@ angular.module('startyApp')
               $scope.organization = null;
             })
             .error(function() {
+              $state.go('overview.overview');
               $mdToast.show(
                   $mdToast.simple()
                       .content('Something went wrong while fetching the project info!')

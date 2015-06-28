@@ -1,9 +1,9 @@
 module.exports = {
 
-    mongoHost: process.env.mongoHost || 'localhost:27017',
+    mongoHost: process.env.mongoHost || '127.0.0.1:27017',
     mongoDatabase: 'starty',
 
-    sqlHost: process.env.sqlHost || 'localhost',
+    sqlHost: process.env.sqlHost || '127.0.0.1',
     sqlUsername: process.env.sqlUsername || 'root',
     sqlPassword: process.env.sqlPassword || '',
     sqlDatabase: process.env.sqlDatabase || 'starty',

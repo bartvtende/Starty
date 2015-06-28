@@ -121,5 +121,43 @@ angular.module('startyApp')
           });
         });
     };
+  })
 
+  .controller('IssuesDetailCtrl', function ($scope, $stateParams, IssuesData, $mdToast) {
+    $scope.issueId = $stateParams.id;
+
+    $scope.$watch('$viewContentLoaded', function() {
+      $scope.loadProject();
+    });
+
+    $scope.loadProject = function() {
+      $scope.$watch('project', function() {
+        if ($scope.project != null)
+          $scope.loadIssue();
+      });
+    };
+
+    $scope.loadIssue = function() {
+      if ($scope.project.id != null && $scope.issueId != null) {
+        IssuesData.getIssue($scope.project.id, $scope.issueId)
+          .success(function(issue) {
+            $scope.issue = issue.result;
+          })
+          .error(function() {
+            $mdToast.show(
+              $mdToast.simple()
+                .content('Something went wrong, please try again please')
+                .position('bottom left')
+                .hideDelay(5000)
+            );
+          })
+      } else {
+        $mdToast.show(
+          $mdToast.simple()
+            .content('Something went wrong, please try again please')
+            .position('bottom left')
+            .hideDelay(5000)
+        );
+      }
+    };
   });
