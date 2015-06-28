@@ -140,8 +140,8 @@ router.put('/', auth.isAuthenticated, function(req, res) {
         });
 });
 
-router.delete('/', auth.isAuthenticated, function(req, res) {
-    var shortcode = req.body.shortcode;
+router.delete('/:shortcode', auth.isAuthenticated, function(req, res) {
+    var shortcode = req.params.shortcode;
 
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
         res.json({
@@ -150,8 +150,9 @@ router.delete('/', auth.isAuthenticated, function(req, res) {
         });
     }
 
-    Projects.find({ where: { shortcode: shortcode, organization_id: req.user.organization_id }})
+    Projects.findAll({ where: { shortcode: shortcode, organization_id: req.user.organization_id }})
         .then(function(project) {
+            var project = project[0];
             if (project == null) {
                 return res.json({
                     error: 'The project doesn\'t exist!',
@@ -169,6 +170,12 @@ router.delete('/', auth.isAuthenticated, function(req, res) {
                     return res.json({
                         error: '',
                         result: project
+                    });
+                })
+                .then(function() {
+                    return res.json({
+                        error: 'Something went wrong, please try again!',
+                        result: ''
                     });
                 });
         });
