@@ -12,7 +12,8 @@ var sprintsSchema = new Schema({
 var listsSchema = new Schema({
     sprintId: Schema.Types.ObjectId,
     name: String,
-    order: Number
+    order: Number,
+    completed: Boolean
 }, { versionKey: false });
 
 var itemsSchema = new Schema({
@@ -20,12 +21,11 @@ var itemsSchema = new Schema({
     shortcode: String,
     title: String,
     description: String,
-    assignedUsers: String,
+    assignedUsers: [],
     backlog: [],
     issues: [],
     status: String,
-    completedAt: Date,
-    order: Number
+    completedAt: Date
 }, { versionKey: false });
 
 sprintsSchema.plugin(timestamps);
