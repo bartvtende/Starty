@@ -51,3 +51,14 @@ body {
 .active {
   background-color: #ECECEC !important;
 }
+
+.scrum-items {
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.scrum-items div {
+  width: 300px;
+  float: left;
+}

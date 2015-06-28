@@ -107,6 +107,11 @@ angular
         templateUrl: 'views/pages/project/board.html',
         controller: 'BoardCtrl'
       })
+      .state('project.board-create-sprint', {
+        url: '/board-create-sprint',
+        templateUrl: 'views/pages/project/board-create-sprint.html',
+        controller: 'BoardCtrl'
+      })
       .state('project.backlog', {
         url: '/backlog',
         templateUrl: 'views/pages/project/backlog.html',

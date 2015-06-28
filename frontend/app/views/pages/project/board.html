@@ -3,75 +3,63 @@
         <span>Scrumboard</span>
     </h2>
     <span flex></span>
-    <md-button class="md-icon-button" aria-label="Add" ui-sref="project.issues-create">
-        <md-icon md-svg-src="images/icons/ic_add_24px.svg" style="color: white;"></md-icon>
-    </md-button>
+
+    <md-menu>
+      <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open sample menu">
+        <md-icon md-svg-src="images/icons/ic_dashboard_24px.svg" style="color: white;"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <div ng-repeat="(key, sprint) in data.Sprints">
+          <md-menu-item>
+            <md-button ng-click="goToSprint( {{ key }} )">
+              {{sprint.name}}
+            </md-button>
+          </md-menu-item>
+        </div>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button ui-sref="project.board-create-sprint">
+            Add Sprint
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+
 </md-toolbar>
+<div style="overflow-x: scroll; width:100%">
+  <div style="width: {{cur.lists.length * 300 + 56}};display: inline-flex;">
+    <div ng-repeat="list in cur.lists" style="width: 300px; float: left">
+<div style="float:left;width: 65px;display: -webkit-box;">
+      <md-fab-speed-dial md-open="demo.isOpen" md-direction="right"
+                         ng-class="demo.selectedMode">
+        <md-fab-trigger>
+          <md-button aria-label="menu" class="md-fab md-primary md-mini" ng-click="listEdit($event, {{list.order}})">
+            <md-icon md-svg-src="images/icons/ic_edit_24px.svg"></md-icon>
+          </md-button>
+        </md-fab-trigger>
+        <md-fab-actions>
+          <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="listMoveLeft({{list.order}})">
+            &#60;
+          </md-button>
+          <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="listMoveRight({{list.order}})">
+            &#62;
+          </md-button>
+          <md-button aria-label="left" class="md-fab md-raised md-warn md-mini" ng-click="deleteList({{list.order}})">
+            <md-icon md-svg-src="images/icons/ic_delete_24px.svg"></md-icon>
+          </md-button>
+        </md-fab-actions>
+      </md-fab-speed-dial></div>
 
-<md-content layout="row" flex class="md-padding">
-    <div flex="20" flex-sm="50">
-        <md-card>
-            <md-card-content>
-                <h2 class="md-title">Sprint 1</h2>
-                <p>
-                    The titles of Washed Out's breakthrough song and the first single from Paracosm share
-                </p>
-            </md-card-content>
-        </md-card>
+      <h3 style="float:left;margin">{{list.name}}</h3>
+
+      <md-whiteframe ng-repeat="item in cur.items" class="md-whiteframe-z5" layout layout-align="center center">
+        <span>{{item.title}}</span>
+      </md-whiteframe>
     </div>
 
-    <div flex="20" flex-sm="50">
-        <md-card>
-            <md-card-content>
-                <h2 class="md-title">Sprint 2</h2>
-                <p>
-                    The titles of Washed Out's breakthrough song and the first single from Paracosm share
-                </p>
-            </md-card-content>
-        </md-card>
-    </div>
+  <md-button class="md-fab" aria-label="Add List" ng-click="addList($event)" style="float: left">
+      <md-icon md-svg-src="images/icons/ic_add_24px.svg" style="color: white;"></md-icon>
+  </md-button>
 
-    <div flex="20" flex-sm="50">
-        <md-card>
-            <md-card-content>
-                <h2 class="md-title">Sprint 3</h2>
-                <p>
-                    The titles of Washed Out's breakthrough song and the first single from Paracosm share
-                </p>
-            </md-card-content>
-        </md-card>
-    </div>
-
-    <div flex="20" flex-sm="50">
-        <md-card>
-            <md-card-content>
-                <h2 class="md-title">Sprint 4</h2>
-                <p>
-                    The titles of Washed Out's breakthrough song and the first single from Paracosm share
-                </p>
-            </md-card-content>
-        </md-card>
-    </div>
-
-    <div flex="20" flex-sm="50">
-        <md-card>
-            <md-card-content>
-                <h2 class="md-title">Sprint 5</h2>
-                <p>
-                    The titles of Washed Out's breakthrough song and the first single from Paracosm share
-                </p>
-            </md-card-content>
-        </md-card>
-    </div>
-
-    <div flex="20" flex-sm="50">
-        <md-card>
-            <md-card-content>
-                <h2 class="md-title">Sprint 6</h2>
-                <p>
-                    The titles of Washed Out's breakthrough song and the first single from Paracosm share
-                </p>
-            </md-card-content>
-        </md-card>
-    </div>
-</md-content>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div layout="column">
+    <md-toolbar class="md-accent md-toolbar-tools">
+        <h2>
+            <span>Create new sprint item</span>
+        </h2>
+    </md-toolbar>
+
+    <md-content layout="column" flex class="md-padding">
+        <md-input-container flex>
+            <label>Sprint name (required)</label>
+            <input ng-model="sprint.name">
+        </md-input-container>
+
+        <md-input-container flex>
+            <label>Start at (required)</label>
+            <input ng-model="sprint.startAt" type="date">
+        </md-input-container>
+
+        <md-input-container flex>
+            <label>End at (required)</label>
+            <input ng-model="sprint.endAt" type="date">
+        </md-input-container>
+
+        <br />
+
+        <section layout="row" layout-sm="column" layout-align="end end">
+            <md-button class="md-raised md-primary" ng-click="createSprint(sprint)">Create sprint!</md-button>
+        </section>
+    </md-content>
+</div>
