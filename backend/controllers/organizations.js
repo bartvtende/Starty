@@ -4,8 +4,8 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-var Organizations = models.Organizations;
-var Users = models.Users;
+var Organizations = models.organizations;
+var Users = models.users;
 
 /**
  * Retrieves an organization that the user is part of

@@ -6,13 +6,13 @@ var sequelize = new Sequelize(settings.sqlDatabase, settings.sqlUsername, settin
 
 // Load models dynamically
 var models = [
-    'Organizations',
-    'Users',
-    'Projects',
-    'Backlog',
-    'Issues',
-    'ProjectUser',
-    'Providers'
+    'organizations',
+    'users',
+    'projects',
+    'backlog',
+    'issues',
+    'projectuser',
+    'providers'
 ];
 
 models.forEach(function(model) {

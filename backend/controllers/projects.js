@@ -4,10 +4,10 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-var Organizations = models.Organizations;
-var Projects = models.Projects;
-var Users = models.Users;
-var ProjectUser = models.ProjectUser;
+var Organizations = models.organizations;
+var Projects = models.projects;
+var Users = models.users;
+var ProjectUser = models.projectuser;
 
 /**
  * Gets all the projects of this user

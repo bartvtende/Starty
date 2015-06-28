@@ -4,10 +4,10 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-var Backlog = models.Backlog;
-var Issues = models.Issues;
+var Backlog = models.backlog;
+var Issues = models.issues;
 
-var Users = models.Users;
+var Users = models.users;
 
 var getModel = function (model) {
     switch (model) {

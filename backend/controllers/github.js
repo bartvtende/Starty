@@ -7,7 +7,7 @@ var auth = require('./auth');
 
 var request = require('request');
 
-var Providers = models.Providers;
+var Providers = models.providers;
 
 /**
  * Lists all the repositories from the user

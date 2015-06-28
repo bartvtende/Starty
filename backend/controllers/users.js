@@ -6,7 +6,7 @@ var router = express.Router();
 var models = require('../models/index');
 var auth = require('./auth');
 
-var Users = models.Users;
+var Users = models.users;
 
 /**
  * Returns the logged in user

@@ -8,7 +8,7 @@ var settings = require('../config/settings.js');
 
 var requestify = require('requestify');
 
-var Providers = models.Providers;
+var Providers = models.providers;
 
 router.get('/github', function(req, res) {
     if (!req.query.code) {

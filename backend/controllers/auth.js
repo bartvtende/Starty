@@ -4,7 +4,7 @@ var moment = require('moment');
 var settings = require('../config/settings');
 var models = require('../models');
 
-var Users = models.Users;
+var Users = models.users;
 
 module.exports = {
 
