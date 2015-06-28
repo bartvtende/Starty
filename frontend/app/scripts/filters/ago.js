@@ -24,12 +24,12 @@ angular.module('startyApp')
     return function(minutes){
       if (minutes > 60) {
         var hours = Math.floor(minutes / 60);
-        var minutes = minutes - (hours * 60);
+        var newminutes = minutes - (hours * 60);
 
-        if (minutes == 0) {
+        if (newminutes === 0) {
           return hours + ' hours';
         } else {
-          return hours + ' hours and ' + minutes + ' minutes';
+          return hours + ' hours and ' + newminutes + ' minutes';
         }
       } else {
         return minutes + ' minutes';

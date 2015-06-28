@@ -10,11 +10,23 @@
 angular.module('startyApp')
   .controller('IssuesCtrl', function ($state, $stateParams, $scope, IssuesData, ProjectData, $mdToast, $mdDialog) {
 
+    $scope.priorities = ['Trivial', 'Minor', 'Major', 'Critical', 'Blocking'];
+    $scope.types = ['Bug', 'New feature', 'Sub-task', 'Improvement'];
     $scope.issues = [];
+
+    $scope.orderBy = '+id';
+
+    $scope.toggleOrderBy = function(order) {
+        if ($scope.orderBy == '+' + order) {
+            $scope.orderBy = '-' + order;
+        } else {
+            $scope.orderBy = '+' + order;
+        }
+    };
 
     $scope.createIssue = function(backlog) {
       backlog.project_id = $scope.project.id;
-      backlog.status = 1;
+      backlog.status = 'Open';
       IssuesData.createIssue(backlog)
         .success(function() {
             $state.go('project.issues');
@@ -67,7 +79,7 @@ angular.module('startyApp')
             // Load a backlog item from one project
             IssuesData.getIssue($scope.project.id, $stateParams.id)
                 .success(function(backlog) {
-                    $scope.backlog = backlog.result;
+                    $scope.issue = backlog.result.item;
                 })
                 .error(function(err) {
                     $mdToast.show(
@@ -81,12 +93,13 @@ angular.module('startyApp')
         }
     };
 
-    $scope.editIssues = function(backlog) {
+    $scope.editIssue = function(backlog) {
         if (typeof backlog === 'object') {
           backlog.project_id = $scope.project.id;
           IssuesData.setIssue(backlog)
             .success(function(project) {
-                $state.go('project.backlog');
+                $state.go('project.issues');
+                $scope.issue = project.result.issue;
               })
             .error(function() {
                 $mdToast.show(
@@ -141,7 +154,8 @@ angular.module('startyApp')
       if ($scope.project.id != null && $scope.issueId != null) {
         IssuesData.getIssue($scope.project.id, $scope.issueId)
           .success(function(issue) {
-            $scope.issue = issue.result;
+            $scope.issue = issue.result.item;
+            $scope.user = issue.result.user;
           })
           .error(function() {
             $mdToast.show(

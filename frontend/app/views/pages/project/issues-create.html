@@ -5,26 +5,34 @@
         </h2>
     </md-toolbar>
 
-    <md-content layout="column" flex class="md-padding">
+    <md-content layout="column" flex class="md-padding" md-theme="docs-dark" >
         <md-input-container flex>
-            <label>Issue ID (required)</label>
-            <input ng-model="issue.id">
+            <label>Issue ID *</label>
+            <input ng-model="issue.id" md-maxlength="6" required>
         </md-input-container>
 
         <md-input-container flex>
-            <label>Issue name (required)</label>
+            <label>Issue name *</label>
             <input ng-model="issue.title">
         </md-input-container>
 
         <md-input-container flex>
-            <label>Issue description (required)</label>
-            <textarea ng-model="issue.description" md-maxlength="500" rows="5"></textarea>
+            <label>Issue description *</label>
+            <textarea ng-model="issue.description" md-maxlength="500" rows="3"></textarea>
         </md-input-container>
 
         <md-input-container flex>
-            <label>Time Expected (required)</label>
+            <label>Time expected (required)</label>
             <input ng-model="issue.time_expected" type="number">
         </md-input-container>
+
+        <md-select placeholder="Choose a priority" ng-model="issue.priority" required>
+            <md-option ng-repeat="priority in priorities" value="{{priority}}">{{priority}}</md-option>
+        </md-select>
+
+        <md-select placeholder="Choose a type" ng-model="issue.type" required>
+            <md-option ng-repeat="type in types" value="{{type}}">{{type}}</md-option>
+        </md-select>
 
         <br />
 
