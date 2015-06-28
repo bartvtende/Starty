@@ -1,4 +1,6 @@
-<h1>Login</h1>
+<h1>Starty</h1>
+
+<h4>Login</h4>
 
 <form name="LoginForm" ng-submit="login(user)" novalidate>
     <md-input-container>
@@ -12,6 +14,7 @@
     </md-input-container>
 
     <p><small>Don't have an account? <a ui-sref="auth.register">Register!</a></small></p>
+    <p><small>Or did you forget your password? <a ui-sref="auth.forgot-password">Reset your password!</a></small></p>
 
-    <md-button class="md-raised md-primary">Login</md-button>
+    <md-button class="md-raised md-primary" ng-disabled="LoginForm.$invalid">Login</md-button>
 </form>

@@ -18,11 +18,15 @@ angular
         'ngTouch',
         'ngMaterial',
         'ngMdIcons',
-        'satellizer'
+        'satellizer',
+        'angular-loading-bar'
     ])
     .run(function ($state, $rootScope) {
         $rootScope.$state = $state;
     })
+    .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+        cfpLoadingBarProvider.includeSpinner = false;
+    }])
     .constant('urls', {
         API: 'http://localhost:1337/api',
         homepage: 'http://localhost:9000/#'

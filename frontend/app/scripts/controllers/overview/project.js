@@ -49,10 +49,24 @@ angular.module('startyApp')
         };
 
         $scope.createProject = function (name, description) {
+            var shortcode = slug(name);
+
+            for (var i = 0; i < $scope.projects.length; i++) {
+                if ($scope.projects[i].shortcode == shortcode) {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Project with the same name already exists, try another name!')
+                            .position('bottom left')
+                            .hideDelay(5000)
+                    );
+                    return false;
+                }
+            };
+
             var newProject = {
                 name: name,
                 description: description,
-                shortcode: slug(name)
+                shortcode: shortcode
             };
 
             ProjectData.createProject(newProject)

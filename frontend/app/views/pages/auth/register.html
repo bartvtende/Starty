@@ -3,17 +3,17 @@
 <form name="RegisterForm" ng-submit="register(user)" novalidate>
     <md-input-container>
         <md-icon md-svg-src="images/icons/ic_person_24px.svg" class="name"></md-icon>
-        <input ng-model="user.name" type="name" placeholder="Name (required)" ng-required="true" autofocus>
+        <input ng-model="user.name" type="name" placeholder="Name *" ng-minlength="3" ng-required="true" autofocus>
     </md-input-container>
 
     <md-input-container>
         <md-icon md-svg-src="images/icons/ic_email_24px.svg" class="email"></md-icon>
-        <input ng-model="user.email" type="email" placeholder="Email (required)" ng-required="true">
+        <input ng-model="user.email" type="email" placeholder="Email *" ng-required="true">
     </md-input-container>
 
     <md-input-container>
         <md-icon md-svg-src="images/icons/ic_lock_24px.svg" class="password"></md-icon>
-        <input ng-model="user.password" type="password" placeholder="Password (required)" ng-required="true" required>
+        <input ng-model="user.password" type="password" placeholder="Password *" ng-required="true" required>
     </md-input-container>
 
     <p><small>Already have an account? <a ui-sref="auth.login">Login!</a></small></p>

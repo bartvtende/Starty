@@ -8,7 +8,21 @@
  * Controller of the startyApp
  */
 angular.module('startyApp')
-    .controller('JoinCtrl', function ($scope, $state, $mdToast, JoinOrganizationData) {
+    .controller('JoinCtrl', function ($scope, $state, $mdToast, JoinOrganizationData, UserData) {
+
+        $scope.$watch('$viewContentLoaded', function () {
+            $scope.checkUser();
+        });
+
+        $scope.checkUser = function() {
+            UserData.getUser()
+                .success(function(user) {
+                    var user = user.result;
+                    if (user.organization_id != null) {
+                        $state.go('overview.overview');
+                    }
+                });
+        };
 
         $scope.createOrganization = function (name) {
             JoinOrganizationData.joinOrganization({name: name})

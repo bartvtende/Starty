@@ -6,42 +6,44 @@
     </md-toolbar>
 
     <md-content layout="column" flex class="md-padding">
-        <md-input-container flex>
-            <label>Issue ID</label>
-            <input ng-model="issue.id" disabled>
-        </md-input-container>
+        <form name="IssueUpdateForm" ng-submit="editIssue(issue)" novalidate>
+            <md-input-container flex>
+                <label>Issue ID</label>
+                <input ng-model="issue.id" ng-minlength="4" ng-maxlength="6" disabled ng-required="true">
+            </md-input-container>
 
-        <md-input-container flex>
-            <label>Issue name (required)</label>
-            <input ng-model="issue.title">
-        </md-input-container>
+            <md-input-container flex>
+                <label>Issue name *</label>
+                <input ng-model="issue.title" ng-required="true">
+            </md-input-container>
 
-        <md-input-container flex>
-            <label>Issue description (required)</label>
-            <textarea ng-model="issue.description" md-maxlength="500" rows="3"></textarea>
-        </md-input-container>
+            <md-input-container flex>
+                <label>Issue description *</label>
+                <textarea ng-model="issue.description" md-maxlength="500" rows="3" ng-required="true"></textarea>
+            </md-input-container>
 
-        <md-input-container flex>
-            <label>Time expected (required)</label>
-            <input ng-model="issue.time_expected" type="number">
-        </md-input-container>
+            <md-input-container flex>
+                <label>Time expected *</label>
+                <input ng-model="issue.time_expected" type="number" min="0" max="10000" ng-required="true">
+            </md-input-container>
 
-        <md-select placeholder="Choose a status" ng-model="issue.status" required>
-            <md-option ng-repeat="status in statusses" value="{{status}}">{{status}}</md-option>
-        </md-select>
+            <md-select placeholder="Choose a status" ng-model="issue.status" ng-required="true">
+                <md-option ng-repeat="status in statusses" value="{{status}}">{{status}}</md-option>
+            </md-select>
 
-        <md-select placeholder="Choose a priority" ng-model="issue.priority" required>
-            <md-option ng-repeat="priority in priorities" value="{{priority}}">{{priority}}</md-option>
-        </md-select>
+            <md-select placeholder="Choose a priority" ng-model="issue.priority" ng-required="true">
+                <md-option ng-repeat="priority in priorities" value="{{priority}}">{{priority}}</md-option>
+            </md-select>
 
-        <md-select placeholder="Choose a type" ng-model="issue.type" required>
-            <md-option ng-repeat="type in types" value="{{type}}">{{type}}</md-option>
-        </md-select>
+            <md-select placeholder="Choose a type" ng-model="issue.type" ng-required="true">
+                <md-option ng-repeat="type in types" value="{{type}}">{{type}}</md-option>
+            </md-select>
 
-        <br />
+            <br />
 
-        <section layout="row" layout-sm="column" layout-align="end end">
-            <md-button class="md-raised md-primary" ng-click="editIssue(issue)">Update!</md-button>
-        </section>
+            <section layout="row" layout-sm="column" layout-align="end end">
+                <md-button class="md-raised md-primary" ng-disabled="IssueUpdateForm.$invalid">Update!</md-button>
+            </section>
+        </form>
     </md-content>
 </div>

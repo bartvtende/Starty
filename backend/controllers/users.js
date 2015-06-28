@@ -146,7 +146,7 @@ router.post('/forgot-password', function(req, res) {
 
                         user.save()
                             .then(function() {
-                                res.json({
+                                return res.json({
                                     error: '',
                                     result: 'Your password has been changed!'
                                 })

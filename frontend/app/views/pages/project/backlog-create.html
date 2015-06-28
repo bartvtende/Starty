@@ -6,34 +6,36 @@
     </md-toolbar>
 
     <md-content layout="column" flex class="md-padding">
-        <md-input-container flex>
-            <label>Backlog ID *</label>
-            <input ng-model="backlog.id">
-        </md-input-container>
+        <form name="BacklogCreateForm" ng-submit="createBacklogItem(backlog)" novalidate>
+            <md-input-container flex>
+                <label>Backlog ID *</label>
+                <input ng-model="backlog.id" ng-minlength="4" ng-maxlength="6" ng-required="true">
+            </md-input-container>
 
-        <md-input-container flex>
-            <label>Backlog name *</label>
-            <input ng-model="backlog.title">
-        </md-input-container>
+            <md-input-container flex>
+                <label>Backlog name *</label>
+                <input ng-model="backlog.title" ng-required="true">
+            </md-input-container>
 
-        <md-input-container flex>
-            <label>Backlog description *</label>
-            <textarea ng-model="backlog.description" md-maxlength="500" rows="3"></textarea>
-        </md-input-container>
+            <md-input-container flex>
+                <label>Backlog description *</label>
+                <textarea ng-model="backlog.description" md-maxlength="500" rows="3" ng-required="true"></textarea>
+            </md-input-container>
 
-        <md-input-container flex>
-            <label>Time expected *</label>
-            <input ng-model="backlog.time_expected" type="number">
-        </md-input-container>
+            <md-input-container flex>
+                <label>Time expected *</label>
+                <input ng-model="backlog.time_expected" type="number" min="0" max="10000" ng-required="true">
+            </md-input-container>
 
-        <md-select placeholder="Choose a status" ng-model="backlog.status" required>
-            <md-option ng-repeat="status in statusses" value="{{status}}">{{status}}</md-option>
-        </md-select>
+            <md-select placeholder="Choose a status" ng-model="backlog.status" ng-required="true">
+                <md-option ng-repeat="status in statusses" value="{{status}}">{{status}}</md-option>
+            </md-select>
 
-        <br />
+            <br />
 
-        <section layout="row" layout-sm="column" layout-align="end end">
-            <md-button class="md-raised md-primary" ng-click="createBacklogItem(backlog)">Create backlog!</md-button>
-        </section>
+            <section layout="row" layout-sm="column" layout-align="end end">
+                <md-button class="md-raised md-primary" ng-disabled="BacklogCreateForm.$invalid">Create backlog!</md-button>
+            </section>
+        </form>
     </md-content>
 </div>

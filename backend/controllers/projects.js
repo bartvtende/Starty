@@ -14,7 +14,7 @@ var ProjectUser = models.projectuser;
  */
 router.get('/', auth.isAuthenticated, function(req, res){
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
@@ -46,7 +46,7 @@ router.get('/:shortcode', auth.isAuthenticated, function(req, res) {
     var shortcode = req.params.shortcode;
 
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
@@ -78,7 +78,7 @@ router.get('/:shortcode', auth.isAuthenticated, function(req, res) {
  */
 router.post('/', auth.isAuthenticated, function(req, res) {
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
@@ -104,14 +104,14 @@ router.put('/', auth.isAuthenticated, function(req, res) {
     var projectId = req.body.project_id;
 
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
     }
 
     if (projectId == null) {
-        res.json({
+        return res.json({
             error: 'You didn\'t specify a project!',
             result: ''
         });
@@ -144,7 +144,7 @@ router.delete('/:shortcode', auth.isAuthenticated, function(req, res) {
     var shortcode = req.params.shortcode;
 
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
@@ -186,7 +186,7 @@ router.delete('/:shortcode', auth.isAuthenticated, function(req, res) {
  */
 router.post('/join', auth.isAuthenticated, function(req, res) {
     if (req.user.organization_id == 0 || req.user.organization_id == null) {
-        res.json({
+        return res.json({
             error: 'You are not a member of an organization!',
             result: ''
         });
