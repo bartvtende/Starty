@@ -24,8 +24,7 @@ var itemsSchema = new Schema({
     backlog: [],
     issues: [],
     status: String,
-    completedAt: Date,
-    order: Number
+    completedAt: Date
 }, { versionKey: false });
 
 sprintsSchema.plugin(timestamps);
