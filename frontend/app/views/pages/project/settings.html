@@ -16,7 +16,7 @@
         <div ng-if="repositories">
             <form name="RepositoryForm" ng-submit="createWebhook(repo)" novalidate>
                 <md-select placeholder="Choose a repository" ng-model="repo" ng-required="true">
-                    <md-option ng-repeat="repository in repositories track by $index" value="{{repository.name}}">{{repository.name}}
+                    <md-option ng-repeat="repository in repositories" value="{{repository.name}}">{{repository.name}}
                     </md-option>
                 </md-select>
 

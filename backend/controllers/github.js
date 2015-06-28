@@ -3,6 +3,7 @@ var router = express.Router();
 
 var models = require('../models/index');
 var settings = require('../config/settings');
+var Messages = require('../models/messages');
 var auth = require('./auth');
 
 var requestify = require('requestify');
@@ -128,9 +129,28 @@ router.post('/:projectId/webhook', auth.isAuthenticated, function(req, res) {
 
 router.post('/:projectId/webhook/event', function(req, res) {
     console.log(res.body);
-    return res.json({
-        error: '',
-        result: 'Yay!'
+    var message = 'New commit by ' + req.body.sender.login + ': ';
+
+    var newMessage = {
+        projectId: req.params.projectId,
+        message: message,
+        providerId: 'github'
+    };
+
+    var message = new Messages(newMessage);
+
+    message.save(function(err, message) {
+        if (err) {
+            return res.json({
+                error: '',
+                result: message
+            });
+        }
+
+        return res.json({
+            error: '',
+            result: message
+        })
     });
 });
 
