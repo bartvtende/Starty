@@ -15,8 +15,8 @@
         <md-list-item class="md-3-line">
           <img ng-src="images/icons/ic_person_24px.svg" class="md-avatar" alt="{{message.name}}" />
           <div class="md-list-item-text message-item" layout="column">
-            <h3>{{message.name || 'Deleted user'}} <small>- {{message.createdAt | ago}}</small></h3>
-            <p>{{message.message}}</p>
+            <h3>{{message.name || 'Deleted user'}} <small>- <span time="{{message.createdAt}}"></span></small></h3>
+            <p ng-bind-html="checkTags(message.message)"></p>
           </div>
         </md-list-item>
       </div>

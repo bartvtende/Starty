@@ -9,7 +9,7 @@
  */
 var socky = io.connect('http://localhost:1338', {'force new connection': true});
 angular.module('startyApp')
-    .controller('MessageCtrl', function ($scope, MessageData, $mdToast, ProjectData, $stateParams, $auth) {
+    .controller('MessageCtrl', function ($scope, MessageData, $mdToast, ProjectData, $stateParams, $auth, $sce) {
 
         $scope.selectedChat = 'Chatting with all';
         $scope.personId = null;
@@ -23,6 +23,16 @@ angular.module('startyApp')
                 }
             });
         });
+
+        $scope.checkTags = function(message) {
+            if (!message) return message;
+
+            var replacePattern = /(^|\s)#(\w*[a-zA-Z_]+\w*)/gim;
+
+            var replacedText = message.replace(replacePattern, '$1<a href="#/' + $scope.project.shortcode + '/backlog/$2" class="tag">#$2</a>');
+
+            return $sce.trustAsHtml(replacedText);
+        };
 
         $scope.connectUsers = function () {
             for (var i = 0; i < $scope.messages.length; i++) {

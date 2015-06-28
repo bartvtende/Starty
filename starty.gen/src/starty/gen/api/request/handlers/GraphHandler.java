@@ -1,6 +1,9 @@
 package starty.gen.api.request.handlers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import starty.gen.api.model.Graph;
 import starty.gen.api.model.ScrumboardItem;
@@ -17,7 +20,7 @@ public class GraphHandler extends Handler {
 	private int sprintDuration;
 	private double taskDaysAssigned; 
 	private int workDays;
-	private double taskDaysCompleted = 28; 
+	private double taskDaysCompleted; 
 	
 	public GraphHandler(){
 		super();
@@ -84,9 +87,59 @@ public class GraphHandler extends Handler {
 	 * @return int[]
 	 */
 	private double[] calculateActualWorkload(Sprint sprint){
-		double[] actual = new double[0];
+		double[] actual = new double[workDays + 1];
+		System.out.println("workdays= " + workDays);
+		ScrumboardList cl = super.getListDao().findCompletedList(sprint);
+		Calendar day = sprint.getStartAt();
+		if(cl != null){
+			boolean currentDayPassed = false;
+			boolean endPast = false;
+			double weekendWork = 0.0; 
+			int i = 1;
+			double total = this.taskDaysAssigned;
+			System.out.println("startday = " + day.getTime());
+			actual[0] = total;
+			while (currentDayPassed == false && endPast == false ){
+				String today = super.getCalendarParser().parseDateToISOString(Calendar.getInstance());
+				Calendar d = super.getCalendarParser().parseIsoStringToCalendar(today);
+				
+				//System.out.println("current " + today + d.getTime());
+				ArrayList<Object> items = super.getItemsDao().getItemsbyListIdAndDate(cl, day);
+				System.out.println(items.size() + " items size in handler");
+				
+				if(super.getCalendarParser().checkIfWeekend(day)){
+					System.out.println("weekend???");
+					weekendWork += this.calculateCompletedWorkTime(items);
+					if(i == workDays){
+						actual[i] = total - weekendWork;
+						weekendWork = 0;
+					}
+				}
+				else if (super.getCalendarParser().checkIfMonday(d)){
+					actual[i] = total - (this.calculateCompletedWorkTime(items));
+					System.out.println("calc1 " + actual[i]);
+					weekendWork = 0.0;
+					i++;
+					System.out.println("monday");
+				
+				}else if(i <= workDays + 1){
+					actual[i] =  total - this.calculateCompletedWorkTime(items);
+					System.out.println("calc2 " + actual[i]);
+					i++;
+				}
+				
+				System.out.println(i + " " + total);
+				day.add(Calendar.DATE, 1);
+				System.out.println("day = " + day.getTime());
+				//currentDaPassed = super.getCalendarParser().checkIfDatePassed(day, d);
+				endPast = super.getCalendarParser().checkIfDatePassed(day, sprint.getEndAt());
+			}
+		}
+		
+		
 		return actual;
 	}
+	
 	
 	/**
 	 * convert idealWorkload and actualWorkload to graphData
@@ -100,7 +153,8 @@ public class GraphHandler extends Handler {
 		
 		for(int d = 0; d <= workDays; d++){
 			double actual = 0; 
-			if(d < actualWorkload.length){
+			if(d <= actualWorkload.length){
+				//System.out.println("check graphdat" + d + " " + actualWorkload.length  );
 				actual = actualWorkload[d]; 
 			}
 			graphData[d][0] = d;
@@ -140,18 +194,39 @@ public class GraphHandler extends Handler {
 	 */
 	private double getTasksDaysAssignedFromDB(Sprint sprint){
 		ArrayList<Object> lists = super.getListDao().findListsBySprint(sprint);
+		//System.out.println(lists.size());
 		double daysAssigned = 0.0;
 		
 		for(Object l : lists ){
 			ScrumboardList list = (ScrumboardList) l;
 			ArrayList<Object> items = super.getItemsDao().getItemsbyListId(list);
-			
+			//System.out.println(items.size() + "amount");
 			for(Object i : items ){
 				ScrumboardItem item = (ScrumboardItem) i;
+				//System.out.println("item " + item.getExpectedTime());
 				daysAssigned += item.getExpectedTime();
 			}
 		}
 		return daysAssigned;
+	}
+	
+	/**
+	 * calculate completed work time
+	 * @param items
+	 * @return double
+	 */
+	private double calculateCompletedWorkTime(ArrayList<Object> items){
+		double completedWork = 0.0;
+		if(items.size() > 0){
+			for(Object i  : items){
+				ScrumboardItem item = (ScrumboardItem) i;
+				System.out.println(" expectedTime " + item.getExpectedTime());
+				completedWork += item.getExpectedTime();
+			}
+		}else{
+			System.out.println("null dammit " + items.size());
+		}
+		return completedWork;
 	}
 	
 	/** 

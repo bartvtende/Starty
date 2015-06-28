@@ -38,6 +38,25 @@ public class ScrumboardListsDao extends MongoDao {
 	}
 	
 	/**
+	 * get completed list for sprint
+	 * @param sprint
+	 * @return ScrumboardList
+	 */
+	public ScrumboardList findCompletedList(Sprint sprint){
+		ScrumboardList list = null;
+		BasicDBObject query = new BasicDBObject();
+			query.put("sprintid", sprint.getId());
+			query.put("completed", true);
+		ArrayList<Object> lists = this.executeQuery(query);
+		if(lists.size() == 1){
+			list = (ScrumboardList) lists.get(0);
+		}else{
+			System.out.println("completed list 404");
+		}
+		return list;
+	}
+	
+	/**
 	 * execut the query and get the data
 	 * @return ArrayList<Object
 	 */
@@ -67,14 +86,15 @@ public class ScrumboardListsDao extends MongoDao {
 	@SuppressWarnings("rawtypes")
 	@Override
 	protected Object parse(DBObject obj) {
+		//System.out.println("list " + obj );
 		ScrumboardList list = new ScrumboardList();
 		Map map = obj.toMap();
 		if(map.size() > 0 && this.sprint != null){
 			list.setId(map.get("_id").toString());
 			list.setSprint(this.sprint);
 			list.setName(map.get("name").toString());
-			list.setCreatedAt(super.getCalendarParser().parseStringToCalendar(map.get("createdAt").toString()));
-			list.setUpdatedAt(super.getCalendarParser().parseStringToCalendar(map.get("updatedAt").toString()));
+			list.setCreatedAt(super.getCalendarParser().parseIsoDateString(map.get("createdAt").toString()));
+			list.setUpdatedAt(super.getCalendarParser().parseIsoDateString(map.get("updatedAt").toString()));
 			list.setCompleted(Boolean.parseBoolean(map.get("completed").toString()));
 		}
 		return list;

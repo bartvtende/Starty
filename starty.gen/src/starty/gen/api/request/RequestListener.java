@@ -12,7 +12,7 @@ import starty.gen.api.request.handlers.GraphHandler;
 public class RequestListener {
 	
 	@GET
-	@Path("graph/{sprintId}")
+	@Path("/graph/{sprintId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getGraph(@PathParam("sprintId") String sprintId){
 		GraphHandler handler = new GraphHandler();

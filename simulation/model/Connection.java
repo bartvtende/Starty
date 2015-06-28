@@ -94,31 +94,32 @@ public class Connection {
 		return httppost;
 	}
 	
-	public HttpPost CreatePrivateMessagePost(String token, int senderId, int receiverId, int projectId, String Message){
+	
+	public HttpPost CreatePrivateMessagePost(String token, int receiverId, int projectId, String message, String user){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-		formparams.add(new BasicNameValuePair("senderId", new Integer(senderId).toString()));
 		formparams.add(new BasicNameValuePair("receiverId", new Integer(receiverId).toString()));
-		formparams.add(new BasicNameValuePair("projectId", new Integer(projectId).toString()));
-		formparams.add(new BasicNameValuePair("Message", Message));
+		formparams.add(new BasicNameValuePair("message", message));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
-		HttpPost httppost = new HttpPost(address+"/messages");
+		HttpPost httppost = new HttpPost(address+"/messages/"+projectId+"/"+receiverId);
 		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
 		httppost.setEntity(entity);
 		return httppost;
 	}
 	
-	public HttpPost CreateGlobalMessagePost(String token, int senderId, int projectId, String Message){
+	public HttpPost CreateGlobalMessagePost(String token, int projectId, String Message, String user){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-		formparams.add(new BasicNameValuePair("senderId", new Integer(senderId).toString()));
-		formparams.add(new BasicNameValuePair("projectId", new Integer(projectId).toString()));
 		formparams.add(new BasicNameValuePair("Message", Message));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
-		HttpPost httppost = new HttpPost(address+"/messages");
+		HttpPost httppost = new HttpPost(address+"/messages/"+projectId);
 		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
 		httppost.setEntity(entity);
 		return httppost;
 	}
@@ -129,6 +130,42 @@ public class Connection {
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
 		HttpPost httppost = new HttpPost(address+"/organizations/invite");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
+		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
+	public HttpPost CreateItemPost(String token, String model, String user, String item){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("item", item));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/items/"+model);
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
+		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
+	public HttpPost CreateItemUpdatePost(String token, String user, String model, String id, String projectId, 
+			String title, String status, String description, String timeExpected, String priority, String type){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("id", id));
+		formparams.add(new BasicNameValuePair("project_id", projectId));
+		formparams.add(new BasicNameValuePair("title", title));
+		formparams.add(new BasicNameValuePair("status", status));
+		formparams.add(new BasicNameValuePair("decription", description));
+		formparams.add(new BasicNameValuePair("time_expected", timeExpected));
+		formparams.add(new BasicNameValuePair("priority", priority));
+		formparams.add(new BasicNameValuePair("type", type));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/items/"+model);
 		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
 		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);

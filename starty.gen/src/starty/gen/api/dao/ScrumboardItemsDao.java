@@ -1,6 +1,8 @@
 package starty.gen.api.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import starty.gen.api.model.ScrumboardItem;
@@ -9,6 +11,7 @@ import starty.gen.api.model.ScrumboardList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 
 /**
  * Database access object for all scrumboarditems
@@ -33,8 +36,25 @@ public class ScrumboardItemsDao extends MongoDao {
 	public ArrayList<Object> getItemsbyListId(ScrumboardList list){
 		this.list = list;
 		BasicDBObject query = new BasicDBObject();
-			query.put("listid", list.getId());
+			query.put("listId", list.getId());
 		return this.executeQuery(query);
+	}
+	
+	/**
+	 * get items by list id and date
+	 * @param list
+	 * @param date
+	 * @return ArrayList<object>
+	 */
+	public ArrayList<Object> getItemsbyListIdAndDate(ScrumboardList list, Calendar d){
+		this.list = list;
+		BasicDBObject query = new BasicDBObject();
+			query.put("listId", list.getId());
+			query.put("completedAt", new BasicDBObject("$lte", d.getTime()));
+			//query.put("completedAt", new BasicDBObject("$lt", d2.getTime()));
+			//ArrayList<Object> items = this.executeQuery(query);
+			//System.out.println("tja" + items.size() + " " + query);
+			return this.executeQuery(query);
 	}
 
 	/**
@@ -66,9 +86,11 @@ public class ScrumboardItemsDao extends MongoDao {
 	@SuppressWarnings("rawtypes")
 	@Override
 	protected Object parse(DBObject obj) {
+		//System.out.println(obj + " item");
 		ScrumboardItem item = new ScrumboardItem();
 		Map map = obj.toMap();
 		if(map.size() > 0 && this.list != null){
+			//System.out.println("item " + obj);
 			item.setId(map.get("_id").toString());
 			item.setList(this.list);
 			item.setShortCode(map.get("shortcode").toString());
@@ -77,7 +99,7 @@ public class ScrumboardItemsDao extends MongoDao {
 			item.setStatus(map.get("status").toString());
 			item.setExpectedTime(Double.parseDouble(map.get("expectedTime").toString()));
 			if(!map.get("completedAt").equals("")){
-				item.setCompletedAt(super.getCalendarParser().parseStringToCalendar(map.get("completedAt").toString()));
+				item.setCompletedAt(super.getCalendarParser().parseIsoDateString(map.get("completedAt").toString()));
 			}
 		}
 		return item;

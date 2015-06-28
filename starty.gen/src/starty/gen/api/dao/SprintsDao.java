@@ -86,14 +86,19 @@ public class SprintsDao extends MongoDao {
 	@Override
 	protected Object parse(DBObject obj){
 		Sprint sprint = new Sprint();
+		//System.out.println(obj);
 		Map map = obj.toMap();
-		Projects p = this.projectController.retreiveProjectById(Integer.parseInt(map.get("projectid").toString()));
+		Projects p = this.projectController.retreiveProjectById(Integer.parseInt(map.get("projectId").toString()));
 		if(map.size() > 0 && p != null){
 			sprint.setId(map.get("_id").toString());
 			sprint.setProject(p);
 			sprint.setName(map.get("name").toString());
-			sprint.setStartAt(super.getCalendarParser().parseStringToCalendar(map.get("startAt").toString()));
-			sprint.setEndAt(super.getCalendarParser().parseStringToCalendar(map.get("endAt").toString()));
+			//sprint.setStartAt(super.getCalendarParser().parseStringToCalendar(map.get("startAt").toString()));
+			//System.out.println("sprinDaoparse: " + map.get("startAt").toString());
+			sprint.setStartAt(super.getCalendarParser().parseIsoDateString(map.get("startAt").toString()));
+			//sprint.setEndAt(super.getCalendarParser().parseStringToCalendar(map.get("endAt").toString()));
+			sprint.setEndAt(super.getCalendarParser().parseIsoDateString(map.get("endAt").toString()));
+			
 		}else{
 			System.out.println("404");
 		}
