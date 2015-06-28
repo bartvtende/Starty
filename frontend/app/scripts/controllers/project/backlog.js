@@ -134,7 +134,7 @@ angular.module('startyApp')
 
     })
 
-    .controller('BacklogDetailCtrl', function ($scope, $stateParams, BacklogData, $mdToast) {
+    .controller('BacklogDetailCtrl', function ($scope, $stateParams, $state, BacklogData, $mdToast) {
         $scope.backlogId = $stateParams.id;
 
         $scope.$watch('$viewContentLoaded', function () {
@@ -152,6 +152,9 @@ angular.module('startyApp')
             if ($scope.project.id != null && $scope.backlogId != null) {
                 BacklogData.getBacklogItem($scope.project.id, $scope.backlogId)
                     .success(function (item) {
+                        if (item.result == null || item.result == '') {
+                            return $state.go('project.issues-detail', {id: $scope.backlogId});
+                        }
                         $scope.backlog = item.result.item;
                         $scope.user = item.result.user;
                     })

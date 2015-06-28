@@ -12,6 +12,11 @@ body {
   margin: 0;
 }
 
+a.tag {
+    cursor: pointer;
+    color: #0040D0;
+}
+
 #loading-bar .bar {
     background: #000 !important;
 }

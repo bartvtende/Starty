@@ -136,7 +136,7 @@ angular.module('startyApp')
         };
     })
 
-    .controller('IssuesDetailCtrl', function ($scope, $stateParams, IssuesData, $mdToast) {
+    .controller('IssuesDetailCtrl', function ($scope, $state, $stateParams, IssuesData, $mdToast) {
         $scope.issueId = $stateParams.id;
 
         $scope.$watch('$viewContentLoaded', function () {
@@ -154,6 +154,15 @@ angular.module('startyApp')
             if ($scope.project.id != null && $scope.issueId != null) {
                 IssuesData.getIssue($scope.project.id, $scope.issueId)
                     .success(function (issue) {
+                        if (issue.result == null || issue.result == '') {
+                            $state.go('project.messages');
+                            $mdToast.show(
+                                $mdToast.simple()
+                                    .content('Issue or backlog item doesn\'t exist!')
+                                    .position('bottom left')
+                                    .hideDelay(5000)
+                            );
+                        }
                         $scope.issue = issue.result.item;
                         $scope.user = issue.result.user;
                     })

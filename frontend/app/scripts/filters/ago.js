@@ -13,7 +13,40 @@ angular.module('startyApp')
         return function (isodate) {
             return moment(isodate).fromNow();
         };
-    })
+    }).directive('time',
+    [
+        '$timeout',
+        '$filter',
+        function ($timeout, $filter) {
+
+            return function (scope, element, attrs) {
+                var time = attrs.time;
+                var intervalLength = 1000 * 10; // 10 seconds
+                var filter = $filter('ago');
+                var timeoutId;
+
+                function updateTime() {
+                    element.text(filter(time));
+                }
+
+                function updateLater() {
+                    timeoutId = $timeout(function () {
+                        updateTime();
+                        updateLater();
+                    }, intervalLength);
+                }
+
+                element.bind('$destroy', function () {
+                    $timeout.cancel(timeoutId);
+                });
+
+                updateTime();
+                updateLater();
+            };
+
+        }
+    ]
+)
     .filter('time', function () {
         return function (isodate) {
             var date = new Date(isodate);
