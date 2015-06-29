@@ -61,13 +61,17 @@
       </div>
 
       <md-list>
-        <md-list-item class="md-3-line" ng-repeat="(itemKey, item) in list.items">
+        <md-list-item class="md-3-line" ng-repeat="(itemKey, item) in list.items" ng-mouseover="extended = true" ng-mouseleave="extended = false">
           <md-button aria-label="left" class="md-fab md-mini" ng-click="itemEdit($event, {{listKey}}, {{itemKey}})">
             <md-icon md-svg-src="images/icons/ic_edit_24px.svg" style="color: white;"></md-icon>
           </md-button>
           <div class="md-list-item-text">
             <h3>{{ item.title }}</h3>
-            <p>{{ item.description }}</p>
+            <h3>{{ item.description }}</h3>
+            <div ng-show="extended">
+              <p>Shortcode: {{item.shortcode}}</p>
+              <p>Users: <md-chip ng-repeat="user in item.assignedUsers">{{user.name}}</md-chip></p>
+            </div>
           </div>
         </md-list-item>
       </md-list>
