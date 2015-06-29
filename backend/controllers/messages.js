@@ -63,7 +63,7 @@ router.post('/:projectId/:receiverId', auth.isAuthenticated, function(req, res) 
     var newMessage = {
         projectId: req.params.projectId,
         message: req.body.message,
-        senderId: req.user._id,
+        senderId: req.user.id,
         receiverId: req.params.receiverId
     };
 
@@ -88,7 +88,7 @@ router.post('/:projectId', auth.isAuthenticated, function(req, res) {
     var newMessage = {
         projectId: req.params.projectId,
         message: req.body.message,
-        senderId: req.user._id
+        senderId: req.user.id
     };
 
     var message = new Messages(newMessage);
