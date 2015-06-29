@@ -26,11 +26,14 @@ import model.User;
 public class StartSimulation {
 
 	private static LoremIpsum lorem = new LoremIpsum();
-	private final static int ORG_AMOUNT = 1;
-	private final static int PROJ_PER_ORG_AMOUNT = 10;
-	private final static int USER_PER_PROJ_AMOUNT = 100;
-	private final static int ISSUE_PER_PROJ_AMOUNT = 100;
-	private final static int BACKLOG_PER_PROJ_AMOUNT = 100;
+	private final static int ORG_AMOUNT = 1; //default 10
+	private final static int PROJ_PER_ORG_AMOUNT = 1; //default 10
+	private final static int USER_PER_PROJ_AMOUNT = 10; //default 100
+	private final static int ISSUE_PER_PROJ_AMOUNT = 100; //default 100
+	private final static int BACKLOG_PER_PROJ_AMOUNT = 100; //default 100
+	private final static int SPRINT_PER_PROJ_AMOUNT = 2; //default 2
+	private final static int LIST_PER_SPRINT_AMOUNT = 5; //default 5
+	private final static int ITEM_PER_LIST_AMOUNT = 10; //default 10
 	//total # of users = ORG_AMOUNT * PROJ_PER_ORG_AMOUNT * USER_PER_PROJ_AMOUNT + ORG_AMOUNT;
 	//the '+ ORG_AMOUNT' is because there is a separate user created as the creator of an organization.
 	
@@ -53,7 +56,7 @@ public class StartSimulation {
 		String rs = Generator.getRandomString(4);
 		//le hardcode ;)
 		for (int i = 0; i < ORG_AMOUNT; i++) {
-			User creator = new User("test", "test", "test" + rs + i + "@test.io");
+			User creator = new User("test-creator", "test", "test" + rs + i + "@test.io");
 			
 			String userJson = null;
 			token = null;
@@ -136,7 +139,7 @@ public class StartSimulation {
 					for(int k=0;k<USER_PER_PROJ_AMOUNT;k++){
 						String newUserMail = null;
 						int newUserId = 0;
-						response = con.ExecuteHttpRequestBase(con.CreateAddUserPost("org-employee"+rs+i+j+k+"@test.io", "test", "test"));
+						response = con.ExecuteHttpRequestBase(con.CreateAddUserPost("org-employee"+rs+i+j+k+"@test.io", "test", "test"+k));
 						entity = response.getEntity();
 						String newUserString = null;
 						try {
@@ -226,7 +229,74 @@ public class StartSimulation {
 							e.printStackTrace();
 						}
 					}
-					
+					for(int k=0;k<SPRINT_PER_PROJ_AMOUNT;k++){
+						String sprintId = null;
+						//create backlog
+						response = con.ExecuteHttpRequestBase(con.CreateSprintPost(token, projectId, "sprint"+i+j+k));
+						entity = response.getEntity();
+						try {
+							entityString = EntityUtils.toString(entity);
+							System.out.println("ES Sprint: "+entityString);
+							JsonElement jsonElement = jsonParser.parse(entityString);
+							JsonObject jsonObject = jsonElement.getAsJsonObject();
+							JsonObject sprint = jsonObject.get("result").getAsJsonObject();
+							sprintId = sprint.get("_id").getAsString();
+						} catch (ParseException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							response.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						for(int l=0;l<LIST_PER_SPRINT_AMOUNT;l++){
+							String listId = null;
+							//create backlog
+							response = con.ExecuteHttpRequestBase(con.CreateListPost(token, sprintId, "spr"+rs+i+j+k+l, new Integer(l).toString(), "true"));
+							entity = response.getEntity();
+							try {
+								entityString = EntityUtils.toString(entity);
+								System.out.println(entityString);
+								JsonElement jsonElement = jsonParser.parse(entityString);
+								JsonObject jsonObject = jsonElement.getAsJsonObject();
+								JsonObject list = jsonObject.get("result").getAsJsonObject();
+								listId = list.get("_id").getAsString();
+								
+							} catch (ParseException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							try {
+								response.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+							for(int m=0;m<ITEM_PER_LIST_AMOUNT;m++){
+								//create backlog
+								response = con.ExecuteHttpRequestBase(con.CreateItemPost(token, listId, "i"+rs+i+j+k+l+m, "item"+rs+i+j+k+l+m, lorem.words(15), "completed", new Integer(4).toString()));
+								entity = response.getEntity();
+								try {
+									entityString = EntityUtils.toString(entity);
+									System.out.println("ITEM ES: "+entityString);
+									
+								} catch (ParseException | IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								try {
+									response.close();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
+							}
+						}
+					}
 					projectUserList.put(projectId, users);
 					
 				}
