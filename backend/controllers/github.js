@@ -128,7 +128,6 @@ router.post('/:projectId/webhook', auth.isAuthenticated, function(req, res) {
 });
 
 router.post('/:projectId/webhook/event', function(req, res) {
-    console.log(res.body);
     if (req.body.commits != null) {
         var message = 'New commit by ' + req.body.commits[0].author.name + ': ' + req.body.commits[0].message;
     } else {
@@ -138,7 +137,7 @@ router.post('/:projectId/webhook/event', function(req, res) {
     var newMessage = {
         projectId: req.params.projectId,
         message: message,
-        providerId: 'github'
+        providerId: 'GitHub'
     };
 
     var message = new Messages(newMessage);
