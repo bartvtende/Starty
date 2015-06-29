@@ -33,8 +33,8 @@ listsSchema.plugin(timestamps);
 itemsSchema.plugin(timestamps);
 
 var Sprints = mongoose.model('Sprints', sprintsSchema);
-var ScrumboardLists = mongoose.model('ScrumboardLists', listsSchema);
-var ScrumboardItems = mongoose.model('ScrumboardItems', itemsSchema);
+var ScrumboardLists = mongoose.model('Scrumboard_Lists', listsSchema);
+var ScrumboardItems = mongoose.model('Scrumboard_Items', itemsSchema);
 
 module.exports = {
 	Sprints: Sprints,

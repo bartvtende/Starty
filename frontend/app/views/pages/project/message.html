@@ -1,68 +1,75 @@
 <div id="messages" layout="column">
 
-  <md-toolbar class="md-accent">
-    <h2 class="md-toolbar-tools">
-      <span>{{selectedChat}}</span>
-    </h2>
-  </md-toolbar>
+    <md-toolbar class="md-accent">
+        <h2 class="md-toolbar-tools">
+            <span>{{selectedChat}}</span>
+        </h2>
+    </md-toolbar>
 
-  <div layout="row" class="fit-height">
-    <div class="message-list" flex>
-      <div ng-if="messages.length == 0">
-        <p>&nbsp&nbsp&nbsp;There are no messages, go and be social! :)</p>
-      </div>
-      <div ng-repeat="message in messages track by $index">
-        <md-list-item class="md-3-line">
-          <img ng-src="images/icons/ic_person_24px.svg" class="md-avatar" alt="{{message.name}}" />
-          <div class="md-list-item-text message-item" layout="column">
-            <h3>{{message.name || 'Deleted user'}} <small>- <span time="{{message.createdAt}}"></span></small></h3>
-            <p ng-bind-html="checkTags(message.message)"></p>
-          </div>
-        </md-list-item>
-      </div>
-    </div>
-
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2 message-sidebar" md-component-id="right" md-is-locked-open="$mdMedia('gt-sm')">
-      <md-content layout-padding>
-        <md-list-item ng-click="changeChat('', 'all')">
-          <img alt="All" ng-src="images/icons/ic_forum_24px.svg" class="md-avatar" />
-          <p>All</p>
-
-          <div ng-show="allmessages != 0">
-            <md-button class="md-fab md-mini" aria-label="New messages">
-              {{ allmessages }}
-            </md-button>
-          </div>
-        </md-list-item>
-
-        <div ng-if="persons.length != 0">
-          <h4>Persons</h4>
-
-          <md-list-item ng-repeat="person in persons" ng-click="changeChat(person.id, person.name)">
-            <img alt="{{ person.name }}" ng-src="images/icons/ic_person_24px.svg" class="md-avatar" />
-            <p>{{ person.name }}</p>
-
-            <div ng-show="person.messages != 0">
-              <md-button class="md-fab md-mini" aria-label="New messages">
-                {{ person.messages }}
-              </md-button>
+    <div layout="row" class="fit-height">
+        <div class="message-list" flex>
+            <div ng-if="messages.length == 0">
+                <p>&nbsp&nbsp&nbsp;There are no messages, go and be social! :)</p>
             </div>
-          </md-list-item>
+            <div ng-repeat="message in messages track by $index">
+                <div ng-if="message.providerId != null"></div>
+                <md-list-item class="md-3-line">
+                    <img ng-src="images/icons/ic_person_24px.svg" class="md-avatar" alt="{{message.name}}"/>
+
+                    <div class="md-list-item-text message-item" layout="column">
+                        <h3>{{message.name || 'Deleted user'}}
+                            <small>- <span time="{{message.createdAt}}"></span></small>
+                        </h3>
+                        <p ng-bind-html="checkTags(message.message)"></p>
+                    </div>
+                </md-list-item>
+            </div>
         </div>
-      </md-content>
-    </md-sidenav>
-  </div>
 
-  <form ng-submit="addMessage(message)">
-    <div class="message-send" layout="row">
-      <md-input-container flex md-no-float class="message-text">
-        <input ng-model="message" placeholder="Type a message.." autofocus>
-      </md-input-container>
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2 message-sidebar" md-component-id="right"
+                    md-is-locked-open="$mdMedia('gt-sm')">
+            <md-content layout-padding>
+                <md-list-item ng-click="changeChat('', 'all')">
+                    <img alt="All" ng-src="images/icons/ic_forum_24px.svg" class="md-avatar"/>
 
-      <md-button class="md-fab" aria-label="Send message">
-        <md-icon md-svg-src="images/icons/ic_send_24px.svg"></md-icon>
-      </md-button>
+                    <p>All</p>
+
+                    <div ng-show="allmessages != 0">
+                        <md-button class="md-fab md-mini" aria-label="New messages">
+                            {{ allmessages }}
+                        </md-button>
+                    </div>
+                </md-list-item>
+
+                <div ng-if="persons.length != 0">
+                    <h4>Persons</h4>
+
+                    <md-list-item ng-repeat="person in persons" ng-click="changeChat(person.id, person.name)">
+                        <img alt="{{ person.name }}" ng-src="images/icons/ic_person_24px.svg" class="md-avatar"/>
+
+                        <p>{{ person.name }}</p>
+
+                        <div ng-show="person.messages != 0">
+                            <md-button class="md-fab md-mini" aria-label="New messages">
+                                {{ person.messages }}
+                            </md-button>
+                        </div>
+                    </md-list-item>
+                </div>
+            </md-content>
+        </md-sidenav>
     </div>
-  </form>
+
+    <form ng-submit="addMessage(message)">
+        <div class="message-send" layout="row">
+            <md-input-container flex md-no-float class="message-text">
+                <input ng-model="message" placeholder="Type a message.." autofocus>
+            </md-input-container>
+
+            <md-button class="md-fab" aria-label="Send message">
+                <md-icon md-svg-src="images/icons/ic_send_24px.svg"></md-icon>
+            </md-button>
+        </div>
+    </form>
 
 </div>
