@@ -22,7 +22,14 @@
             </md-button>
         </form>
 
-        <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
+        <div ng-show="!showChart">
+            You cannot generate a burn down chart with your data yet!
+        </div>
+
+        <div ng-show="showChart">
+            <div google-chart chart="chartObject" style="{{chart.cssStyle}}"/>
+        </div>
+
 
     </md-content>
 </div>
