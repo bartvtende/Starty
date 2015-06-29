@@ -130,7 +130,7 @@ angular.module('startyApp')
                             image: 'http://placehold.it/50x50',
                             name: name,
                             message: msg.message,
-                            time: msg.createdAt
+                            createdAt: msg.createdAt
                         });
                         window.setTimeout(showNewest, 100);
                     });

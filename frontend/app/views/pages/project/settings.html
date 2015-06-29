@@ -9,9 +9,8 @@
         <h2 class="md-title">GitHub integration</h2>
 
         <div ng-if="!repositories">
-            <md-button class="md-raised md-primary" ng-click="authenticate('github')">Sign in with GitHub</md-button>
+            You need to authenticate with <a ui-sref="overview.settings">GitHub</a> first!
         </div>
-
 
         <div ng-if="repositories">
             <form name="RepositoryForm" ng-submit="createWebhook(repo)" novalidate>
