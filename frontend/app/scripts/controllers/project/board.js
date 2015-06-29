@@ -99,7 +99,7 @@ angular.module('startyApp')
                 </md-input-container> \
                 <md-input-container> \
                     <label>List Completed</label> \
-                    <md-switch class="md-secondary" ng-model="item.completed"></md-switch> \
+                    <md-switch class="md-secondary" ng-model="list.completed"></md-switch> \
                 </md-input-container> \
             </md-content> \
             <div class="md-actions"> \
@@ -158,7 +158,7 @@ angular.module('startyApp')
                 </md-input-container> \
                 <md-input-container> \
                     <label>List Completed</label> \
-                    <md-switch class="md-secondary" ng-model="item.completed"></md-switch> \
+                    <md-switch class="md-secondary" ng-model="list.completed"></md-switch> \
                 </md-input-container> \
             </md-content> \
             <div class="md-actions"> \
