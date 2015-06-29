@@ -97,6 +97,10 @@ angular.module('startyApp')
                     <label>List Name</label> \
                     <input ng-model="list.name" class="dialog-close"></input> \
                 </md-input-container> \
+                <md-input-container> \
+                    <label>List Completed</label> \
+                    <md-switch class="md-secondary" ng-model="item.completed"></md-switch> \
+                </md-input-container> \
             </md-content> \
             <div class="md-actions"> \
                 <!-- type=button is needed so form uses submit button --> \
@@ -151,6 +155,10 @@ angular.module('startyApp')
                 <md-input-container> \
                     <label>List Name</label> \
                     <input ng-model="list.name" class="dialog-close"></input> \
+                </md-input-container> \
+                <md-input-container> \
+                    <label>List Completed</label> \
+                    <md-switch class="md-secondary" ng-model="item.completed"></md-switch> \
                 </md-input-container> \
             </md-content> \
             <div class="md-actions"> \
