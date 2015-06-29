@@ -130,7 +130,7 @@ router.post('/:projectId/webhook', auth.isAuthenticated, function(req, res) {
 router.post('/:projectId/webhook/event', function(req, res) {
     console.log(res.body);
     if (req.body.commits != null) {
-        var message = 'New commit by ' + req.body.commits.author.name + ': ' + req.body.commits.message;
+        var message = 'New commit by ' + req.body.commits[0].author.name + ': ' + req.body.commits[0].message;
     } else {
         var message = 'Error: Type of message is not yet supported';
     }
@@ -146,8 +146,8 @@ router.post('/:projectId/webhook/event', function(req, res) {
     message.save(function(err, message) {
         if (err) {
             return res.json({
-                error: '',
-                result: message
+                error: err,
+                result: ''
             });
         }
 

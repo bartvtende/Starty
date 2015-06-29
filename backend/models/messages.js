@@ -6,7 +6,7 @@ var messagesSchema = new Schema({
     projectId: Number,
     senderId: Number,
     receiverId: Number,
-    providerId: Number,
+    providerId: String,
     message: String
 }, { versionKey: false });
 
