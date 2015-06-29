@@ -23,7 +23,7 @@ import model.Organization;
 import model.SimulatedData;
 import model.User;
 
-public class TestAddingUsers {
+public class StartSimulation {
 
 	private static LoremIpsum lorem = new LoremIpsum();
 	
