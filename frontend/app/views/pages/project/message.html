@@ -12,17 +12,28 @@
                 <p>&nbsp&nbsp&nbsp;There are no messages, go and be social! :)</p>
             </div>
             <div ng-repeat="message in messages track by $index">
-                <div ng-if="message.providerId != null"></div>
-                <md-list-item class="md-3-line">
-                    <img ng-src="images/icons/ic_person_24px.svg" class="md-avatar" alt="{{message.name}}"/>
-
-                    <div class="md-list-item-text message-item" layout="column">
-                        <h3>{{message.name || 'Deleted user'}}
-                            <small>- <span time="{{message.createdAt}}"></span></small>
-                        </h3>
-                        <p ng-bind-html="checkTags(message.message)"></p>
-                    </div>
-                </md-list-item>
+                <div ng-if="message.providerId != null">
+                    <md-list-item class="md-3-line">
+                        <img ng-src="images/icons/github-circle.svg" class="md-avatar" alt="{{message.name}}"/>
+                        <div class="md-list-item-text message-item" layout="column">
+                            <h3>{{message.providerId}} bot
+                                <small>- <span time="{{message.createdAt}}"></span></small>
+                            </h3>
+                            <p ng-bind-html="checkTags(message.message)"></p>
+                        </div>
+                    </md-list-item>
+                </div>
+                <div ng-if="message.providerId == null">
+                    <md-list-item class="md-3-line">
+                        <img ng-src="images/icons/ic_person_24px.svg" class="md-avatar" alt="{{message.name}}"/>
+                        <div class="md-list-item-text message-item" layout="column">
+                            <h3>{{message.name || 'Deleted user'}}
+                                <small>- <span time="{{message.createdAt}}"></span></small>
+                            </h3>
+                            <p ng-bind-html="checkTags(message.message)"></p>
+                        </div>
+                    </md-list-item>
+                </div>
             </div>
         </div>
 
