@@ -16,6 +16,10 @@ angular.module('startyApp')
         return $http.get(url + '/' + projectId);
     };
 
+    this.allSprints = function (projectId) {
+        return $http.get(url + '/sprints/' + projectId);
+    };
+
     this.createSprint = function (sprint) {
         return $http.post(url + '/sprints', sprint);
     };

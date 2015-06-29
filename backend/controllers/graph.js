@@ -8,10 +8,10 @@ var requestify = require('requestify');
 
 router.get('/:sprintId', auth.isAuthenticated, function(req, res) {
     var sprintId = req.params.sprintId;
-    var endpoint =
 
     requestify.get(settings.graphUrl + '/' + sprintId)
         .then(function(resp) {
+        	console.log(resp);
             return res.json({
                 error: '',
                 result: resp.getBody()
