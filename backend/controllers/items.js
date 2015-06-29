@@ -30,8 +30,8 @@ router.get('/:model/:projectId', auth.isAuthenticated, function(req, res){
     }
 
     var model = getModel(req.params.model);
-    model.findAll({ where: { project_id: req.params.projectId }})
-        .then(function(projects) {
+    model.find({ where: { project_id: req.params.projectId }}).limit(40)
+        .exec(function(projects) {
             if (projects.length == 0) {
                 return res.json({
                     error: 'You don\'t have any projects!',
@@ -44,7 +44,7 @@ router.get('/:model/:projectId', auth.isAuthenticated, function(req, res){
                 });
             }
         });
-});
+}); 
 
 /**
  * Get a item of this project
