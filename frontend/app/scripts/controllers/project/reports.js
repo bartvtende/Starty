@@ -91,10 +91,10 @@ angular.module('startyApp')
                                     "v": data[0]
                                 },
                                 {
-                                    "v": data[1]
+                                    "v": Math.round(data[1] * 10) / 10
                                 },
                                 {
-                                    "v": data[2]
+                                    "v": Math.round(data[2] * 10) / 10
                                 }
                             ]
                         });
