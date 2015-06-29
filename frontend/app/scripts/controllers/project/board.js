@@ -109,12 +109,12 @@ angular.module('startyApp')
             </div> \
           </form></md-dialog> \
         ';
-
+        
         $mdDialog.show({
               template: dialogContent,
               targetEvent: ev,
               controller: 'ListDialogController',
-              locals: {list: {name: ''}}
+              locals: {list: {name: '', completed: false}}
           })
           .then(function(list) {
 
@@ -316,7 +316,11 @@ angular.module('startyApp')
                   <input ng-model="item.description" class="dialog-close"></input> \
               </md-input-container> \
               <md-input-container> \
-                  <label>Item Status</label> \
+                  <label>Expected Time</label> \
+                  <input ng-model="item.expectedTime" type="number" class="dialog-close"></input> \
+              </md-input-container> \
+              <md-input-container> \
+                  <label>Status</label> \
                   <input ng-model="item.status" class="dialog-close"></input> \
               </md-input-container> \
               <md-input-container> \
