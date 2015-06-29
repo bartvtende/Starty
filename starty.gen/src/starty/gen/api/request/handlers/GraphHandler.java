@@ -33,12 +33,12 @@ public class GraphHandler extends Handler {
 	 */
 	public String getGraph(String sprintId){
 		Sprint sprint = super.getSprintsDao().findSprindById(sprintId);
-					
+		System.out.println("sprint " + sprint.toString());
 		Graph graph = new Graph();
 		
 		String parsedGraph = "";
 		
-		if(sprint != null){
+		if(sprint.getId() != null){
 			this.sprintDuration = this.calculateSprintDuration(sprint);
 			this.taskDaysAssigned = this.getTasksDaysAssignedFromDB(sprint);
 			this.workDays = this.sprintDuration - ((this.sprintDuration / 7) * 2);
@@ -56,6 +56,8 @@ public class GraphHandler extends Handler {
 			parsedGraph = json.objectToJSON(graph); 
 			
 			this.saveGraph(parsedGraph);
+		}else{
+			parsedGraph = "{\"error\": \"sprint id not found\"}";
 		}
 		return parsedGraph;
 	}

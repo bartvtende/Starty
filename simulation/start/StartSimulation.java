@@ -314,10 +314,14 @@ public class StartSimulation {
 			Iterator<String> userIterator = users.iterator();
 			while(userIterator.hasNext()){
 				String user = userIterator.next();
-				CloseableHttpResponse response = con.ExecuteHttpRequestBase(con.CreateGlobalMessagePost(token, new Integer(projectId).intValue(), lorem.words(20), user));
+				JsonObject jsonObject = jsonParser.parse(user).getAsJsonObject();
+				String jsonId = jsonObject.get("id").getAsString();
+				
+				CloseableHttpResponse response = con.ExecuteHttpRequestBase(con.CreateGlobalMessagePost(token, new Integer(projectId).intValue(), lorem.words(20), jsonId));
 				HttpEntity entity = response.getEntity();
 				try {
 					String entityString = EntityUtils.toString(entity);
+					System.out.println("MESSAGE ES: "+entityString);
 				} catch (ParseException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -329,6 +333,30 @@ public class StartSimulation {
 					e.printStackTrace();
 				}	
 				
+				for(int i = 0; i<users.size();i++){
+					String receiverId = null;
+					String userReceiver = users.get(i);
+					JsonObject jsonObjectReceiver = jsonParser.parse(userReceiver).getAsJsonObject();
+					String receiverJsonId = jsonObjectReceiver.get("id").getAsString();
+					
+					if(!receiverJsonId.equals(jsonId)){
+						response = con.ExecuteHttpRequestBase(con.CreatePrivateMessagePost(token, new Integer(receiverJsonId).intValue(), new Integer(projectId).intValue(), lorem.words(15), jsonId));
+						entity = response.getEntity();
+						try {
+							String entityString = EntityUtils.toString(entity);
+							System.out.println("MESSAGE ES: "+entityString);
+						} catch (ParseException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							response.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
 				
 			}
 		}

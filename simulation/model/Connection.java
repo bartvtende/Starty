@@ -95,31 +95,29 @@ public class Connection {
 	}
 	
 	
-	public HttpPost CreatePrivateMessagePost(String token, int receiverId, int projectId, String message, String user){
+	public HttpPost CreatePrivateMessagePost(String token, int receiverId, int projectId, String message, String userId){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("receiverId", new Integer(receiverId).toString()));
 		formparams.add(new BasicNameValuePair("message", message));
+		formparams.add(new BasicNameValuePair("userId", userId));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
 		HttpPost httppost = new HttpPost(address+"/messages/"+projectId+"/"+receiverId);
 		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
-		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);
-		httppost.addHeader(headerUser);
 		httppost.setEntity(entity);
 		return httppost;
 	}
 	
-	public HttpPost CreateGlobalMessagePost(String token, int projectId, String Message, String user){
+	public HttpPost CreateGlobalMessagePost(String token, int projectId, String Message, String userId){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("message", Message));
+		formparams.add(new BasicNameValuePair("userId", userId));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
 		HttpPost httppost = new HttpPost(address+"/messages/"+projectId);
 		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
-		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);
-		httppost.addHeader(headerUser);
 		httppost.setEntity(entity);
 		return httppost;
 	}
