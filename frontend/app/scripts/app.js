@@ -19,7 +19,8 @@ angular
         'ngMaterial',
         'ngMdIcons',
         'satellizer',
-        'angular-loading-bar'
+        'angular-loading-bar',
+        'googlechart'
     ])
     .run(function ($state, $rootScope) {
         $rootScope.$state = $state;

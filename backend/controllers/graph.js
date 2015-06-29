@@ -11,6 +11,7 @@ router.get('/:sprintId', auth.isAuthenticated, function(req, res) {
 
     requestify.get(settings.graphUrl + '/' + sprintId)
         .then(function(resp) {
+        	console.log(resp);
             return res.json({
                 error: '',
                 result: resp.getBody()

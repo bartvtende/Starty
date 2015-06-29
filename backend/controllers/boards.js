@@ -5,7 +5,7 @@ var Boards = require('../models/boards');
 var auth = require('./auth');
 
 /**
- * Retrieves all sprints for a project
+ * Retrieves all scrumboard data for a project
  */
 router.get('/:projectId', auth.isAuthenticated, function(req, res) {
     var projectId = req.params.projectId;
@@ -76,6 +76,34 @@ router.get('/:projectId', auth.isAuthenticated, function(req, res) {
                                 result: ret
                             });
                         });
+                });
+        });
+});
+
+/**
+ * Retrieves all sprints for a project
+ */
+router.get('/sprints/:projectId', auth.isAuthenticated, function(req, res) {
+    var projectId = req.params.projectId;
+    var limit = 100;
+    var ret = {Sprints: [], ScrumboardLists: [], ScrumboardItems: []};
+
+    // Find all the sprints
+    Boards.Sprints
+        .find({ projectId: projectId })
+        .where('receiverId').equals(null)
+        .limit(limit)
+        .sort({ createdAt: 'asc' })
+        .exec(function(err, json) {
+            if (err) {
+                return res.json({
+                    error: err,
+                    result: ''
+                });
+            }
+            return res.json({
+                error: '',
+                result: json
                 });
         });
 });
