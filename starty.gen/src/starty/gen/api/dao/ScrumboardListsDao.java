@@ -3,6 +3,8 @@ package starty.gen.api.dao;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 import starty.gen.api.model.ScrumboardList;
 import starty.gen.api.model.Sprint;
 
@@ -33,7 +35,7 @@ public class ScrumboardListsDao extends MongoDao {
 	public ArrayList<Object> findListsBySprint(Sprint sprint){
 		this.sprint = sprint;
 		BasicDBObject query = new BasicDBObject();
-			query.put("sprintid", sprint.getId());
+			query.put("sprintId", new ObjectId(sprint.getId()));
 		return this.executeQuery(query);
 	}
 	
@@ -45,7 +47,7 @@ public class ScrumboardListsDao extends MongoDao {
 	public ScrumboardList findCompletedList(Sprint sprint){
 		ScrumboardList list = null;
 		BasicDBObject query = new BasicDBObject();
-			query.put("sprintid", sprint.getId());
+			query.put("sprintId", new ObjectId(sprint.getId()));
 			query.put("completed", true);
 		ArrayList<Object> lists = this.executeQuery(query);
 		if(lists.size() == 1){
