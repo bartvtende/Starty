@@ -158,10 +158,12 @@ public class Connection {
 		return httppost;
 	}
 	
-	public HttpPost CreateSprintPost(String token, String projectId, String name){
+	public HttpPost CreateSprintPost(String token, String projectId, String name, String startDate, String endDate){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("projectId", projectId));
 		formparams.add(new BasicNameValuePair("name", name));
+		formparams.add(new BasicNameValuePair("startAt", startDate));
+		formparams.add(new BasicNameValuePair("endAt", endDate));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
 		HttpPost httppost = new HttpPost(address+"/boards/sprints");

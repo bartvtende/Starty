@@ -26,9 +26,9 @@ import model.User;
 public class StartSimulation {
 
 	private static LoremIpsum lorem = new LoremIpsum();
-	private final static int ORG_AMOUNT = 1; //default 10
-	private final static int PROJ_PER_ORG_AMOUNT = 1; //default 10
-	private final static int USER_PER_PROJ_AMOUNT = 10; //default 100
+	private final static int ORG_AMOUNT = 10; //default 10
+	private final static int PROJ_PER_ORG_AMOUNT = 10; //default 10
+	private final static int USER_PER_PROJ_AMOUNT = 100; //default 100
 	private final static int ISSUE_PER_PROJ_AMOUNT = 100; //default 100
 	private final static int BACKLOG_PER_PROJ_AMOUNT = 100; //default 100
 	private final static int SPRINT_PER_PROJ_AMOUNT = 2; //default 2
@@ -80,8 +80,6 @@ public class StartSimulation {
 				JsonObject jsonObject = jsonElement.getAsJsonObject();
 				JsonObject user = jsonObject.get("user").getAsJsonObject();
 				creator.setId(user.get("id").toString());
-				System.out.println("Via GSON: " +jsonObject.get("token").getAsString());
-				System.out.println("Via GSON User: " +jsonObject.get("user"));
 				token = jsonObject.get("token").getAsString();
 				userJson = jsonObject.get("user").toString();
 				SimulatedData.addToken(token);
@@ -103,8 +101,6 @@ public class StartSimulation {
 				Organization organization = new Organization(organizationId, creator, organizationName);
 				organization.addUser(creator);
 				organizations.add(organization);
-				
-				System.out.println(entityString);
 				//JsonObject user = jsonObject.get("user").getAsJsonObject();
 			} catch (ParseException | IOException e) {
 				// TODO Auto-generated catch block
@@ -145,10 +141,11 @@ public class StartSimulation {
 						try {
 							entityString = EntityUtils.toString(entity);
 							JsonElement jsonElement = jsonParser.parse(entityString);
-							System.out.println(entityString);
+							
 							JsonObject jsonObject = jsonElement.getAsJsonObject();
 							JsonObject newUser = jsonObject.get("user").getAsJsonObject();
 							newUserMail = newUser.get("email").getAsString();
+							System.out.println("mail: "+newUserMail);
 							newUserId = newUser.get("id").getAsInt();
 							newUserString = newUser.toString();
 							users.add(newUserString);
@@ -232,11 +229,10 @@ public class StartSimulation {
 					for(int k=0;k<SPRINT_PER_PROJ_AMOUNT;k++){
 						String sprintId = null;
 						//create backlog
-						response = con.ExecuteHttpRequestBase(con.CreateSprintPost(token, projectId, "sprint"+i+j+k));
+						response = con.ExecuteHttpRequestBase(con.CreateSprintPost(token, projectId, "sprint"+i+j+k, "2015-06-27T22:00:00.000Z", "2015-07-03T22:00:00.000Z"));
 						entity = response.getEntity();
 						try {
 							entityString = EntityUtils.toString(entity);
-							System.out.println("ES Sprint: "+entityString);
 							JsonElement jsonElement = jsonParser.parse(entityString);
 							JsonObject jsonObject = jsonElement.getAsJsonObject();
 							JsonObject sprint = jsonObject.get("result").getAsJsonObject();
@@ -258,7 +254,6 @@ public class StartSimulation {
 							entity = response.getEntity();
 							try {
 								entityString = EntityUtils.toString(entity);
-								System.out.println(entityString);
 								JsonElement jsonElement = jsonParser.parse(entityString);
 								JsonObject jsonObject = jsonElement.getAsJsonObject();
 								JsonObject list = jsonObject.get("result").getAsJsonObject();
@@ -281,7 +276,7 @@ public class StartSimulation {
 								entity = response.getEntity();
 								try {
 									entityString = EntityUtils.toString(entity);
-									System.out.println("ITEM ES: "+entityString);
+									
 									
 								} catch (ParseException | IOException e) {
 									// TODO Auto-generated catch block
@@ -321,7 +316,7 @@ public class StartSimulation {
 				HttpEntity entity = response.getEntity();
 				try {
 					String entityString = EntityUtils.toString(entity);
-					System.out.println("MESSAGE ES: "+entityString);
+					
 				} catch (ParseException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -344,7 +339,7 @@ public class StartSimulation {
 						entity = response.getEntity();
 						try {
 							String entityString = EntityUtils.toString(entity);
-							System.out.println("MESSAGE ES: "+entityString);
+							
 						} catch (ParseException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
