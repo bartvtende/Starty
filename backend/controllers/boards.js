@@ -135,7 +135,9 @@ router.post('/sprints', auth.isAuthenticated, function(req, res) {
  * Creates a new list for a project
  */
 router.post('/lists', auth.isAuthenticated, function(req, res) {
+    var ObjectId = require('mongoose').Types.ObjectId;
     var list = new Boards.ScrumboardLists(req.body);
+    var limit = 100;
 
     list.save(function(err, list) {
         
@@ -145,6 +147,18 @@ router.post('/lists', auth.isAuthenticated, function(req, res) {
                 result: ''
             });
         }
+
+        if (req.body.completed) {
+            if (list) {
+                var currentDate = new Date().toISOString();
+                // Find all the items
+                Boards.ScrumboardItems
+                    .update({ listId: new ObjectId(req.body._id) }, {completedAt: currentDate}, {multi: true}, function(err, json) {
+                        console.log(err);
+                    });
+            }
+        }
+
         return res.json({
             error: '',
             result: list
@@ -158,12 +172,12 @@ router.post('/lists', auth.isAuthenticated, function(req, res) {
  * Creates a new list for a project
  */
 router.put('/lists', auth.isAuthenticated, function(req, res) {
+    var ObjectId = require('mongoose').Types.ObjectId;
 
-    var ObjectId = require('mongoose').Types.ObjectId; 
-    var list = Boards.ScrumboardLists
+    Boards.ScrumboardLists
         .update(
-            { _id: new ObjectId(req.body._id )},
-            {name: req.body.name, order: req.body.order},
+            { _id: new ObjectId(req.body._id)},
+            {name: req.body.name, order: req.body.order, completed: req.body.completed},
             {  },
             function(err, list) {
 
@@ -173,12 +187,20 @@ router.put('/lists', auth.isAuthenticated, function(req, res) {
                         result: ''
                     });
                 }
+
+                if (req.body.completed) {
+                    var currentDate = new Date().toISOString();
+                    // Find all the items
+                    Boards.ScrumboardItems
+                        .update({ listId: new ObjectId(req.body._id) },{completedAt: currentDate}, {multi: true}, function(err, json) {
+                            console.log(err);
+                        });
+                }
                 return res.json({
                     error: '',
                     result: list
                 });
             });
-
 });
 
 /**

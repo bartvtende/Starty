@@ -9,7 +9,7 @@
  */
 var socky = io.connect('http://localhost:1338', {'force new connection': true});
 angular.module('startyApp')
-    .controller('MessageCtrl', function ($scope, MessageData, $mdToast, ProjectData, $stateParams, $auth, $sce, GraphData) {
+    .controller('MessageCtrl', function ($scope, MessageData, $mdToast, ProjectData, $stateParams, $auth, $sce) {
 
         $scope.selectedChat = 'Chatting with all';
         $scope.personId = null;
@@ -45,7 +45,7 @@ angular.module('startyApp')
         };
 
         $scope.loadProject = function () {
-            $scope.$watchGroup(['project', 'user'], function (values) {
+                $scope.$watchGroup(['project', 'user'], function (values) {
                 if (values[0] != null && values[0].id != undefined && values[1] != null && values[1].id != undefined) {
                     var projectId = $scope.project.id;
                     var userId = $scope.user.id;

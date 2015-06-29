@@ -95,31 +95,29 @@ public class Connection {
 	}
 	
 	
-	public HttpPost CreatePrivateMessagePost(String token, int receiverId, int projectId, String message, String user){
+	public HttpPost CreatePrivateMessagePost(String token, int receiverId, int projectId, String message, String userId){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("receiverId", new Integer(receiverId).toString()));
 		formparams.add(new BasicNameValuePair("message", message));
+		formparams.add(new BasicNameValuePair("userId", userId));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
 		HttpPost httppost = new HttpPost(address+"/messages/"+projectId+"/"+receiverId);
 		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
-		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);
-		httppost.addHeader(headerUser);
 		httppost.setEntity(entity);
 		return httppost;
 	}
 	
-	public HttpPost CreateGlobalMessagePost(String token, int projectId, String Message, String user){
+	public HttpPost CreateGlobalMessagePost(String token, int projectId, String Message, String userId){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-		formparams.add(new BasicNameValuePair("Message", Message));
+		formparams.add(new BasicNameValuePair("message", Message));
+		formparams.add(new BasicNameValuePair("userId", userId));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
 		
 		HttpPost httppost = new HttpPost(address+"/messages/"+projectId);
 		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
-		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);
-		httppost.addHeader(headerUser);
 		httppost.setEntity(entity);
 		return httppost;
 	}
@@ -138,19 +136,6 @@ public class Connection {
 		return httppost;
 	}
 	
-	public HttpPost CreateItemPost(String token, String model, String user, String item){
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-		formparams.add(new BasicNameValuePair("item", item));
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
-		
-		HttpPost httppost = new HttpPost(address+"/items/"+model);
-		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
-		BasicHeader headerUser = new BasicHeader("user", user);
-		httppost.addHeader(header);
-		httppost.addHeader(headerUser);
-		httppost.setEntity(entity);
-		return httppost;
-	}
 	public HttpPost CreateItemIssuePost(String token, String model, String id, String user, String projectId,
 			String title, String description, String status, String type, String priority, String timeExpected){
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -169,6 +154,54 @@ public class Connection {
 		BasicHeader headerUser = new BasicHeader("user", user);
 		httppost.addHeader(header);
 		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
+	public HttpPost CreateSprintPost(String token, String projectId, String name, String startDate, String endDate){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("projectId", projectId));
+		formparams.add(new BasicNameValuePair("name", name));
+		formparams.add(new BasicNameValuePair("startAt", startDate));
+		formparams.add(new BasicNameValuePair("endAt", endDate));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/boards/sprints");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		httppost.addHeader(header);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
+	public HttpPost CreateListPost(String token, String sprintId,  String name, String order, String completed){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("sprintId", sprintId));
+		formparams.add(new BasicNameValuePair("name", name));
+		formparams.add(new BasicNameValuePair("order", order));
+		formparams.add(new BasicNameValuePair("completed", completed));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/boards/lists");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		httppost.addHeader(header);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
+	public HttpPost CreateItemPost(String token, String listId, String shortCode, String title, String description, 
+			String status, String expectedTime){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("listId", listId));
+		formparams.add(new BasicNameValuePair("shortcode", shortCode));
+		formparams.add(new BasicNameValuePair("title", title));
+		formparams.add(new BasicNameValuePair("description", description));
+		formparams.add(new BasicNameValuePair("status", status));
+		formparams.add(new BasicNameValuePair("expectedTime", expectedTime));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/boards/items");
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		httppost.addHeader(header);
 		httppost.setEntity(entity);
 		return httppost;
 	}

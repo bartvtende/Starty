@@ -70,6 +70,12 @@ public class Sprint {
 	public void setEndAt(Calendar endAt) {
 		this.endAt = endAt;
 	}
+
+	@Override
+	public String toString() {
+		return "Sprint [id=" + id + ", project=" + project + ", name=" + name
+				+ ", startAt=" + startAt + ", endAt=" + endAt + "]";
+	}
 	
 	
 }

@@ -17,6 +17,7 @@ public class RequestListener {
 	public String getGraph(@PathParam("sprintId") String sprintId){
 		GraphHandler handler = new GraphHandler();
 		String g = handler.getGraph(sprintId); 
+		System.out.println(g + " test g " );
 		return g;
 	}
 	
