@@ -184,6 +184,41 @@ public class TestAddingUsers {
 						
 						
 					}
+					for(int k=0;k<100;k++){
+						//create issue
+						response = con.ExecuteHttpRequestBase(con.CreateItemIssuePost(token, "issues", rs.substring(1, 3)+i+j+k, userJson, projectId, "Issue"+rs+i+j+k, lorem.words(15), "Open", "Bug", "Critical", "3"));
+						entity = response.getEntity();
+						try {
+							entityString = EntityUtils.toString(entity);
+						} catch (ParseException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							response.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					for(int k=0;k<100;k++){
+						//create issue
+						response = con.ExecuteHttpRequestBase(con.CreateItemBacklogPost(token, "backlog", rs.substring(1, 3)+i+j+k, userJson, projectId, "Backlog"+rs+i+j+k, lorem.words(15), "Open", "3"));
+						entity = response.getEntity();
+						try {
+							entityString = EntityUtils.toString(entity);
+						} catch (ParseException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							response.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					
 					projectUserList.put(projectId, users);
 					
 				}
