@@ -1,21 +1,31 @@
 <div layout="column">
-  <md-toolbar class="md-accent md-toolbar-tools">
-    <h2>
-      <span>Project settings</span>
-    </h2>
-  </md-toolbar>
+    <md-toolbar class="md-accent md-toolbar-tools">
+        <h2>
+            <span>Project settings</span>
+        </h2>
+    </md-toolbar>
 
-  <md-content layout="column" flex class="md-padding">
-    <h2 class="md-title">GitHub integration</h2>
+    <md-content layout="column" flex class="md-padding">
+        <h2 class="md-title">GitHub integration</h2>
 
-    <md-button class="md-raised md-primary" ng-click="authenticate('github')">Sign in with GitHub</md-button>
+        <div ng-if="!repositories">
+            <md-button class="md-raised md-primary" ng-click="authenticate('github')">Sign in with GitHub</md-button>
+        </div>
 
-    or
 
-    Your list of repo's
+        <div ng-if="repositories">
+            <form name="RepositoryForm" ng-submit="createWebhook(repo)" novalidate>
+                <md-select placeholder="Choose a repository" ng-model="repo" ng-required="true">
+                    <md-option ng-repeat="repository in repositories" value="{{repository.name}}">{{repository.name}}
+                    </md-option>
+                </md-select>
 
-    <h2 class="md-title">Delete this project</h2>
+                <md-button class="md-raised md-primary" ng-disabled="RepositoryForm.$invalid">Link this repository with this project</md-button>
+            </form>
+        </div>
 
-    <md-button class="md-raised" ng-click="confirmDelete($event, project)">Delete project</md-button>
-  </md-content>
+        <h2 class="md-title">Delete this project</h2>
+
+        <md-button class="md-raised" ng-click="confirmDelete($event, project)">Delete project</md-button>
+    </md-content>
 </div>

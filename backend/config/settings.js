@@ -16,5 +16,4 @@ module.exports = {
     githubClientSecret: '8975f269f7cf457b55ce576960daaeb6a283df94',
 
     baseUrl: process.env.baseUrl || 'http://localhost:1337/api'
-
 };

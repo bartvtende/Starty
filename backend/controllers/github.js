@@ -3,8 +3,10 @@ var router = express.Router();
 
 var models = require('../models/index');
 var settings = require('../config/settings');
+var Messages = require('../models/messages');
 var auth = require('./auth');
 
+var requestify = require('requestify');
 var request = require('request');
 
 var Providers = models.providers;
@@ -127,9 +129,32 @@ router.post('/:projectId/webhook', auth.isAuthenticated, function(req, res) {
 
 router.post('/:projectId/webhook/event', function(req, res) {
     console.log(res.body);
-    return res.json({
-        error: '',
-        result: 'Yay!'
+    if (req.body.commits != null) {
+        var message = 'New commit by ' + req.body.commits[0].author.name + ': ' + req.body.commits[0].message;
+    } else {
+        var message = 'Error: Type of message is not yet supported';
+    }
+
+    var newMessage = {
+        projectId: req.params.projectId,
+        message: message,
+        providerId: 'github'
+    };
+
+    var message = new Messages(newMessage);
+
+    message.save(function(err, message) {
+        if (err) {
+            return res.json({
+                error: err,
+                result: ''
+            });
+        }
+
+        return res.json({
+            error: '',
+            result: message
+        })
     });
 });
 

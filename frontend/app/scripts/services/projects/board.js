@@ -36,4 +36,12 @@ angular.module('startyApp')
         return $http.post(url + '/items', item);
     };
 
+    this.editItem = function (item) {
+        return $http.put(url + '/items', item);
+    };
+
+    this.deleteItem = function (item) {
+        return $http.delete(url + '/items/' + item);
+    };
+
   });

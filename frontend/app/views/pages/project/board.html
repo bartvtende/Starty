@@ -24,12 +24,12 @@
         </md-menu-item>
       </md-menu-content>
     </md-menu>
-
 </md-toolbar>
+
 <div style="overflow-x: scroll; width:100%">
   <div style="width: {{cur.lists.length * 300 + 56}};display: inline-flex;">
-    <div style="width:100%">
-      <div ng-repeat="list in cur.lists" style="width: 300px; float: left">
+    <div ng-repeat="(listKey, list) in cur.lists" style="width: 300px">
+      <div style="width:300px;height:75px">
         <div style="float:left;width: 65px;display: -webkit-box;">
           <md-fab-speed-dial md-open="demo.isOpen" md-direction="right"
                              ng-class="demo.selectedMode">
@@ -52,14 +52,17 @@
                 <md-icon md-svg-src="images/icons/ic_add_24px.svg"></md-icon>
               </md-button>
             </md-fab-actions>
-          </md-fab-speed-dial></div>
+          </md-fab-speed-dial>
 
-        <h3 style="float:left;margin">{{list.name}}</h3>
+        </div>
+
+        <h3 style="float:left;">{{list.name}}</h3>
+
       </div>
-      
+
       <md-list>
-        <md-list-item class="md-3-line" ng-repeat="(key, item) in cur.items">
-          <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="itemEdit({{key}})">
+        <md-list-item class="md-3-line" ng-repeat="(itemKey, item) in list.items">
+          <md-button aria-label="left" class="md-fab md-raised md-mini" ng-click="itemEdit($event, {{listKey}}, {{itemKey}})">
             <md-icon md-svg-src="images/icons/ic_edit_24px.svg" style="color: white;"></md-icon>
           </md-button>
           <div class="md-list-item-text">
