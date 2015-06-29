@@ -26,6 +26,14 @@ import model.User;
 public class StartSimulation {
 
 	private static LoremIpsum lorem = new LoremIpsum();
+	private final static int ORG_AMOUNT = 1;
+	private final static int PROJ_PER_ORG_AMOUNT = 10;
+	private final static int USER_PER_PROJ_AMOUNT = 100;
+	private final static int ISSUE_PER_PROJ_AMOUNT = 100;
+	private final static int BACKLOG_PER_PROJ_AMOUNT = 100;
+	//total # of users = ORG_AMOUNT * PROJ_PER_ORG_AMOUNT * USER_PER_PROJ_AMOUNT + ORG_AMOUNT;
+	//the '+ ORG_AMOUNT' is because there is a separate user created as the creator of an organization.
+	
 	
 	public static void main(String[] args) {
 		JsonParser jsonParser = new JsonParser();
@@ -44,7 +52,7 @@ public class StartSimulation {
 		//random string
 		String rs = Generator.getRandomString(4);
 		//le hardcode ;)
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < ORG_AMOUNT; i++) {
 			User creator = new User("test", "test", "test" + rs + i + "@test.io");
 			
 			String userJson = null;
@@ -106,7 +114,7 @@ public class StartSimulation {
 				e1.printStackTrace();
 			}
 			
-				for(int j =0; j<10;j++){
+				for(int j =0; j<PROJ_PER_ORG_AMOUNT;j++){
 					//add project
 					response = con.ExecuteHttpRequestBase(con.CreateNewProjectPost(token, userJson, "pr"+rs+i+j, "project"+rs+i+j, lorem.words(40)));
 					entity = response.getEntity();
@@ -125,7 +133,7 @@ public class StartSimulation {
 						e.printStackTrace();
 					}
 					ArrayList<String> users = new ArrayList<String>();
-					for(int k=0;k<100;k++){
+					for(int k=0;k<USER_PER_PROJ_AMOUNT;k++){
 						String newUserMail = null;
 						int newUserId = 0;
 						response = con.ExecuteHttpRequestBase(con.CreateAddUserPost("org-employee"+rs+i+j+k+"@test.io", "test", "test"));
@@ -184,7 +192,7 @@ public class StartSimulation {
 						
 						
 					}
-					for(int k=0;k<100;k++){
+					for(int k=0;k<ISSUE_PER_PROJ_AMOUNT;k++){
 						//create issue
 						response = con.ExecuteHttpRequestBase(con.CreateItemIssuePost(token, "issues", rs.substring(1, 3)+i+j+k, userJson, projectId, "Issue"+rs+i+j+k, lorem.words(15), "Open", "Bug", "Critical", "3"));
 						entity = response.getEntity();
@@ -201,8 +209,8 @@ public class StartSimulation {
 							e.printStackTrace();
 						}
 					}
-					for(int k=0;k<100;k++){
-						//create issue
+					for(int k=0;k<BACKLOG_PER_PROJ_AMOUNT;k++){
+						//create backlog
 						response = con.ExecuteHttpRequestBase(con.CreateItemBacklogPost(token, "backlog", rs.substring(1, 3)+i+j+k, userJson, projectId, "Backlog"+rs+i+j+k, lorem.words(15), "Open", "3"));
 						entity = response.getEntity();
 						try {
