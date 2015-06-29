@@ -151,6 +151,47 @@ public class Connection {
 		httppost.setEntity(entity);
 		return httppost;
 	}
+	public HttpPost CreateItemIssuePost(String token, String model, String id, String user, String projectId,
+			String title, String description, String status, String type, String priority, String timeExpected){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("id", id));
+		formparams.add(new BasicNameValuePair("project_id", projectId));
+		formparams.add(new BasicNameValuePair("title", title));
+		formparams.add(new BasicNameValuePair("description", description));
+		formparams.add(new BasicNameValuePair("status", status));
+		formparams.add(new BasicNameValuePair("type", type));
+		formparams.add(new BasicNameValuePair("priority", priority));
+		formparams.add(new BasicNameValuePair("time_expected", timeExpected));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/items/"+model);
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
+		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
+	
+	public HttpPost CreateItemBacklogPost(String token, String model, String id, String user, String projectId,
+			String title, String description, String status, String timeExpected){
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("id", id));
+		formparams.add(new BasicNameValuePair("project_id", projectId));
+		formparams.add(new BasicNameValuePair("title", title));
+		formparams.add(new BasicNameValuePair("description", description));
+		formparams.add(new BasicNameValuePair("status", status));
+		formparams.add(new BasicNameValuePair("time_expected", timeExpected));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
+		
+		HttpPost httppost = new HttpPost(address+"/items/"+model);
+		BasicHeader header = new BasicHeader("Authorization", "Bearer "+token);
+		BasicHeader headerUser = new BasicHeader("user", user);
+		httppost.addHeader(header);
+		httppost.addHeader(headerUser);
+		httppost.setEntity(entity);
+		return httppost;
+	}
 	
 	public HttpPost CreateItemUpdatePost(String token, String user, String model, String id, String projectId, 
 			String title, String status, String description, String timeExpected, String priority, String type){

@@ -9,7 +9,7 @@
  */
 var socky = io.connect('http://localhost:1338', {'force new connection': true});
 angular.module('startyApp')
-    .controller('MessageCtrl', function ($scope, MessageData, $mdToast, ProjectData, $stateParams, $auth, $sce) {
+    .controller('MessageCtrl', function ($scope, MessageData, $mdToast, ProjectData, $stateParams, $auth, $sce, GraphData) {
 
         $scope.selectedChat = 'Chatting with all';
         $scope.personId = null;
@@ -130,7 +130,7 @@ angular.module('startyApp')
                             image: 'http://placehold.it/50x50',
                             name: name,
                             message: msg.message,
-                            time: msg.createdAt
+                            createdAt: msg.createdAt
                         });
                         window.setTimeout(showNewest, 100);
                     });

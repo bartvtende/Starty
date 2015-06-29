@@ -24,6 +24,7 @@ public class GraphHandler extends Handler {
 	
 	public GraphHandler(){
 		super();
+		this.taskDaysAssigned = 0.0;
 	}
 	
 	/**
@@ -51,6 +52,7 @@ public class GraphHandler extends Handler {
 			graph.setGraphData(graphData);
 			
 			JsonParser json = new JsonParser();
+			System.out.println(graph.getSprintId());
 			parsedGraph = json.objectToJSON(graph); 
 			
 			this.saveGraph(parsedGraph);
@@ -107,31 +109,34 @@ public class GraphHandler extends Handler {
 				ArrayList<Object> items = super.getItemsDao().getItemsbyListIdAndDate(cl, day);
 				System.out.println(items.size() + " items size in handler");
 				
-				if(super.getCalendarParser().checkIfWeekend(day)){
-					System.out.println("weekend???");
-					weekendWork += this.calculateCompletedWorkTime(items);
-					if(i == workDays){
-						actual[i] = total - weekendWork;
-						weekendWork = 0;
+				if(items.size() > 0 && i <= workDays){
+					if(super.getCalendarParser().checkIfWeekend(day)){
+						System.out.println("weekend???");
+						weekendWork += this.calculateCompletedWorkTime(items);
+						if(i == workDays){
+							actual[i] = total - weekendWork;
+							weekendWork = 0;
+						}
+					}else if (super.getCalendarParser().checkIfMonday(d)){
+						System.out.println("length " + actual.length + "i= " + i + "work " + workDays );
+						actual[i] = total - (this.calculateCompletedWorkTime(items));
+						System.out.println("calc1 " + actual[i]);
+						weekendWork = 0.0;
+						i++;
+						System.out.println("monday");
+					
+					}else if(i <= workDays + 1){
+						actual[i] =  total - this.calculateCompletedWorkTime(items);
+						System.out.println("calc2 " + actual[i]);
+						i++;
 					}
 				}
-				else if (super.getCalendarParser().checkIfMonday(d)){
-					actual[i] = total - (this.calculateCompletedWorkTime(items));
-					System.out.println("calc1 " + actual[i]);
-					weekendWork = 0.0;
-					i++;
-					System.out.println("monday");
 				
-				}else if(i <= workDays + 1){
-					actual[i] =  total - this.calculateCompletedWorkTime(items);
-					System.out.println("calc2 " + actual[i]);
-					i++;
-				}
 				
 				System.out.println(i + " " + total);
 				day.add(Calendar.DATE, 1);
 				System.out.println("day = " + day.getTime());
-				//currentDaPassed = super.getCalendarParser().checkIfDatePassed(day, d);
+				//currentDayPassed = super.getCalendarParser().checkIfDatePassed(day, d);
 				endPast = super.getCalendarParser().checkIfDatePassed(day, sprint.getEndAt());
 			}
 		}
@@ -173,10 +178,15 @@ public class GraphHandler extends Handler {
 	 */
 	private double calculateEfficiencyFactor(int amountDev){
 		//TODO get passed workdays an work completed
-		double manDays = this.workDays * amountDev;
-		double eff = this.taskDaysCompleted / manDays;
-		double factor = Math.floor(eff * 10) /10 ;
-		return factor;
+		if(this.taskDaysCompleted > 0){
+			double manDays = this.workDays * amountDev;
+			System.out.println("mandays " + manDays);
+			double eff = this.taskDaysCompleted / manDays;
+			System.out.println("eff " + eff);
+			double factor = Math.floor(eff * 10) /10 ;
+			return factor;
+		}
+		return 0.0;
 	}
 	/**
 	 * calculate the amount of days for duration of the sprint

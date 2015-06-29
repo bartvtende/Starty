@@ -1,5 +1,6 @@
 package starty.gen.api.util;
 
+import starty.gen.api.model.Graph;
 import starty.gen.api.model.Projects;
 import starty.gen.api.model.ScrumboardList;
 import starty.gen.api.model.Sprint;
@@ -26,6 +27,8 @@ public class JsonParser {
 	public String objectToJSON(Object obj){
 		String json = "";
 		if(obj != null && obj instanceof java.io.Serializable == false ){
+			Graph g  = (Graph) obj;
+			System.out.println(g.toString());
 			Gson gson = new Gson();
 			json = gson.toJson(obj);
 		}

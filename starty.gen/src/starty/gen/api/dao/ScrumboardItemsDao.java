@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 import starty.gen.api.model.ScrumboardItem;
 import starty.gen.api.model.ScrumboardList;
 
@@ -36,7 +38,7 @@ public class ScrumboardItemsDao extends MongoDao {
 	public ArrayList<Object> getItemsbyListId(ScrumboardList list){
 		this.list = list;
 		BasicDBObject query = new BasicDBObject();
-			query.put("listId", list.getId());
+		query.put("listId", new ObjectId(list.getId()));
 		return this.executeQuery(query);
 	}
 	
@@ -49,7 +51,7 @@ public class ScrumboardItemsDao extends MongoDao {
 	public ArrayList<Object> getItemsbyListIdAndDate(ScrumboardList list, Calendar d){
 		this.list = list;
 		BasicDBObject query = new BasicDBObject();
-			query.put("listId", list.getId());
+			query.put("listId", new ObjectId(list.getId()));
 			query.put("completedAt", new BasicDBObject("$lte", d.getTime()));
 			//query.put("completedAt", new BasicDBObject("$lt", d2.getTime()));
 			//ArrayList<Object> items = this.executeQuery(query);
@@ -98,7 +100,7 @@ public class ScrumboardItemsDao extends MongoDao {
 			item.setDescription(map.get("description").toString());
 			item.setStatus(map.get("status").toString());
 			item.setExpectedTime(Double.parseDouble(map.get("expectedTime").toString()));
-			if(!map.get("completedAt").equals("")){
+			if(map.get("completedAt") != null){
 				item.setCompletedAt(super.getCalendarParser().parseIsoDateString(map.get("completedAt").toString()));
 			}
 		}
