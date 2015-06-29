@@ -45,7 +45,7 @@ angular.module('startyApp')
         };
 
         $scope.loadProject = function () {
-            $scope.$watchGroup(['project', 'user'], function (values) {
+                $scope.$watchGroup(['project', 'user'], function (values) {
                 if (values[0] != null && values[0].id != undefined && values[1] != null && values[1].id != undefined) {
                     var projectId = $scope.project.id;
                     var userId = $scope.user.id;

@@ -12,6 +12,16 @@
     <md-content layout="column" flex class="md-padding">
         <h2 class="md-title">Burn down chart</h2>
 
+        <form name="SprintForm" ng-submit="openGraph(sprintId)" novalidate layout="row">
+            <md-select placeholder="Sprints" ng-model="sprintId">
+                <md-option ng-repeat="sprint in sprints" value="{{sprint._id}}">{{sprint.name}}</md-option>
+            </md-select>
+
+            <md-button class="md-fab md-mini" aria-label="Change sprint">
+                <md-icon md-svg-src="images/icons/ic_refresh_24px.svg"></md-icon>
+            </md-button>
+        </form>
+
         <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
 
     </md-content>
