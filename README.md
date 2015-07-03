@@ -6,7 +6,7 @@ Awesome projectmanagement tool for startups!
 * Centralized messages with private messages and GitHub bot
 * Scrumboard (Kabana) with sprints, lists and user stories
 * Issue tracker
-* Burn down chart generation for reports (External Java)
+* Burn down chart generation for reports (external Java application)
 * Many more small features
 
 ##Technology stack
