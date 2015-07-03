@@ -1,5 +1,21 @@
-# Starty
+#Starty
 Awesome projectmanagement tool for startups!
+
+##Features
+* All features are project-based within an organization
+* Centralized messages with private messages and GitHub bot
+* Scrumboard (Kabana) with sprints, lists and user stories
+* Issue tracker
+* Burn down chart generation for reports (External Java)
+* Many more small features
+
+##Technology stack
+* Node.js as backend
+* AngularJS as frontend
+* MongoDB and MySQL as the databases
+* Angular Material as CSS framework
+* Socket.io for real-time communications
+* JSON Web Tokens for authentication
 
 ##Running the frontend
 
@@ -15,3 +31,10 @@ Awesome projectmanagement tool for startups!
 3. In your command line, execute ```npm install``` to install all the necessary dependencies.
 4. In your command line, execute ```nodemon app.js``` to run application
 5. Go to [http://localhost:1337/api/{whatever api endpoint}](http://localhost:1337/api/{whatever api endpoint}) to access the backend
+
+##Running the graph generator
+
+1. Get the war-file from ```/starty.gen war/starty.gen.war```
+2. Using for example XAMPP, place the war-file in XAMPP's ```/tomcat/webapps```
+3. Start the Tomcat client within XAMPP
+4. Go to [http://localhost:8080/starty.gen/api/request/graph/{sprintId}/](http://localhost:8080/starty.gen/api/request/graph/{sprintId}/) to get the graph data
