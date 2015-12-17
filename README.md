@@ -1,6 +1,8 @@
 #Starty
 Awesome projectmanagement tool for startups!
 
+![Starty screencap](http://i.imgur.com/LJu4zjK.png)
+
 ##Features
 * All features are project-based within an organization
 * Centralized messages with private messages and GitHub bot
